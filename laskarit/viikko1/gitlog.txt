@@ -1,0 +1,104 @@
+commit 232b51aec3542c0a12bcad34c7646b91b711a7c1
+Author: Henri Immonen <henri.immonen000@gmail.com>
+Date:   Mon Mar 14 12:37:29 2022 +0200
+
+    Tehtävä 11
+
+ tiedostoja/file2             | 0
+ tiedostoja/{file1 => file22} | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 37979962af46bb14f3982b4307481a5a73784b7d
+Author: Henri Immonen <henri.immonen000@gmail.com>
+Date:   Mon Mar 14 12:32:45 2022 +0200
+
+    tiedostoja-hakemisto luotu
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit cd0f8a8c055fc7ec362ffde2e36b94d5d04ff1bf
+Author: Henri Immonen <henri.immonen000@gmail.com>
+Date:   Fri Mar 11 11:24:01 2022 +0200
+
+    Lisäyksiä ja poistoja
+
+ eka.txt    | 4 +++-
+ kolmas.txt | 4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+commit ca27a6741c371cb8d74b9705b4de5a839d6754db
+Author: Henri Immonen <henri.immonen000@gmail.com>
+Date:   Fri Mar 11 11:22:00 2022 +0200
+
+    Tiedosto.txt uudelleennimetty
+
+ tiedosto.txt => eka.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 499bd70ab5e49f284e2cae91b5200882540836b6
+Author: Henri Immonen <henri.immonen000@gmail.com>
+Date:   Fri Mar 11 11:19:08 2022 +0200
+
+    Poistettu tiedosto toinen.txt
+
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 64007630be97b3592b737743ada2f3f125a8170e
+Author: Henri Immonen <henri.immonen000@gmail.com>
+Date:   Fri Mar 11 11:02:11 2022 +0200
+
+    Lisätty lorem ipsum tiedosto.txt tiedostoon
+
+ tiedosto.txt | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 351243596a4ee43f8bf46c2d6fad373df679a53d
+Author: Henri Immonen <henri.immonen000@gmail.com>
+Date:   Fri Mar 11 10:58:04 2022 +0200
+
+    Hakemisto stuff ja testfile lisätty
+
+ stuff/testfile.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 3fc6c119784f246fe5f32520992a21b0621d9918
+Author: Henri Immonen <henri.immonen000@gmail.com>
+Date:   Fri Mar 11 10:56:39 2022 +0200
+
+    Muokattu toista ja kolmatta tiedostoa
+
+ kolmas.txt | 1 +
+ toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit da90c29498762833b30d95f7ec284e30ed6e38c7
+Author: Henri Immonen <henri.immonen000@gmail.com>
+Date:   Fri Mar 11 10:55:30 2022 +0200
+
+    Lisätty kolmas tiedosto
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit e0539f84fed7dafce35d37e067d4a703fae45e9b
+Author: Henri Immonen <henri.immonen000@gmail.com>
+Date:   Fri Mar 11 10:53:26 2022 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit fe189b083c7faff78c0a751cfd844b649dff88d0
+Author: Henri Immonen <henri.immonen000@gmail.com>
+Date:   Fri Mar 11 10:50:49 2022 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
