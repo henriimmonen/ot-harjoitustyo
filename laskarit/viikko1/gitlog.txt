@@ -102,3 +102,5 @@ Date:   Fri Mar 11 10:50:49 2022 +0200
 
  tiedosto.txt | 0
  1 file changed, 0 insertions(+), 0 deletions(-)
+
+Tehtävä 17 Lisäys.
