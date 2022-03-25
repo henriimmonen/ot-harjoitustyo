@@ -1,7 +1,7 @@
 # Vaatimusmäärittely
 
 ## Sovelluksen tarkoitus
-- Sovellus on versio suositusta Pac-Man pelistä. Pelin tarkoituksena on kerätän pisteitä ja varoa kentässä liikkuvia vihollisia saamasta sinua kiinni. 
+- Sovellus on versio suositusta Pac-Man pelistä. Pelin tarkoituksena on kerätä pisteitä ja varoa kentässä liikkuvia vihollisia saamasta sinua kiinni. 
 
 ## Käyttäjät
 - Käyttäjinä toimivat pelin pelaajat. Muita tarpeellisia rooleja käyttäjille ei ole.
