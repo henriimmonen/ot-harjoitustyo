@@ -7,6 +7,7 @@ Kansio tulee sisältämään **harjoitustyön** ja laskuharjoituksia.
 ## Harjoitustyö
 - [Vaatimusmäärittely](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
 
+## Laskarit
 ### Viikko 1
 - [Gitlog](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/laskarit/viikko1/gitlog.txt)
 - [Komentorivi](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)
