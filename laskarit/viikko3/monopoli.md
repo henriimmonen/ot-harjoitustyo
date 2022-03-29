@@ -6,7 +6,7 @@ classDiagram
 	Pelinappula "1" -- "1" Pelaaja
 	Nopat -- "*" Pelaaja
 	Nopat .. Pelinappula
-	Class Ruutu {
+	class Ruutu {
 	    seuraava_ruutu()
 	}
 ```
