@@ -25,4 +25,7 @@ classDiagram
 	class Pelaaja {
 	    Saldo
 	}
+	class Kortti {
+	    toiminto
+	}
 ```
