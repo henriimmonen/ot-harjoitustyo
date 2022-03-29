@@ -10,5 +10,5 @@ sequenceDiagram
 	m ->> self._engine: is_running()
 	self._engine -->> m: True
 	m ->> self._engine: use_energy()
-	self._engine ->> self._fuel_tank: consume(10)  
+	self._engine ->> self._tank: consume(10)  
 ```
