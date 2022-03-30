@@ -20,4 +20,5 @@ Kansio tulee sisältämään **harjoitustyön** ja laskuharjoituksia.
 
 ### Viikko 3
 - [luokkakaavio](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/laskarit/viikko3/monopoli.md)
-- [sekvenssikaavio](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/laskarit/viikko3/machine.md)
+- [sekvenssikaavio-moottori](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/laskarit/viikko3/machine.md)
+- [sekvenssikaavio HSL](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/laskarit/viikko3/hsl.md)
