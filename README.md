@@ -17,3 +17,7 @@ Kansio tulee sisältämään **harjoitustyön** ja laskuharjoituksia.
 - [unicafe](https://github.com/henriimmonen/ot-harjoitustyo/tree/master/laskarit/viikko2/unicafe)
 - [maksukortti](https://github.com/henriimmonen/ot-harjoitustyo/tree/master/laskarit/viikko2/maksukortti)
 - [testien coverage report](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/laskarit/viikko2/coverage_report.jpg)
+
+### Viikko 3
+- [luokkakaavio](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/laskarit/viikko3/monopoli.md)
+- [sekvenssikaavio](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/laskarit/viikko3/machine.md)
