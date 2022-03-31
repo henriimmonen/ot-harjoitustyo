@@ -1,0 +1,40 @@
+import pygame
+from level import Level
+from pygame.locals import (
+    K_LEFT,
+    K_RIGHT,
+    K_UP,
+    K_DOWN,
+    KEYDOWN,
+    K_ESCAPE,
+    QUIT,
+)
+
+def main():
+    LEVEL_MAP = [[1, 1, 1, 1, 1],
+             [1, 0, 0, 0, 1],
+             [1, 0, 0, 3, 1],
+             [1, 1, 1, 1, 1]]
+    CELL_SIZE = 50
+
+    height = len(LEVEL_MAP)
+    width = len(LEVEL_MAP[0])
+    display_height = height * CELL_SIZE
+    display_width = width * CELL_SIZE
+    display = pygame.display.set_mode((display_width, display_height))
+    pygame.display.set_caption("Pacman")
+
+    level = Level(LEVEL_MAP, CELL_SIZE)
+    pygame.init()
+    level.all_sprites.draw(display)
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
+            elif event.type == QUIT:
+                running = False
+if __name__ == "__main__":
+    main()
