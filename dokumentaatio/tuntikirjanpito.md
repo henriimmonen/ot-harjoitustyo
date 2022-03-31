@@ -3,3 +3,4 @@
 |  Pvä  |  Aika  |  Mitä tein  |
 |-------|--------|-------------|
 | 25.3  |  1h	 |  Vaatimusmäärittely |
+| 30.3  |  2,5h  | Harjoitustyön pohjustus ja ensimmäiset luokat|
