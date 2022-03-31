@@ -10,7 +10,6 @@ class Level:
         self.walls = pygame.sprite.Group()
         self.floors = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
-
         self._initialize_sprites(level_map)
 
     def _initialize_sprites(self, level_map):
@@ -37,4 +36,6 @@ class Level:
             self.pacman
         )
 
+    def move_pacman(self, dx = 0, dy = 0):
+        self.pacman.rect.move_ip(dx, dy)
 

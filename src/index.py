@@ -24,6 +24,8 @@ def main():
              [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
     CELL_SIZE = 50
 
+    clock = pygame.time.Clock()
+
     height = len(LEVEL_MAP)
     width = len(LEVEL_MAP[0])
     display_height = height * CELL_SIZE
@@ -42,8 +44,18 @@ def main():
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     running = False
-            elif event.type == QUIT:
-                running = False
+                if event.key == K_LEFT:
+                    level.move_pacman(dx = -50)
+                if event.key == K_RIGHT:
+                    level.move_pacman(dx = 50)
+                if event.key == K_UP:
+                    level.move_pacman(dy = -50)
+                if event.key == K_DOWN:
+                    level.move_pacman(dy = 50)
+                if event.type == QUIT:
+                    running = False
         pygame.display.update()
+        level.all_sprites.draw(screen)
+        clock.tick(60)
 if __name__ == "__main__":
     main()
