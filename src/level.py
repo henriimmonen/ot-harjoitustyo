@@ -10,9 +10,9 @@ class Level:
         self.walls = pygame.sprite.Group()
         self.floors = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
-        self._initialize_sprites(level_map)
+        self.initialize_sprites(level_map)
 
-    def _initialize_sprites(self, level_map):
+    def initialize_sprites(self, level_map):
         level_height = len(level_map)
         level_width = len(level_map[0])
 
@@ -36,6 +36,16 @@ class Level:
             self.pacman
         )
 
+    def moving_is_possible(self, dx = 0, dy = 0):
+        self.pacman.rect.move_ip(dx, dy)
+        crashing = pygame.sprite.spritecollide(self.pacman, self.walls, False)
+        can_move = not crashing
+        self.pacman.rect.move_ip(-dx, -dy)
+
+        return can_move
+
     def move_pacman(self, dx = 0, dy = 0):
+        if not self.moving_is_possible(dx, dy):
+            return
         self.pacman.rect.move_ip(dx, dy)
 
