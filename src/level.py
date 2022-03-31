@@ -24,6 +24,7 @@ class Level:
 
                 if level_map[y][x] == 0:
                     self.floors.add(Floor(normalized_x, normalized_y))
+                    print(self.floors)
                 elif level_map[y][x] == 1:
                     self.walls.add(Wall(normalized_x, normalized_y))
                 elif level_map[y][x] == 2:

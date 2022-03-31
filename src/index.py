@@ -10,13 +10,13 @@ from pygame.locals import (
     QUIT,
 )
 
-def main():
-    LEVEL_MAP = [[1, 1, 1, 1, 1],
+LEVEL_MAP = [[1, 1, 1, 1, 1],
              [1, 0, 0, 0, 1],
              [1, 0, 0, 3, 1],
              [1, 1, 1, 1, 1]]
-    CELL_SIZE = 50
+CELL_SIZE = 50
 
+def main():
     height = len(LEVEL_MAP)
     width = len(LEVEL_MAP[0])
     display_height = height * CELL_SIZE
@@ -25,9 +25,10 @@ def main():
     pygame.display.set_caption("Pacman")
 
     level = Level(LEVEL_MAP, CELL_SIZE)
-    pygame.init()
-    level.all_sprites.draw(display)
 
+    pygame.init()
+
+    level.all_sprites.draw(display)
     running = True
     while running:
         for event in pygame.event.get():
