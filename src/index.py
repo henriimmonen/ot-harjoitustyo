@@ -10,25 +10,32 @@ from pygame.locals import (
     QUIT,
 )
 
-LEVEL_MAP = [[1, 1, 1, 1, 1],
-             [1, 0, 0, 0, 1],
-             [1, 0, 0, 3, 1],
-             [1, 1, 1, 1, 1]]
-CELL_SIZE = 50
-
 def main():
+
+    LEVEL_MAP = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+             [1, 0, 1, 3, 1, 1, 0, 1, 0, 1],
+             [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
+             [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
+             [1, 0, 0, 0, 1, 1, 0, 0, 0, 1],
+             [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
+             [1, 0, 1, 0, 1, 1, 0, 1, 0, 1],
+             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
+    CELL_SIZE = 50
+
     height = len(LEVEL_MAP)
     width = len(LEVEL_MAP[0])
     display_height = height * CELL_SIZE
     display_width = width * CELL_SIZE
-    display = pygame.display.set_mode((display_width, display_height))
+    screen = pygame.display.set_mode((display_width, display_height))
     pygame.display.set_caption("Pacman")
 
     level = Level(LEVEL_MAP, CELL_SIZE)
 
     pygame.init()
 
-    level.all_sprites.draw(display)
+    level.all_sprites.draw(screen)
     running = True
     while running:
         for event in pygame.event.get():
@@ -37,5 +44,6 @@ def main():
                     running = False
             elif event.type == QUIT:
                 running = False
+        pygame.display.update()
 if __name__ == "__main__":
     main()
