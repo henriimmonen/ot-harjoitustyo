@@ -32,7 +32,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 name = "coverage"
 version = "6.3.2"
 description = "Code coverage measurement for Python"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -137,7 +137,7 @@ python-versions = ">=3.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "c41082bd9a4265859c8579bd38f4a3202eaf0a3344d582d1f33286208532a7f7"
+content-hash = "2c4519e96c9b97ba3ff7f75f2d9ff9d07e86f6ea6a8f2adb900024ca5f0a4b0b"
 
 [metadata.files]
 atomicwrites = [
