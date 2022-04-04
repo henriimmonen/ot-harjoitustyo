@@ -1,8 +1,5 @@
 # Repositorio Ohjelmistotekniikka-kurssia varten
-
-Kansio tulee sisältämään **harjoitustyön** ja laskuharjoituksia.
-
-*Kurssilla tutustutaan ohjelmistokehityksen periaatteisiin sekä menetelmiin ja sovelletaan niitä toteuttamalla pienehkö harjoitustyö.*
+Harjoitustyön aiheena on tuottaa Pac-Man pelin versio. Harjoitustyössä on alustavasti käytetty ohjelmoinnin jatkokurssilla käytettyjä png-kuvia (lattia, seinä). Lisäksi Pac-Man hahmo on lainattu David Reillyn [Pac-Man](https://github.com/greyblue9/pacman-python) projektista.
 
 ## Harjoitustyön dokumentaatio
 - [Vaatimusmäärittely](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
