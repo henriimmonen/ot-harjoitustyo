@@ -36,16 +36,15 @@ class Level:
             self.pacman
         )
 
-    def moving_is_possible(self, dx = 0, dy = 0):
-        self.pacman.rect.move_ip(dx, dy)
+    def moving_is_possible(self, x = 0, y = 0):
+        self.pacman.rect.move_ip(x, y)
         crashing = pygame.sprite.spritecollide(self.pacman, self.walls, False)
         can_move = not crashing
-        self.pacman.rect.move_ip(-dx, -dy)
-
+        self.pacman.rect.move_ip(-x, -y)
         return can_move
 
-    def move_pacman(self, dx = 0, dy = 0):
-        if not self.moving_is_possible(dx, dy):
+    def move_pacman(self, x = 0, y = 0):
+        if not self.moving_is_possible(x, y):
             return
-        self.pacman.rect.move_ip(dx, dy)
+        self.pacman.rect.move_ip(x, y)
 
