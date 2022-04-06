@@ -1,9 +1,6 @@
-from re import X
-import pygame
-import os
+import pygame, os
 
 dirname = os.path.dirname(__file__)
-
 
 class Wall(pygame.sprite.Sprite):
     def __init__(self, x=0, y=0):
