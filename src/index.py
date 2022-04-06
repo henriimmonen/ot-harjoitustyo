@@ -10,17 +10,18 @@ from pygame.locals import (
     QUIT,
 )
 
+
 def main():
     initial_level = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-             [1, 0, 1, 3, 1, 1, 0, 1, 0, 1],
-             [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-             [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-             [1, 0, 0, 0, 1, 1, 0, 0, 0, 1],
-             [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-             [1, 0, 1, 0, 1, 1, 0, 1, 0, 1],
-             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
+                     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                     [1, 0, 1, 3, 1, 1, 0, 1, 0, 1],
+                     [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
+                     [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
+                     [1, 0, 0, 0, 1, 1, 0, 0, 0, 1],
+                     [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
+                     [1, 0, 1, 0, 1, 1, 0, 1, 0, 1],
+                     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
     size = 50
 
     clock = pygame.time.Clock()
@@ -44,17 +45,19 @@ def main():
                 if event.key == K_ESCAPE:
                     running = False
                 if event.key == K_LEFT:
-                    level.move_pacman(x = -50)
+                    level.move_pacman(x=-50)
                 if event.key == K_RIGHT:
-                    level.move_pacman(x = 50)
+                    level.move_pacman(x=50)
                 if event.key == K_UP:
-                    level.move_pacman(y = -50)
+                    level.move_pacman(y=-50)
                 if event.key == K_DOWN:
-                    level.move_pacman(y = 50)
+                    level.move_pacman(y=50)
             if event.type == QUIT:
                 running = False
         pygame.display.update()
         level.all_sprites.draw(screen)
         clock.tick(60)
+
+
 if __name__ == "__main__":
     main()
