@@ -14,6 +14,7 @@ class Level:
         self.pellets = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
         self.initialize_sprites(level_map)
+        self.score = 0
 
     def initialize_sprites(self, level_map):
         level_height = len(level_map)
@@ -49,10 +50,12 @@ class Level:
         return can_move
 
     def pacman_eats(self):
-        pygame.sprite.spritecollide(self.pacman, self.pellets, True)
+        if pygame.sprite.spritecollide(self.pacman, self.pellets, True):
+            self.score += 10
 
     def move_pacman(self, x=0, y=0):
         if not self.moving_is_possible(x, y):
             return
         self.pacman.rect.move_ip(x, y)
         self.pacman_eats()
+
