@@ -1,4 +1,5 @@
-import pygame, sys
+import pygame
+import sys
 from pygame.locals import (
     K_SPACE,
     K_LEFT,
@@ -10,14 +11,16 @@ from pygame.locals import (
     QUIT,
 )
 
-def draw_starting_screen(screen):
-    screen.fill((0,0,0))
-    font = pygame.font.SysFont('arial black', 16)
-    start_text = font.render("START GAME BY PRESSING SPACE", False, (200, 150, 100))
-    highscore_text = font.render("HIGHSCORES", False, (107,183,210,1))
 
-    screen.blit(start_text, (100,200))
-    screen.blit(highscore_text, (200,0))
+def draw_starting_screen(screen):
+    screen.fill((0, 0, 0))
+    font = pygame.font.SysFont('arial black', 16)
+    start_text = font.render(
+        "START GAME BY PRESSING SPACE", False, (200, 150, 100))
+    highscore_text = font.render("HIGHSCORES", False, (107, 183, 210, 1))
+
+    screen.blit(start_text, (100, 200))
+    screen.blit(highscore_text, (200, 0))
     pygame.display.update()
 
     running = True
@@ -33,8 +36,16 @@ def draw_starting_screen(screen):
                 pygame.quit()
                 sys.exit()
 
-def gameloop(level, screen, clock):
+
+def gameloop(level, screen, clock,):
+    screen.fill((0, 0, 0))
+    score = pygame.Rect(200,0,100,50)
+    font = pygame.font.SysFont('arial black', 16)
+    pygame.draw.rect(screen, (0, 0, 0), score)
+
     level.all_sprites.draw(screen)
+    pygame.display.update()
+
     running = True
     while running:
         for event in pygame.event.get():
@@ -51,6 +62,15 @@ def gameloop(level, screen, clock):
                     level.move_pacman(y=50)
             if event.type == QUIT:
                 running = False
+
+        update_score(screen, level, font, score)
+        
         pygame.display.update()
         level.all_sprites.draw(screen)
         clock.tick(60)
+
+def update_score(screen, level, font, score):
+    score_text = font.render("SCORE: {}".format(
+    level.score), True, (107, 183, 210, 1))
+    screen.fill((0,0,0), score)
+    screen.blit(score_text, score)

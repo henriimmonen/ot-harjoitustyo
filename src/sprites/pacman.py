@@ -1,6 +1,8 @@
-import pygame, os
+import pygame
+import os
 
 dirname = os.path.dirname(__file__)
+
 
 class Pacman(pygame.sprite.Sprite):
     def __init__(self, x=0, y=0):

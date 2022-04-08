@@ -13,8 +13,8 @@ class Level:
         self.floors = pygame.sprite.Group()
         self.pellets = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
-        self.initialize_sprites(level_map)
         self.score = 0
+        self.initialize_sprites(level_map)
 
     def initialize_sprites(self, level_map):
         level_height = len(level_map)
@@ -35,6 +35,7 @@ class Level:
                 elif level_map[y][x] == 3:
                     self.pacman = Pacman(normalized_x, normalized_y)
                     self.floors.add(Floor(normalized_x, normalized_y))
+
         self.all_sprites.add(
             self.floors,
             self.walls,
@@ -58,4 +59,3 @@ class Level:
             return
         self.pacman.rect.move_ip(x, y)
         self.pacman_eats()
-
