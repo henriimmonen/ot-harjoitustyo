@@ -54,8 +54,9 @@ class Level:
         if pygame.sprite.spritecollide(self.pacman, self.pellets, True):
             self.score += 10
 
-    def move_pacman(self, x=0, y=0):
-        if not self.moving_is_possible(x, y):
+    def move_pacman(self, direction):
+        if not self.moving_is_possible(direction[0], direction[1]):
             return
-        self.pacman.rect.move_ip(x, y)
+
+        self.pacman.rect.move_ip(direction[0], direction[1])
         self.pacman_eats()
