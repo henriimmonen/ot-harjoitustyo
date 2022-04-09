@@ -1,5 +1,5 @@
 # Repositorio Ohjelmistotekniikka-kurssia varten
-Harjoitustyön aiheena on Pacman pelin versio. Tarkempi määrittely pelin ominaisuuksista löytyy vaatimusmäärittely-dokumentista. Harjoitustyössä on alustavasti käytetty ohjelmoinnin jatkokurssilla käytettyjä png-kuvia (lattia, seinä). Lisäksi Pac-Man hahmo on lainattu David Reillyn [Pac-Man](https://github.com/greyblue9/pacman-python) projektista.
+Harjoitustyön aiheena on Pacman pelin versio. Tarkempi määrittely pelin ominaisuuksista löytyy vaatimusmäärittely-dokumentista. Harjoitustyössä on alustavasti käytetty ohjelmoinnin jatkokurssilla käytettyjä png-kuvia (lattia, seinä). Lisäksi Pac-Man-hahmo ja muita png-kuvia on lainattu David Reillyn [Pac-Man](https://github.com/greyblue9/pacman-python) projektista.
 
 ## Harjoitustyön dokumentaatio
 - [Vaatimusmäärittely](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
