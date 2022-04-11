@@ -20,19 +20,19 @@ class Level:
         level_height = len(level_map)
         level_width = len(level_map[0])
 
-        for y in range(level_height):
-            for x in range(level_width):
-                normalized_x = x * self.cell_size
-                normalized_y = y * self.cell_size
+        for height in range(level_height):
+            for width in range(level_width):
+                normalized_y = height * self.cell_size
+                normalized_x = width * self.cell_size
 
-                if level_map[y][x] == 0:
+                if level_map[height][width] == 0:
                     self.floors.add(Floor(normalized_x, normalized_y))
                     self.pellets.add(Pellet(normalized_x, normalized_y))
-                elif level_map[y][x] == 1:
+                elif level_map[height][width] == 1:
                     self.walls.add(Wall(normalized_x, normalized_y))
-                elif level_map[y][x] == 2:
+                elif level_map[height][width] == 2:
                     pass
-                elif level_map[y][x] == 3:
+                elif level_map[height][width] == 3:
                     self.pacman = Pacman(normalized_x, normalized_y)
                     self.floors.add(Floor(normalized_x, normalized_y))
 
@@ -43,11 +43,11 @@ class Level:
             self.pellets
         )
 
-    def moving_is_possible(self, x=0, y=0):
-        self.pacman.rect.move_ip(x, y)
+    def moving_is_possible(self, d_x=0, d_y=0):
+        self.pacman.rect.move_ip(d_x, d_y)
         crashing = pygame.sprite.spritecollide(self.pacman, self.walls, False)
         can_move = not crashing
-        self.pacman.rect.move_ip(-x, -y)
+        self.pacman.rect.move_ip(-d_x, -d_y)
         return can_move
 
     def pacman_eats(self):

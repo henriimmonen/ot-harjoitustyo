@@ -9,4 +9,6 @@
 | 4.4.   |  2h    | Testit kirjoitettu loppuun ja generoitu testikattavuusraportointi |
 | 6.4.   |  4h    | Lisätty pylint ja formatointi invoke-taskeihin. Lisäksi lisätty spriteksi pelletit, joita pacmanin liikkuminen hävittää. Koodin refaktorointia. |
 | 7.4.   |  4h    | Refaktorointia, pisteiden kertyminen toteutettu.|
-| Yhteensä | 21h |  |
+| 8.4.   |  5h    | Pisteiden kertyminen toteutettu.|
+| 9.4.   |  2h    | Hahmon liikkuminen korjattu ja luokkia siivottu/refaktoroitu. |
+| Yhteensä | 28h |  |

@@ -1,15 +1,14 @@
-import pygame
 import os
+import pygame
 
 dirname = os.path.dirname(__file__)
 
-
 class Pacman(pygame.sprite.Sprite):
-    def __init__(self, x=0, y=0):
+    def __init__(self, coordinate_x=0, coordinate_y=0):
         super().__init__()
         self.image = pygame.image.load(
             os.path.join(dirname, "..", "assets", "pacman.png")
         )
         self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+        self.rect.x = coordinate_x
+        self.rect.y = coordinate_y

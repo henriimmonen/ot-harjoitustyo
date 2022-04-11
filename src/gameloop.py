@@ -1,15 +1,5 @@
-import pygame
 import sys
-from pygame.locals import (
-    K_SPACE,
-    K_LEFT,
-    K_RIGHT,
-    K_UP,
-    K_DOWN,
-    KEYDOWN,
-    K_ESCAPE,
-    QUIT,
-)
+import pygame
 
 class Gameloop:
     def __init__(self, level, screen, clock):
@@ -27,14 +17,12 @@ class Gameloop:
 
         while self.starting_screen:
             for event in pygame.event.get():
-                if event.type == KEYDOWN:
-                    if event.key == K_SPACE:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
                         self.starting_screen = False
-                    if event.key == K_ESCAPE:
-                        pygame.quit()
+                    if event.key == pygame.K_ESCAPE:
                         sys.exit()
-                if event.type == QUIT:
-                    pygame.quit()
+                if event.type == pygame.QUIT:
                     sys.exit()
 
     def gameloop(self):
@@ -42,18 +30,18 @@ class Gameloop:
 
         while self.running:
             for event in pygame.event.get():
-                if event.type == KEYDOWN:
-                    if event.key == K_ESCAPE:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
                         self.running = False
-                    if event.key == K_LEFT:
+                    if event.key == pygame.K_LEFT:
                         self.direction = (-50, 0)
-                    if event.key == K_RIGHT:
+                    if event.key == pygame.K_RIGHT:
                         self.direction = (50, 0)
-                    if event.key == K_UP:
+                    if event.key == pygame.K_UP:
                         self.direction = (0, -50)
-                    if event.key == K_DOWN:
+                    if event.key == pygame.K_DOWN:
                         self.direction = (0, 50)
-                if event.type == QUIT:
+                if event.type == pygame.QUIT:
                     self.running = False
             self.update_round(self.direction)
 
