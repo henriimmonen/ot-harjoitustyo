@@ -12,4 +12,5 @@
 | 8.4.   |  5h    | Pisteiden kertyminen toteutettu.|
 | 9.4.   |  2h    | Hahmon liikkuminen korjattu ja luokkia siivottu/refaktoroitu. |
 | 11.4.  |  1,5h  | Pylint-virheiden korjaamista | 
-| Yhteensä | 29,5h |  |
+| 12.4.  |  2h    | Luokkakaavion teko ja viimeiset korjaukset viikkopalautukseen.|
+| Yhteensä | 31,5h |  |
