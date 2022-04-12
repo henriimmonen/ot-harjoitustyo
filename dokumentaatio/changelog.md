@@ -7,7 +7,7 @@
 - Testit tarkastavat, että koordinaatit ovat pacmanillä oikein, eikä liikkumista tapahdu muualle kuin sallituille ruuduille.
  
 ## Viikko 4 
-- Pelin pääluokka on index.py. Pelitasoon liittyvä toiminnallisuus on luokassa Level ja gamelooppiin liittyvä toiminnallisuus luokassa Gameloop.
+- Pelin pääluokka on App (app.py-tiedostossa). Pelitasoon liittyvä toiminnallisuus on luokassa Level ja gamelooppiin liittyvä toiminnallisuus luokassa Gameloop.
 - Pelin käynnistyessä pelaajalle näytetään aloitusruutu, johon myöhemmin kerätään parhaimman pistesaldon saaneet pelaajat. Lisäksi tässä mäkymässä ohjeistetaan painamaan välilyöntiä, jotta itse peli alkaa. Tätä ensinäkymää jatkokehitetään tulevilla viikoilla. 
 - Pacman liikkuu siihen suuntaan mihin nuolinäppäintä painetaan. Mikäli pelihahmo ei voi liikkua siihen suuntaan, liike pysähtyy.
 - Lattiaruutujen päälle generoituu pellet-sprite, joita keräämällä yläruudussa näkyvä pistesaldo kasvaa. 
