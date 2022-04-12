@@ -5,6 +5,7 @@ Harjoitustyön aiheena on Pacman pelin versio. Tarkempi määrittely pelin omina
 - [Vaatimusmäärittely](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
 - [Tuntikirjanpito](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/tuntikirjanpito.md)
 - [Changelog](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/changelog.md)
+- [Arkkitehtuuri](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
 
 ## Harjoitustyön komentorivitoiminnot
 - Pelin käynnistys suoritetaan käskyllä:
