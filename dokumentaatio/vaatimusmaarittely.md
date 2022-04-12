@@ -8,7 +8,7 @@
  
 ## Suunnitellut toiminnallisuudet
 - Pelissä on muutama (2-3) valmiiksi rakennettua kenttää, joita pelaaja voi pelata. 
-- Pelaaja liikuttaa hahmoa nuolinäppäimillä ympäri kenttää ja koittaa kerätä mahdollisimman monta pistettä. 
-- Pisteistä pidetään kirjaa ja pelin päätyttyä pelaajan saama pistesaldo näytetään ruudulla. 
+- Pelaaja liikuttaa hahmoa nuolinäppäimillä ympäri kenttää ja koittaa kerätä mahdollisimman monta pistettä. | Tehty ✔️
+- Pisteistä pidetään kirjaa ja pelin päätyttyä pelaajan saama pistesaldo näytetään ruudulla.  | Tehty osittain
 - Lopuksi on mahdollista laittaa oma nimi ns. leaderboardille, mikäli pelaajan keräämä pistemäärä riittää.
 - Leaderboard kerää parhaan viiden pelaajan pisteet.
