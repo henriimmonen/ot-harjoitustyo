@@ -11,4 +11,5 @@
 | 7.4.   |  4h    | Refaktorointia, pisteiden kertyminen toteutettu.|
 | 8.4.   |  5h    | Pisteiden kertyminen toteutettu.|
 | 9.4.   |  2h    | Hahmon liikkuminen korjattu ja luokkia siivottu/refaktoroitu. |
-| Yhteensä | 28h |  |
+| 11.4.  |  1,5h  | Pylint-virheiden korjaamista | 
+| Yhteensä | 29,5h |  |
