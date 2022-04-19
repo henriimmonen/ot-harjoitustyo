@@ -12,6 +12,7 @@ class Level:
         self.walls = pygame.sprite.Group()
         self.floors = pygame.sprite.Group()
         self.pellets = pygame.sprite.Group()
+        self.power_pellets = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
         self.score = 0
         self.initialize_sprites(level_map)
@@ -43,11 +44,11 @@ class Level:
             self.pellets
         )
 
-    def moving_is_possible(self, d_x=0, d_y=0):
-        self.pacman.rect.move_ip(d_x, d_y)
+    def moving_is_possible(self, direction):
+        self.pacman.rect.move_ip(direction[0], direction[1])
         crashing = pygame.sprite.spritecollide(self.pacman, self.walls, False)
         can_move = not crashing
-        self.pacman.rect.move_ip(-d_x, -d_y)
+        self.pacman.rect.move_ip(-direction[0], -direction[1])
         return can_move
 
     def pacman_eats(self):
@@ -55,7 +56,10 @@ class Level:
             self.score += 10
 
     def move_pacman(self, direction):
-        if not self.moving_is_possible(direction[0], direction[1]):
+        if len(self.pellets) == 0:
+            return "finished"
+
+        if not self.moving_is_possible(direction):
             return
 
         self.pacman.rect.move_ip(direction[0], direction[1])

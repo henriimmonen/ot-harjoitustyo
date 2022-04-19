@@ -11,6 +11,7 @@ class Gameloop:
         self.direction = (0,0)
         self.running = True
         self.starting_screen = True
+        self.next_level = False
 
     def draw_starting_screen(self):
         self.initialize_starting_screen()
@@ -67,7 +68,8 @@ class Gameloop:
         self.screen.blit(score_text, self.score)
 
     def update_round(self, direction):
-        self.level.move_pacman(direction)
+        if self.level.move_pacman(direction) == "finished":
+            self.next_level == True
         self.update_score()
         pygame.display.update()
         self.level.all_sprites.draw(self.screen)
