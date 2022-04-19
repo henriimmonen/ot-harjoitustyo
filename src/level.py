@@ -3,6 +3,7 @@ from sprites.pacman import Pacman
 from sprites.wall import Wall
 from sprites.floor import Floor
 from sprites.pellet import Pellet
+from sprites.powerpellet import PowerPellet
 
 
 class Level:
@@ -32,7 +33,8 @@ class Level:
                 elif level_map[height][width] == 1:
                     self.walls.add(Wall(normalized_x, normalized_y))
                 elif level_map[height][width] == 2:
-                    pass
+                    self.floors.add(Floor(normalized_x, normalized_y))
+                    self.power_pellets.add(PowerPellet(normalized_x, normalized_y))
                 elif level_map[height][width] == 3:
                     self.pacman = Pacman(normalized_x, normalized_y)
                     self.floors.add(Floor(normalized_x, normalized_y))
@@ -41,6 +43,7 @@ class Level:
             self.floors,
             self.walls,
             self.pacman,
+            self.power_pellets,
             self.pellets
         )
 
@@ -52,7 +55,7 @@ class Level:
         return can_move
 
     def pacman_eats(self):
-        if pygame.sprite.spritecollide(self.pacman, self.pellets, True):
+        if pygame.sprite.spritecollide(self.pacman, self.pellets, True) or pygame.sprite.spritecollide(self.pacman, self.power_pellets, True):
             self.score += 10
 
     def move_pacman(self, direction):
