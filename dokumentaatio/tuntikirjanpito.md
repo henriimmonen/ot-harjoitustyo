@@ -13,4 +13,5 @@
 | 9.4.   |  2h    | Hahmon liikkuminen korjattu ja luokkia siivottu/refaktoroitu. |
 | 11.4.  |  1,5h  | Pylint-virheiden korjaamista | 
 | 12.4.  |  2h    | Luokkakaavion teko ja viimeiset korjaukset viikkopalautukseen.|
-| Yhteensä | 31,5h |  |
+| 19.4.  |  3h    | Powerpellet-sprite luotu ja viilattu pelin ulkonäköä.|
+| Yhteensä | 34,5h |  |
