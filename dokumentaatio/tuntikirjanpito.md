@@ -14,4 +14,5 @@
 | 11.4.  |  1,5h  | Pylint-virheiden korjaamista | 
 | 12.4.  |  2h    | Luokkakaavion teko ja viimeiset korjaukset viikkopalautukseen.|
 | 19.4.  |  3h    | Powerpellet-sprite luotu ja viilattu pelin ulkonäköä.|
+| 20.4.  |  1,5h  | Muokattu ruudukon kokoa ja lisätty alustava ghost-luokka. |
 | Yhteensä | 34,5h |  |
