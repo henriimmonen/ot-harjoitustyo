@@ -2,12 +2,13 @@ import sys
 import pygame
 
 class Gameloop:
-    def __init__(self, level, screen, clock):
+    def __init__(self, level, screen, clock, size):
         self.screen = screen
         self.level = level
+        self.size = size
         self.clock = clock
         self.font = pygame.font.SysFont('arial black', 16)
-        self.score = pygame.Rect(200, 0, 100, 50)
+        self.score = pygame.Rect(0, 0, 100, 30)
         self.direction = (0,0)
         self.running = True
         self.starting_screen = True
@@ -35,13 +36,13 @@ class Gameloop:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
                     if event.key == pygame.K_LEFT:
-                        self.direction = (-50, 0)
+                        self.direction = (-self.size, 0)
                     if event.key == pygame.K_RIGHT:
-                        self.direction = (50, 0)
+                        self.direction = (self.size, 0)
                     if event.key == pygame.K_UP:
-                        self.direction = (0, -50)
+                        self.direction = (0, -self.size)
                     if event.key == pygame.K_DOWN:
-                        self.direction = (0, 50)
+                        self.direction = (0, self.size)
                 if event.type == pygame.QUIT:
                     self.running = False
             self.update_round(self.direction)
@@ -51,8 +52,8 @@ class Gameloop:
         start_text = self.font.render(
             "START GAME BY PRESSING SPACE", False, (200, 150, 100))
         highscore_text = self.font.render("HIGHSCORES", False, (107, 183, 210, 1))
-        self.screen.blit(start_text, (100, 200))
-        self.screen.blit(highscore_text, (200, 0))
+        self.screen.blit(start_text, (50, 200))
+        self.screen.blit(highscore_text, (140, 0))
         pygame.display.update()
 
     def initialize_gameloop(self):

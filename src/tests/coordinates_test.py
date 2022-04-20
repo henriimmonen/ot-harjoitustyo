@@ -11,7 +11,7 @@ test_level = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
               [1, 0, 1, 0, 1, 1, 0, 1, 0, 1],
               [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
               [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
-size = 50
+size = 30
 
 
 class TestLevel(unittest.TestCase):
@@ -29,26 +29,26 @@ class TestLevel(unittest.TestCase):
         self.coordinates_match(self.pacman, size * 3, size * 2)
 
     def test_moving_down(self):
-        self.level.move_pacman((0,50))
+        self.level.move_pacman((0,size))
         self.coordinates_match(self.pacman, size * 3, size * 3)
 
     def test_moving_up(self):
-        self.level.move_pacman((0,-50))
+        self.level.move_pacman((0,-size))
         self.coordinates_match(self.pacman, size * 3, size * 1)
 
     def test_not_going_through_walls(self):
-        self.level.move_pacman((-50,0))
+        self.level.move_pacman((-size,0))
         self.coordinates_match(self.pacman, size * 3, size * 2)
 
     def test_pellets_disappear_when_eaten(self):
         all_pellets = len(self.pellets)
-        self.level.move_pacman((0,50))
+        self.level.move_pacman((0,size))
         one_pellet_less = len(self.pellets)
         self.assertLess(one_pellet_less, all_pellets)
 
     def test_pellets_remain_same_if_nothing_to_eat(self):
-        self.level.move_pacman((0,50))
+        self.level.move_pacman((0,size))
         all_pellets = len(self.pellets)
-        self.level.move_pacman((0,-50))
+        self.level.move_pacman((0,-size))
         pellets_after_moving = len(self.pellets)
         self.assertEqual(pellets_after_moving, all_pellets)

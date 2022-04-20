@@ -4,18 +4,22 @@ from gameloop import Gameloop
 
 class App:
     def __init__(self):
-        self.level = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
-                      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-                      [1, 2, 1, 3, 1, 1, 0, 1, 2, 1],
-                      [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-                      [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-                      [1, 0, 0, 0, 1, 1, 0, 0, 0, 1],
-                      [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-                      [1, 0, 1, 0, 1, 1, 0, 1, 0, 1],
-                      [1, 2, 0, 0, 0, 0, 0, 0, 2, 1],
-                      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
-        self.size = 50
+        self.level = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+                      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                      [1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1],
+                      [1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1],
+                      [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+                      [1, 1, 1, 0, 1, 0, 4, 0, 1, 0, 1, 1, 1],
+                      [1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1],
+                      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                      [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+                      [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+                      [1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1],
+                      [1, 0, 1, 0, 0, 3, 0, 0, 0, 0, 1, 0, 1],
+                      [1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1],
+                      [1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1],
+                      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
+        self.size = 30
         self.clock = pygame.time.Clock()
         self.display_height = len(self.level) * self.size
         self.display_width = len(self.level[0]) * self.size
@@ -26,7 +30,7 @@ class App:
 
     def run(self):
         pygame.init()
-        gameloop = Gameloop(self.level_class, self.screen, self.clock)
+        gameloop = Gameloop(self.level_class, self.screen, self.clock, self.size)
 
         gameloop.draw_starting_screen()
         gameloop.gameloop()

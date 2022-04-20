@@ -4,6 +4,7 @@ from sprites.wall import Wall
 from sprites.floor import Floor
 from sprites.pellet import Pellet
 from sprites.powerpellet import PowerPellet
+from sprites.ghost import Ghost
 
 
 class Level:
@@ -14,6 +15,7 @@ class Level:
         self.floors = pygame.sprite.Group()
         self.pellets = pygame.sprite.Group()
         self.power_pellets = pygame.sprite.Group()
+        self.ghosts = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
         self.score = 0
         self.initialize_sprites(level_map)
@@ -38,13 +40,16 @@ class Level:
                 elif level_map[height][width] == 3:
                     self.pacman = Pacman(normalized_x, normalized_y)
                     self.floors.add(Floor(normalized_x, normalized_y))
-
+                elif level_map[height][width] == 4:
+                    self.ghosts.add(Ghost(normalized_x, normalized_y))
+                    self.floors.add(Floor(normalized_x, normalized_y))
         self.all_sprites.add(
             self.floors,
             self.walls,
             self.pacman,
             self.power_pellets,
-            self.pellets
+            self.pellets,
+            self.ghosts
         )
 
     def moving_is_possible(self, direction):
