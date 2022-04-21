@@ -1,11 +1,13 @@
 import unittest
+import pygame
 from level import Level
+from gameloop import Gameloop
 
 test_level = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
               [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
               [1, 0, 1, 3, 1, 1, 0, 1, 0, 1],
               [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-              [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
+              [1, 0, 1, 4, 0, 0, 0, 1, 0, 1],
               [1, 0, 0, 0, 1, 1, 0, 0, 0, 1],
               [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
               [1, 0, 1, 0, 1, 1, 0, 1, 0, 1],
@@ -52,3 +54,8 @@ class TestLevel(unittest.TestCase):
         self.level.move_pacman((0,-size))
         pellets_after_moving = len(self.pellets)
         self.assertEqual(pellets_after_moving, all_pellets)
+
+    def test_lives_remaining_is_reduced_when_colliding_with_ghost(self):
+        self.level.move_pacman((0,size))
+        self.level.move_pacman((0,size))
+        self.assertEqual(self.level.lives, 2)
