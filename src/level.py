@@ -18,6 +18,8 @@ class Level:
         self.ghosts = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
         self.score = 0
+        self.lives = 3
+        self.ghost = None
         self.initialize_sprites(level_map)
 
     def initialize_sprites(self, level_map):
@@ -48,7 +50,8 @@ class Level:
 
                 elif level_map[height][width] == 4:
                     if ghost_count == 1:
-                        self.ghosts.add(Ghost(1, normalized_x, normalized_y))
+                        self.ghost = Ghost(1, normalized_x, normalized_y)
+                        self.ghosts.add(self.ghost)
                         self.floors.add(Floor(normalized_x, normalized_y))
                         ghost_count += 1
 
@@ -75,11 +78,11 @@ class Level:
             self.ghosts
         )
 
-    def moving_is_possible(self, direction):
-        self.pacman.rect.move_ip(direction[0], direction[1])
-        crashing = pygame.sprite.spritecollide(self.pacman, self.walls, False)
+    def moving_is_possible(self, sprite, direction):
+        sprite.rect.move_ip(direction[0], direction[1])
+        crashing = pygame.sprite.spritecollide(sprite, self.walls, False)
         can_move = not crashing
-        self.pacman.rect.move_ip(-direction[0], -direction[1])
+        sprite.rect.move_ip(-direction[0], -direction[1])
         return can_move
 
     def pacman_eats(self):
@@ -95,10 +98,14 @@ class Level:
         if len(self.pellets) == 0:
             return "finished"
 
-        if not self.moving_is_possible(direction):
+        if not self.moving_is_possible(self.pacman, direction):
             return
 
         self.pacman.rect.move_ip(direction[0], direction[1])
         if self.pacman_meets_ghost():
+            self.lives -= 1
             return "dead"
         self.pacman_eats()
+
+    def move_ghost(self):
+        self.ghost.rect.move_ip(-30,0)

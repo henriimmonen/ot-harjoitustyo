@@ -13,7 +13,6 @@ class Gameloop:
         self.running = True
         self.starting_screen = True
         self.next_level = False
-        self.lives = 3
 
     def draw_starting_screen(self):
         self.initialize_starting_screen()
@@ -76,9 +75,10 @@ class Gameloop:
             self.next_level == True
 
         elif move == "dead":
-            self.lives -= 1
+            self.level.lives -= 1
             self.running = False
 
+        self.level.move_ghost()
         self.update_score()
         pygame.display.update()
         self.level.all_sprites.draw(self.screen)
