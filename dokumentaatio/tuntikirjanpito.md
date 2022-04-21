@@ -15,4 +15,5 @@
 | 12.4.  |  2h    | Luokkakaavion teko ja viimeiset korjaukset viikkopalautukseen.|
 | 19.4.  |  3h    | Powerpellet-sprite luotu ja viilattu pelin ulkonäköä.|
 | 20.4.  |  1,5h  | Muokattu ruudukon kokoa ja lisätty alustava ghost-luokka. |
-| Yhteensä | 34,5h |  |
+| 21.4.  |  5h    | Haamuille luotu liikkumisfunktio, lisätty testi ja hahmoteltu algoritmia haamujen liikuttelemiseen. |
+| Yhteensä | 39,5h |  |
