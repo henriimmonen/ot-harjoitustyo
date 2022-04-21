@@ -21,6 +21,8 @@ class Level:
         self.initialize_sprites(level_map)
 
     def initialize_sprites(self, level_map):
+        ghost_count = 1
+
         level_height = len(level_map)
         level_width = len(level_map[0])
 
@@ -32,17 +34,38 @@ class Level:
                 if level_map[height][width] == 0:
                     self.floors.add(Floor(normalized_x, normalized_y))
                     self.pellets.add(Pellet(normalized_x, normalized_y))
+
                 elif level_map[height][width] == 1:
                     self.walls.add(Wall(normalized_x, normalized_y))
+
                 elif level_map[height][width] == 2:
                     self.floors.add(Floor(normalized_x, normalized_y))
                     self.power_pellets.add(PowerPellet(normalized_x, normalized_y))
+
                 elif level_map[height][width] == 3:
                     self.pacman = Pacman(normalized_x, normalized_y)
                     self.floors.add(Floor(normalized_x, normalized_y))
+
                 elif level_map[height][width] == 4:
-                    self.ghosts.add(Ghost(normalized_x, normalized_y))
-                    self.floors.add(Floor(normalized_x, normalized_y))
+                    if ghost_count == 1:
+                        self.ghosts.add(Ghost(1, normalized_x, normalized_y))
+                        self.floors.add(Floor(normalized_x, normalized_y))
+                        ghost_count += 1
+
+                    elif ghost_count == 2:
+                        self.ghosts.add(Ghost(2, normalized_x, normalized_y))
+                        self.floors.add(Floor(normalized_x, normalized_y))
+                        ghost_count += 1
+
+                    elif ghost_count == 3:
+                        self.ghosts.add(Ghost(3, normalized_x, normalized_y))
+                        self.floors.add(Floor(normalized_x, normalized_y))
+                        ghost_count += 1
+
+                    else:
+                        self.ghosts.add(Ghost(4, normalized_x, normalized_y))
+                        self.floors.add(Floor(normalized_x, normalized_y))
+
         self.all_sprites.add(
             self.floors,
             self.walls,
@@ -62,6 +85,11 @@ class Level:
     def pacman_eats(self):
         if pygame.sprite.spritecollide(self.pacman, self.pellets, True) or pygame.sprite.spritecollide(self.pacman, self.power_pellets, True):
             self.score += 10
+    
+    def pacman_meets_ghost(self):
+        if pygame.sprite.spritecollide(self.pacman, self.ghosts, False):
+            return True
+        return False
 
     def move_pacman(self, direction):
         if len(self.pellets) == 0:
@@ -71,4 +99,6 @@ class Level:
             return
 
         self.pacman.rect.move_ip(direction[0], direction[1])
+        if self.pacman_meets_ghost():
+            return "dead"
         self.pacman_eats()

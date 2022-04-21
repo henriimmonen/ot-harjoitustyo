@@ -13,6 +13,7 @@ class Gameloop:
         self.running = True
         self.starting_screen = True
         self.next_level = False
+        self.lives = 3
 
     def draw_starting_screen(self):
         self.initialize_starting_screen()
@@ -61,6 +62,7 @@ class Gameloop:
         pygame.draw.rect(self.screen, (0, 0, 0), self.score)
         self.level.all_sprites.draw(self.screen)
         pygame.display.update()
+        #self.running = True
 
     def update_score(self):
         score_text = self.font.render("SCORE: {}".format(
@@ -69,8 +71,14 @@ class Gameloop:
         self.screen.blit(score_text, self.score)
 
     def update_round(self, direction):
-        if self.level.move_pacman(direction) == "finished":
+        move = self.level.move_pacman(direction)
+        if  move == "finished":
             self.next_level == True
+
+        elif move == "dead":
+            self.lives -= 1
+            self.running = False
+
         self.update_score()
         pygame.display.update()
         self.level.all_sprites.draw(self.screen)
