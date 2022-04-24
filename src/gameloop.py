@@ -1,5 +1,6 @@
 import sys
 import pygame
+import time
 
 class Gameloop:
     def __init__(self, level, screen, clock, size):
@@ -73,12 +74,10 @@ class Gameloop:
         move = self.level.move_pacman(direction)
         if  move == "finished":
             self.next_level == True
-
-        elif move == "dead":
+        self.level.move_ghost()
+        if self.level.pacman_meets_ghost():
             self.level.lives -= 1
             self.running = False
-
-        self.level.move_ghost()
         self.update_score()
         pygame.display.update()
         self.level.all_sprites.draw(self.screen)

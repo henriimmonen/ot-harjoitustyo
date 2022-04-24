@@ -100,6 +100,8 @@ class Level:
         return False
 
     def move_pacman(self, direction):
+        self.pacman.coordinates = [self.pacman.rect.x//self.cell_size, self.pacman.rect.y//self.cell_size]
+
         if len(self.pellets) == 0:
             return "finished"
 
@@ -108,21 +110,32 @@ class Level:
 
         self.pacman.rect.move_ip(direction[0], direction[1])
         new_coordinates = [direction[0] // self.cell_size, direction[1]//self.cell_size]
+        
         self.pacman_coordinates = [self.pacman_coordinates[0] + new_coordinates[0], self.pacman_coordinates[1] + new_coordinates[1]]
-        print(self.pacman_coordinates)
-        if self.pacman_meets_ghost():
-            self.lives -= 1
-            return "dead"
         self.pacman_eats()
 
     def move_ghost(self):
-        path = self.bfs([self.ghost_coordinates[0], self.ghost_coordinates[1]], [self.pacman_coordinates[0], self.pacman_coordinates[1]])
-        next_cell = path[1]
-        x_dir = next_cell[0] - self.ghost_coordinates[0]
-        y_dir = next_cell[1] - self.ghost_coordinates[1]
-        self.ghost.rect.move_ip(x_dir*self.cell_size, y_dir*self.cell_size)
-        self.ghost_coordinates = [self.ghost_coordinates[0] + x_dir, self.ghost_coordinates[1] + y_dir]
+        if self.centered(self.ghost):
+            next_cell = self.find_path()
+            x_coordinate = next_cell[0] - self.ghost_coordinates[0]
+            y_coordinate = next_cell[1] - self.ghost_coordinates[1]
+            self.ghost.direction = [x_coordinate, y_coordinate]
+            self.ghost.rect.move_ip(x_coordinate*(self.cell_size//2), y_coordinate*(self.cell_size//2))
+            self.ghost_coordinates = [self.ghost_coordinates[0] + x_coordinate, self.ghost_coordinates[1] + y_coordinate]
+        else:
+            self.ghost.rect.move_ip(self.ghost.direction[0]*self.cell_size//2, self.ghost.direction[1]*self.cell_size//2)
 
+    def centered(self, sprite):
+        if sprite.rect.x % self.cell_size == 0 and sprite.rect.y % self.cell_size == 0:
+            return True
+        return False
+
+    def find_path(self):
+        path = self.bfs([self.ghost_coordinates[0], self.ghost_coordinates[1]], [self.pacman_coordinates[0], self.pacman_coordinates[1]])
+        if len(path) >= 2:
+            return path[1]
+        else:
+            return path[0]
     def bfs(self, start, target):
         q = deque()
         visited = []
@@ -134,18 +147,19 @@ class Level:
 
             if current == target:
                 break
+
             for neighbour in [[0,1], [0,-1], [1,0], [-1,0]]:
                 if neighbour[0]+current[0] >= 0 and neighbour[0]+current[0] < len(self.level[0]):
                     if neighbour[1]+current[1] >= 0 and neighbour[1]+current[1] < len(self.level):
-                        next_cell = [neighbour[0]+current[0], neighbour[1]+current[1]]
-                        if next_cell not in visited:
-                            if self.level[next_cell[1]][next_cell[0]] != 1:
-                                q.append(next_cell)
-                                path.append({"Current":current, "Next":next_cell})
-        shortest = [target]
+                        next = [neighbour[0]+current[0], neighbour[1]+current[1]]
+                        if next not in visited:
+                            if self.level[next[1]][next[0]] != 1:
+                                q.append(next)
+                                path.append([current, next])
+        direction = [target]
         while target != start:
             for step in path:
-                if step["Next"] == target:
-                    target = step["Current"]
-                    shortest.insert(0, step["Current"])
-        return shortest
+                if step[1] == target:
+                    target = step[0]
+                    direction.insert(0, step[0])
+        return direction

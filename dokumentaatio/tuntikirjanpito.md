@@ -16,4 +16,6 @@
 | 19.4.  |  3h    | Powerpellet-sprite luotu ja viilattu pelin ulkonäköä.|
 | 20.4.  |  1,5h  | Muokattu ruudukon kokoa ja lisätty alustava ghost-luokka. |
 | 21.4.  |  5h    | Haamuille luotu liikkumisfunktio, lisätty testi ja hahmoteltu algoritmia haamujen liikuttelemiseen. |
-| Yhteensä | 39,5h |  |
+| 22.4.  |  2,5h  | Leveyshaku saatu toimimaan. |
+| 24.4.  |  2h    | Säädetty haamun nopeutta. |
+| Yhteensä | 42h |  |
