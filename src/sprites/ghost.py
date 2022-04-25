@@ -27,3 +27,4 @@ class Ghost(pygame.sprite.Sprite):
         self.rect.x = coordinate_x
         self.rect.y = coordinate_y
         self.direction = [0,0]
+        self.speed = 1

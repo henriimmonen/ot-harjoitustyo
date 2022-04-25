@@ -62,7 +62,6 @@ class Gameloop:
         pygame.draw.rect(self.screen, (0, 0, 0), self.score)
         self.level.all_sprites.draw(self.screen)
         pygame.display.update()
-        #self.running = True
 
     def update_score(self):
         score_text = self.font.render("SCORE: {}".format(
@@ -74,7 +73,7 @@ class Gameloop:
         move = self.level.move_pacman(direction)
         if  move == "finished":
             self.next_level == True
-        self.level.move_ghost()
+        self.level.move_ghost(self.level.ghost1)
         if self.level.pacman_meets_ghost():
             self.level.lives -= 1
             self.running = False

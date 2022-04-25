@@ -22,7 +22,10 @@ class Level:
         self.all_sprites = pygame.sprite.Group()
         self.score = 0
         self.lives = 3
-        self.ghost = None
+        self.ghost1 = None
+        self.ghost2 = None
+        self.ghost3 = None
+        self.ghost4 = None
         self.initialize_sprites(level_map)
 
     def initialize_sprites(self, level_map):
@@ -54,24 +57,26 @@ class Level:
 
                 elif level_map[height][width] == 4:
                     if ghost_count == 1:
-                        self.ghost = Ghost(1, normalized_x, normalized_y)
-                        self.ghosts.add(self.ghost)
-                        self.ghost_coordinates = [width, height]
+                        self.ghost1 = Ghost(1, normalized_x, normalized_y)
+                        self.ghosts.add(self.ghost1)
                         self.floors.add(Floor(normalized_x, normalized_y))
                         ghost_count += 1
 
                     elif ghost_count == 2:
-                        self.ghosts.add(Ghost(2, normalized_x, normalized_y))
+                        self.ghost2 = Ghost(2, normalized_x, normalized_y)
+                        self.ghosts.add(self.ghost2)
                         self.floors.add(Floor(normalized_x, normalized_y))
                         ghost_count += 1
 
                     elif ghost_count == 3:
-                        self.ghosts.add(Ghost(3, normalized_x, normalized_y))
+                        self.ghost3 = Ghost(3, normalized_x, normalized_y)
+                        self.ghosts.add(self.ghost3)
                         self.floors.add(Floor(normalized_x, normalized_y))
                         ghost_count += 1
 
                     else:
-                        self.ghosts.add(Ghost(4, normalized_x, normalized_y))
+                        self.ghost4 = Ghost(4, normalized_x, normalized_y)
+                        self.ghosts.add(self.ghost4)
                         self.floors.add(Floor(normalized_x, normalized_y))
 
         self.all_sprites.add(
@@ -114,28 +119,28 @@ class Level:
         self.pacman_coordinates = [self.pacman_coordinates[0] + new_coordinates[0], self.pacman_coordinates[1] + new_coordinates[1]]
         self.pacman_eats()
 
-    def move_ghost(self):
-        if self.centered(self.ghost):
-            next_cell = self.find_path()
-            x_coordinate = next_cell[0] - self.ghost_coordinates[0]
-            y_coordinate = next_cell[1] - self.ghost_coordinates[1]
-            self.ghost.direction = [x_coordinate, y_coordinate]
-            self.ghost.rect.move_ip(x_coordinate*(self.cell_size//2), y_coordinate*(self.cell_size//2))
-            self.ghost_coordinates = [self.ghost_coordinates[0] + x_coordinate, self.ghost_coordinates[1] + y_coordinate]
+    def move_ghost(self, sprite):
+        if self.centered(sprite):
+            next_cell = self.find_path(sprite)
+            x_coordinate = next_cell[0] - sprite.rect.x//self.cell_size
+            y_coordinate = next_cell[1] - sprite.rect.y//self.cell_size
+            sprite.direction = [x_coordinate, y_coordinate]
+            sprite.rect.move_ip(x_coordinate*(self.cell_size//2), y_coordinate*(self.cell_size//2))
         else:
-            self.ghost.rect.move_ip(self.ghost.direction[0]*self.cell_size//2, self.ghost.direction[1]*self.cell_size//2)
+            sprite.rect.move_ip(sprite.direction[0] * (self.cell_size//2), sprite.direction[1] * (self.cell_size//2))
 
     def centered(self, sprite):
         if sprite.rect.x % self.cell_size == 0 and sprite.rect.y % self.cell_size == 0:
             return True
         return False
 
-    def find_path(self):
-        path = self.bfs([self.ghost_coordinates[0], self.ghost_coordinates[1]], [self.pacman_coordinates[0], self.pacman_coordinates[1]])
+    def find_path(self, sprite):
+        path = self.bfs([sprite.rect.x//self.cell_size, sprite.rect.y//self.cell_size], [self.pacman_coordinates[0], self.pacman_coordinates[1]])
         if len(path) >= 2:
             return path[1]
         else:
             return path[0]
+
     def bfs(self, start, target):
         q = deque()
         visited = []
