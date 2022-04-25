@@ -9,7 +9,7 @@ class Gameloop:
         self.size = size
         self.clock = clock
         self.font = pygame.font.SysFont('arial black', 16)
-        self.score = pygame.Rect(0, 0, 100, 30)
+        self.score = pygame.Rect(40, 0, 100, 30)
         self.direction = (0,0)
         self.running = True
         self.starting_screen = True
@@ -37,13 +37,13 @@ class Gameloop:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
                     if event.key == pygame.K_LEFT:
-                        self.direction = (-self.size, 0)
+                        self.level.pacman.direction = [-self.size, 0]
                     if event.key == pygame.K_RIGHT:
-                        self.direction = (self.size, 0)
+                        self.level.pacman.direction = [self.size, 0]
                     if event.key == pygame.K_UP:
-                        self.direction = (0, -self.size)
+                        self.level.pacman.direction = [0, -self.size]
                     if event.key == pygame.K_DOWN:
-                        self.direction = (0, self.size)
+                        self.level.pacman.direction = [0, self.size]
                 if event.type == pygame.QUIT:
                     self.running = False
             self.update_round(self.direction)
@@ -53,8 +53,8 @@ class Gameloop:
         start_text = self.font.render(
             "START GAME BY PRESSING SPACE", False, (200, 150, 100))
         highscore_text = self.font.render("HIGHSCORES", False, (107, 183, 210, 1))
-        self.screen.blit(start_text, (50, 200))
-        self.screen.blit(highscore_text, (140, 0))
+        self.screen.blit(start_text, (90, 200))
+        self.screen.blit(highscore_text, (180, 0))
         pygame.display.update()
 
     def initialize_gameloop(self):
@@ -70,14 +70,23 @@ class Gameloop:
         self.screen.blit(score_text, self.score)
 
     def update_round(self, direction):
-        move = self.level.move_pacman(direction)
-        if  move == "finished":
+        move = self.level.move_pacman()
+        if move == "finished":
             self.next_level == True
-        self.level.move_ghost(self.level.ghost1)
+
+        self.move_ghosts()
+
         if self.level.pacman_meets_ghost():
             self.level.lives -= 1
             self.running = False
+
         self.update_score()
         pygame.display.update()
         self.level.all_sprites.draw(self.screen)
         self.clock.tick(7)
+
+    def move_ghosts(self):
+        self.level.move_ghost(self.level.ghost1)
+        self.level.move_ghost(self.level.ghost2)
+        self.level.move_ghost(self.level.ghost3)
+        self.level.move_ghost(self.level.ghost4)

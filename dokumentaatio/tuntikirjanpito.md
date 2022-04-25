@@ -18,4 +18,5 @@
 | 21.4.  |  5h    | Haamuille luotu liikkumisfunktio, lisätty testi ja hahmoteltu algoritmia haamujen liikuttelemiseen. |
 | 22.4.  |  2,5h  | Leveyshaku saatu toimimaan. |
 | 24.4.  |  2h    | Säädetty haamun nopeutta. |
-| Yhteensä | 42h |  |
+| 25.4.  |  8h    | Lisätty testikattavuutta ja hiottu haamujen liikkumista.|
+| Yhteensä | 50h |  |

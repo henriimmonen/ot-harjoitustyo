@@ -10,21 +10,25 @@ class Ghost(pygame.sprite.Sprite):
             self.image = pygame.image.load(
                 os.path.join(dirname, "..", "assets", "ghost1.png")
             )
+            self.speed = 2
         elif number == 2:
             self.image = pygame.image.load(
                 os.path.join(dirname, "..", "assets", "ghost2.png")
             )
+            self.speed = 3
         elif number == 3:
             self.image = pygame.image.load(
                 os.path.join(dirname, "..", "assets", "ghost3.png")
             )
+            self.speed = 6
         else: 
             self.image = pygame.image.load(
                 os.path.join(dirname, "..", "assets", "ghost4.png")
             )
+            self.speed = 6
 
         self.rect = self.image.get_rect()
         self.rect.x = coordinate_x
         self.rect.y = coordinate_y
         self.direction = [0,0]
-        self.speed = 1
+        self.number = number

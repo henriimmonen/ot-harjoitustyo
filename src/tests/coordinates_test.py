@@ -12,6 +12,11 @@ test_level = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
               [1, 0, 1, 0, 1, 1, 0, 1, 0, 1],
               [1, 2, 0, 0, 0, 0, 0, 0, 2, 1],
               [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
+
+test_pellet_level = [[1, 1, 1, 1],
+                    [1, 0, 0, 1],
+                    [1, 0, 3, 1],
+                    [1, 1, 1, 1]]
 size = 30
 
 
@@ -19,8 +24,12 @@ class TestLevel(unittest.TestCase):
 
     def setUp(self):
         self.level = Level(test_level, size)
+        self.pellet_level = Level(test_pellet_level, size)
         self.pacman = self.level.pacman
         self.pellets = self.level.pellets
+        self.ghost1 = self.level.ghost1
+        self.ghost3 = self.level.ghost3
+        self.ghost4 = self.level.ghost4
         self.power_pellets = self.level.power_pellets
 
     def coordinates_match(self, sprite, x, y):
@@ -34,43 +43,86 @@ class TestLevel(unittest.TestCase):
         self.coordinates_match(self.level.ghost1, size * 3, size * 4)
 
     def test_moving_down(self):
-        self.level.move_pacman((0,size))
+        self.pacman.direction = [0, size]
+        self.level.move_pacman()
         self.coordinates_match(self.pacman, size * 3, size * 3)
 
     def test_moving_up(self):
-        self.level.move_pacman((0,-size))
+        self.pacman.direction = [0,-size]
+        self.level.move_pacman()
         self.coordinates_match(self.pacman, size * 3, size * 1)
 
     def test_not_going_through_walls(self):
-        self.level.move_pacman((-size,0))
+        self.pacman.direction = [-size,0]
+        self.level.move_pacman()
         self.coordinates_match(self.pacman, size * 3, size * 2)
 
     def test_pellets_disappear_when_eaten(self):
         all_pellets = len(self.pellets)
-        self.level.move_pacman((0,size))
+        self.pacman.direction = [0, size]
+        self.level.move_pacman()
         pellets_after_moving = len(self.pellets)
         self.assertLess(pellets_after_moving, all_pellets)
 
     def test_pellets_remain_same_if_nothing_to_eat(self):
-        self.level.move_pacman((0,size))
+        self.pacman.direction = [0, size]
+        self.level.move_pacman()
         all_pellets = len(self.pellets)
-        self.level.move_pacman((0,-size))
+        self.pacman.direction = [0, -size]
+        self.level.move_pacman()
         pellets_after_moving = len(self.pellets)
         self.assertEqual(pellets_after_moving, all_pellets)
-    
+
+    def test_return_finished_when_all_pellets_eaten(self):
+        self.pellet_level.pacman.direction = [-size, 0]
+        self.pellet_level.move_pacman()
+        self.pellet_level.pacman.direction = [0, -size]
+        self.pellet_level.move_pacman()
+        self.pellet_level.pacman.direction = [size, 0]
+        self.pellet_level.move_pacman()
+        self.assertEqual(self.pellet_level.move_pacman(), "finished")
+
     def test_powerpellets_disappear_when_eaten(self):
         all_power_pellets = len(self.power_pellets)
-        self.level.move_pacman((0,-size))
-        self.level.move_pacman((-size, 0))
-        self.level.move_pacman((-size, 0))
+        self.pacman.direction = [0, -size]
+        self.level.move_pacman()
+        self.pacman.direction = [-size, 0]
+        self.level.move_pacman()
+        self.pacman.direction = [-size, 0]
+        self.level.move_pacman()
         power_pellets_after_moving = len(self.power_pellets)
         self.assertLess(power_pellets_after_moving, all_power_pellets)
 
-    def test_lives_remaining_is_reduced_when_colliding_with_ghost(self):
-        self.level.move_pacman((0,size))
-        self.level.move_pacman((0,size))
+    def test_colliding_with_ghost_returns_true(self):
+        self.pacman.direction = [0, size]
+        self.level.move_pacman()
+        self.level.move_pacman()
         self.assertTrue(self.level.pacman_meets_ghost())
 
     def test_not_colliding_with_ghost_returns_false(self):
-        self.level.move_pacman((0, size))
+        self.pacman.direction = [0, size]
+        self.level.move_pacman()
         self.assertFalse(self.level.pacman_meets_ghost())
+    
+    def test_ghost_starts_centered(self):
+        self.assertEqual(self.level.centered(self.ghost1), True)
+    
+    def test_ghost_is_not_centered_after_first_move(self):
+        self.level.move_ghost(self.ghost1)
+        self.assertEqual(self.level.centered(self.ghost1), False)
+
+    def test_bfs_finds_correct_path(self):
+        path = self.level.find_path(self.ghost1)
+        self.assertEqual(path, [3, 3])
+    
+    def test_bfs_returns_path0_if_next_to_pacman(self):
+        self.level.move_ghost(self.ghost1)
+        path = self.level.find_path(self.ghost1)
+        self.assertEqual(path, [3,2])
+
+    def test_bfs_finds_correct_path_for_ghost4(self):
+        self.pacman.direction = [0, size]
+        self.level.move_pacman()
+        path = self.level.find_path(self.ghost4)
+        self.assertEqual(path, [5,4])
+

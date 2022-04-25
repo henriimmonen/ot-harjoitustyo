@@ -1,3 +1,4 @@
+from sqlite3 import enable_shared_cache
 import pygame
 from sprites.pacman import Pacman
 from sprites.wall import Wall
@@ -11,8 +12,10 @@ class Level:
     def __init__(self, level_map, cell_size):
         self.cell_size = cell_size
         self.pacman = None
-        self.pacman_coordinates = []
-        self.ghost_coordinates = []
+        self.ghost1 = None
+        self.ghost2 = None
+        self.ghost3 = None
+        self.ghost4 = None
         self.level = level_map
         self.walls = pygame.sprite.Group()
         self.floors = pygame.sprite.Group()
@@ -22,10 +25,6 @@ class Level:
         self.all_sprites = pygame.sprite.Group()
         self.score = 0
         self.lives = 3
-        self.ghost1 = None
-        self.ghost2 = None
-        self.ghost3 = None
-        self.ghost4 = None
         self.initialize_sprites(level_map)
 
     def initialize_sprites(self, level_map):
@@ -52,7 +51,6 @@ class Level:
 
                 elif level_map[height][width] == 3:
                     self.pacman = Pacman(normalized_x, normalized_y)
-                    self.pacman_coordinates = [width, height]
                     self.floors.add(Floor(normalized_x, normalized_y))
 
                 elif level_map[height][width] == 4:
@@ -88,11 +86,11 @@ class Level:
             self.ghosts
         )
 
-    def moving_is_possible(self, sprite, direction):
-        sprite.rect.move_ip(direction[0], direction[1])
+    def moving_is_possible(self, sprite):
+        sprite.rect.move_ip(sprite.direction[0], sprite.direction[1])
         crashing = pygame.sprite.spritecollide(sprite, self.walls, False)
         can_move = not crashing
-        sprite.rect.move_ip(-direction[0], -direction[1])
+        sprite.rect.move_ip(-sprite.direction[0], -sprite.direction[1])
         return can_move
 
     def pacman_eats(self):
@@ -104,19 +102,14 @@ class Level:
             return True
         return False
 
-    def move_pacman(self, direction):
-        self.pacman.coordinates = [self.pacman.rect.x//self.cell_size, self.pacman.rect.y//self.cell_size]
-
+    def move_pacman(self):
         if len(self.pellets) == 0:
             return "finished"
 
-        if not self.moving_is_possible(self.pacman, direction):
+        if not self.moving_is_possible(self.pacman):
             return
 
-        self.pacman.rect.move_ip(direction[0], direction[1])
-        new_coordinates = [direction[0] // self.cell_size, direction[1]//self.cell_size]
-        
-        self.pacman_coordinates = [self.pacman_coordinates[0] + new_coordinates[0], self.pacman_coordinates[1] + new_coordinates[1]]
+        self.pacman.rect.move_ip(self.pacman.direction[0], self.pacman.direction[1])
         self.pacman_eats()
 
     def move_ghost(self, sprite):
@@ -125,9 +118,9 @@ class Level:
             x_coordinate = next_cell[0] - sprite.rect.x//self.cell_size
             y_coordinate = next_cell[1] - sprite.rect.y//self.cell_size
             sprite.direction = [x_coordinate, y_coordinate]
-            sprite.rect.move_ip(x_coordinate*(self.cell_size//2), y_coordinate*(self.cell_size//2))
+            sprite.rect.move_ip(x_coordinate*(self.cell_size//sprite.speed), y_coordinate*(self.cell_size//sprite.speed))
         else:
-            sprite.rect.move_ip(sprite.direction[0] * (self.cell_size//2), sprite.direction[1] * (self.cell_size//2))
+            sprite.rect.move_ip(sprite.direction[0] * (self.cell_size//sprite.speed), sprite.direction[1] * (self.cell_size//sprite.speed))
 
     def centered(self, sprite):
         if sprite.rect.x % self.cell_size == 0 and sprite.rect.y % self.cell_size == 0:
@@ -135,11 +128,45 @@ class Level:
         return False
 
     def find_path(self, sprite):
-        path = self.bfs([sprite.rect.x//self.cell_size, sprite.rect.y//self.cell_size], [self.pacman_coordinates[0], self.pacman_coordinates[1]])
-        if len(path) >= 2:
-            return path[1]
-        else:
-            return path[0]
+        if sprite.number == 1 or sprite.number == 2:
+            path = self.bfs([sprite.rect.x//self.cell_size, sprite.rect.y//self.cell_size],
+                [self.pacman.rect.x//self.cell_size, self.pacman.rect.y//self.cell_size])
+            if len(path) >= 2:
+                return path[1]
+            else:
+                return path[0]
+
+        elif sprite.number == 3:
+            start = [sprite.rect.x//self.cell_size, sprite.rect.y//self.cell_size]
+            if self.pacman.direction[0] == 0:
+                target = [self.pacman.rect.x//self.cell_size, self.pacman.rect.y//self.cell_size + (self.pacman.direction[1]//self.cell_size) - 2]
+            else:
+                target = [self.pacman.rect.x//self.cell_size + (self.pacman.direction[0]//self.cell_size) - 2, self.pacman.rect.y//self.cell_size]
+
+            if self.level[target[1]][target[0]] == 1 or self.level[target[1]][target[0]] == 9:
+                target = [self.pacman.rect.x//self.cell_size, self.pacman.rect.y//self.cell_size]
+
+            path = self.bfs(start, target)
+            if len(path) >= 2:
+                return path[1]
+            else:
+                return path[0]
+
+        elif sprite.number == 4:
+            start = [sprite.rect.x//self.cell_size, sprite.rect.y//self.cell_size]
+            if self.pacman.direction[0] == 0:
+                target = [self.pacman.rect.x//self.cell_size, self.pacman.rect.y//self.cell_size + (self.pacman.direction[1]//self.cell_size) * 2]
+            else:
+                target = [self.pacman.rect.x//self.cell_size + (self.pacman.direction[0]//self.cell_size) * 2, self.pacman.rect.y//self.cell_size]
+
+            if self.level[target[1]][target[0]] == 1 or self.level[target[1]][target[0]] == 9:
+                target = [self.pacman.rect.x//self.cell_size, self.pacman.rect.y//self.cell_size]
+
+            path = self.bfs(start, target)
+            if len(path) >= 2:
+                return path[1]
+            else:
+                return path[0]
 
     def bfs(self, start, target):
         q = deque()
