@@ -3,6 +3,7 @@ import pygame
 
 dirname = os.path.dirname(__file__)
 
+
 class Ghost(pygame.sprite.Sprite):
     def __init__(self, number, coordinate_x=0, coordinate_y=0):
         super().__init__()
@@ -21,7 +22,7 @@ class Ghost(pygame.sprite.Sprite):
                 os.path.join(dirname, "..", "assets", "ghost3.png")
             )
             self.speed = 6
-        else: 
+        else:
             self.image = pygame.image.load(
                 os.path.join(dirname, "..", "assets", "ghost4.png")
             )
@@ -30,5 +31,5 @@ class Ghost(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = coordinate_x
         self.rect.y = coordinate_y
-        self.direction = [0,0]
+        self.direction = [0, 0]
         self.number = number

@@ -6,7 +6,7 @@ test_level = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
               [1, 2, 0, 0, 0, 0, 0, 0, 2, 1],
               [1, 0, 1, 3, 1, 1, 0, 1, 0, 1],
               [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-              [1, 0, 1, 4, 4, 4, 4, 1, 0, 1],
+              [1, 0, 1, 4, 5, 6, 7, 1, 0, 1],
               [1, 0, 0, 0, 1, 1, 0, 0, 0, 1],
               [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
               [1, 0, 1, 0, 1, 1, 0, 1, 0, 1],
@@ -14,9 +14,9 @@ test_level = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
               [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
 
 test_pellet_level = [[1, 1, 1, 1],
-                    [1, 0, 0, 1],
-                    [1, 0, 3, 1],
-                    [1, 1, 1, 1]]
+                     [1, 0, 0, 1],
+                     [1, 0, 3, 1],
+                     [1, 1, 1, 1]]
 size = 30
 
 
@@ -38,7 +38,7 @@ class TestLevel(unittest.TestCase):
 
     def test_pacmans_coordinates_when_starting(self):
         self.coordinates_match(self.pacman, size * 3, size * 2)
-    
+
     def test_ghost1_coordinates_when_starting(self):
         self.coordinates_match(self.level.ghost1, size * 3, size * 4)
 
@@ -48,12 +48,12 @@ class TestLevel(unittest.TestCase):
         self.coordinates_match(self.pacman, size * 3, size * 3)
 
     def test_moving_up(self):
-        self.pacman.direction = [0,-size]
+        self.pacman.direction = [0, -size]
         self.level.move_pacman()
         self.coordinates_match(self.pacman, size * 3, size * 1)
 
     def test_not_going_through_walls(self):
-        self.pacman.direction = [-size,0]
+        self.pacman.direction = [-size, 0]
         self.level.move_pacman()
         self.coordinates_match(self.pacman, size * 3, size * 2)
 
@@ -72,15 +72,6 @@ class TestLevel(unittest.TestCase):
         self.level.move_pacman()
         pellets_after_moving = len(self.pellets)
         self.assertEqual(pellets_after_moving, all_pellets)
-
-    def test_return_finished_when_all_pellets_eaten(self):
-        self.pellet_level.pacman.direction = [-size, 0]
-        self.pellet_level.move_pacman()
-        self.pellet_level.pacman.direction = [0, -size]
-        self.pellet_level.move_pacman()
-        self.pellet_level.pacman.direction = [size, 0]
-        self.pellet_level.move_pacman()
-        self.assertEqual(self.pellet_level.move_pacman(), "finished")
 
     def test_powerpellets_disappear_when_eaten(self):
         all_power_pellets = len(self.power_pellets)
@@ -103,10 +94,10 @@ class TestLevel(unittest.TestCase):
         self.pacman.direction = [0, size]
         self.level.move_pacman()
         self.assertFalse(self.level.pacman_meets_ghost())
-    
+
     def test_ghost_starts_centered(self):
         self.assertEqual(self.level.centered(self.ghost1), True)
-    
+
     def test_ghost_is_not_centered_after_first_move(self):
         self.level.move_ghost(self.ghost1)
         self.assertEqual(self.level.centered(self.ghost1), False)
@@ -114,15 +105,14 @@ class TestLevel(unittest.TestCase):
     def test_bfs_finds_correct_path(self):
         path = self.level.find_path(self.ghost1)
         self.assertEqual(path, [3, 3])
-    
+
     def test_bfs_returns_path0_if_next_to_pacman(self):
         self.level.move_ghost(self.ghost1)
         path = self.level.find_path(self.ghost1)
-        self.assertEqual(path, [3,2])
+        self.assertEqual(path, [3, 2])
 
     def test_bfs_finds_correct_path_for_ghost4(self):
         self.pacman.direction = [0, size]
         self.level.move_pacman()
         path = self.level.find_path(self.ghost4)
-        self.assertEqual(path, [5,4])
-
+        self.assertEqual(path, [5, 4])

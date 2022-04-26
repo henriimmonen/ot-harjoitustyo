@@ -2,6 +2,7 @@ import pygame
 from level import Level
 from gameloop import Gameloop
 
+
 class App:
     def __init__(self):
         self.level = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
@@ -9,7 +10,7 @@ class App:
                       [9, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 9],
                       [9, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 9],
                       [9, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 9],
-                      [9, 1, 1, 1, 0, 1, 4, 4, 4, 4, 1, 0, 1, 1, 1, 9],
+                      [9, 1, 1, 1, 0, 1, 4, 5, 6, 7, 1, 0, 1, 1, 1, 9],
                       [9, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 9],
                       [9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 9],
                       [9, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 9],
@@ -31,10 +32,12 @@ class App:
 
     def run(self):
         pygame.init()
-        gameloop = Gameloop(self.level_class, self.screen, self.clock, self.size)
+        gameloop = Gameloop(self.level_class, self.screen,
+                            self.clock, self.size)
 
         gameloop.draw_starting_screen()
         gameloop.gameloop()
+
 
 if __name__ == "__main__":
     app = App()

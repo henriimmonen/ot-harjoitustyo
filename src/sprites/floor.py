@@ -3,6 +3,7 @@ import pygame
 
 dirname = os.path.dirname(__file__)
 
+
 class Floor(pygame.sprite.Sprite):
     def __init__(self, coordinate_x=0, coordinate_y=0):
         super().__init__()
