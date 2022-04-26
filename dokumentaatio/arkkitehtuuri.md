@@ -11,9 +11,12 @@ classDiagram
 Sekvenssidiagrammi Pacman-spriten liikuttamisesta. Kyseisessä tilanteessa Pacman liikkuu y-akselilla alaspäin.
 ```mermaid
 sequenceDiagram
+	Note left of Gameloop: event.key == pygame.K_DOWN:
 	Gameloop->>Pacman: direction = [0, self.size]
 	Gameloop->>Level: move_pacman()
-	Note right of Level: if moving_is_possible()
+	Note right of Level: if moving_is_possible():
 	Level->>Pacman: Rect.move_ip(direction[0], direction[1])
+	Pacman-->>Level: ;
 	Note right of Level: self.pacman_eats()
+	Level-->>Gameloop: ;
 ```
