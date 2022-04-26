@@ -11,6 +11,6 @@
 - Pelaaja liikuttaa hahmoa nuolinäppäimillä ympäri kenttää ja koittaa kerätä mahdollisimman monta pistettä. | Tehty ✔️
 - Pisteistä pidetään kirjaa ja pelin päätyttyä pelaajan saama pistesaldo näytetään ruudulla.  | Tehty osittain
 - Lopuksi on mahdollista laittaa oma nimi ns. leaderboardille, mikäli pelaajan keräämä pistemäärä riittää.
-- Haamut jahtaavat Pacman-hahmoa käyttäen leveyshakua. 
-- Haamuilla on omat "persoonallisuutensa" (eri nopeudet ja eri kohderuudut leveyshaussa).
+- Haamut jahtaavat Pacman-hahmoa käyttäen leveyshakua. | Tehty ✔️
+- Haamuilla on omat "persoonallisuutensa" (eri nopeudet ja eri kohderuudut leveyshaussa). | Tehty ✔️
 - Leaderboard kerää parhaan viiden pelaajan pisteet.
