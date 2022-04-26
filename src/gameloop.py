@@ -42,7 +42,8 @@ class Gameloop:
         self.level.all_sprites.draw(self.screen)
         pygame.display.update()
 
-    def handle_starting_events(self):
+    def handle_starting_events(self): # pylint: disable=inconsistent-return-statements
+                                      # could not figure out a way to avoid this
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -52,7 +53,7 @@ class Gameloop:
             if event.type == pygame.QUIT:
                 sys.exit()
 
-    def handle_gameloop_events(self):
+    def handle_gameloop_events(self): # pylint: disable=inconsistent-return-statements
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -70,12 +71,10 @@ class Gameloop:
         self.update_round()
 
         if self.level.pacman_meets_ghost():
-            self.level.lives -= 1
             return False
 
     def update_score(self):
-        score_text = self.font.render("SCORE: {}".format(
-            self.level.score), True, (107, 183, 210, 1))
+        score_text = self.font.render(f"SCORE: {self.level.score}", True, (107, 183, 210, 1))
         self.screen.fill((0, 0, 0), self.score)
         self.screen.blit(score_text, self.score)
 

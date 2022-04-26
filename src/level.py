@@ -8,14 +8,10 @@ from sprites.powerpellet import PowerPellet
 from sprites.ghost import Ghost
 
 
-class Level:
+class Level: # pylint: disable=too-many-instance-attributes
+             # all instance attributes are necessary for this class
     def __init__(self, level_map, cell_size):
         self.cell_size = cell_size
-        self.pacman = None
-        self.ghost1 = None
-        self.ghost2 = None
-        self.ghost3 = None
-        self.ghost4 = None
         self.level = level_map
         self.walls = pygame.sprite.Group()
         self.floors = pygame.sprite.Group()
@@ -27,8 +23,8 @@ class Level:
         self.lives = 3
         self.initialize_sprites(level_map)
 
-    def initialize_sprites(self, level_map):
-
+    def initialize_sprites(self, level_map): # pylint: disable=too-many-statements
+                                             # statements are required to initialize
         level_height = len(level_map)
         level_width = len(level_map[0])
 
@@ -97,6 +93,7 @@ class Level:
 
     def pacman_meets_ghost(self):
         if pygame.sprite.spritecollide(self.pacman, self.ghosts, False):
+            self.lives -= 1
             return True
         return False
 
@@ -183,7 +180,8 @@ class Level:
         visited = []
         path = []
         queue.append(starting_cell)
-        while queue:
+        while queue: # pylint: disable=too-many-nested-blocks
+                     # nested blocks can not be avoided in this algorithm
             current_cell = queue.popleft()
             visited.append(current_cell)
 
