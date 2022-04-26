@@ -15,5 +15,5 @@ sequenceDiagram
 	Gameloop->>Level: move_pacman()
 	Note right of Level: if moving_is_possible()
 	Level->>Pacman: Rect.move_ip(direction[0], direction[1])
-	Note rigth of Level: self.pacman_eats()
+	Note right of Level: self.pacman_eats()
 ```
