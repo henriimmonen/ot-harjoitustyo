@@ -20,4 +20,5 @@
 | 24.4.  |  2h    | Säädetty haamun nopeutta. |
 | 25.4.  |  8h    | Lisätty testikattavuutta ja hiottu haamujen liikkumista.|
 | 26.4.  |  4h    | Korjattu pylint-virheitä ja luotu sekvenssidiagrammi. |
-| Yhteensä | 54h |  |
+| 28.4.  |  3,5h  | Haamut kuolevat, kun pacman on syönyt powerpelletin. |
+| Yhteensä | 57,5h |  |

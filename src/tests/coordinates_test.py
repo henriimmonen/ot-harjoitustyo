@@ -4,9 +4,9 @@ from level import Level
 
 test_level = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
               [1, 2, 0, 0, 0, 0, 0, 0, 2, 1],
-              [1, 0, 1, 3, 1, 1, 0, 1, 0, 1],
+              [1, 5, 1, 3, 1, 1, 0, 1, 0, 1],
               [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-              [1, 0, 1, 4, 5, 6, 7, 1, 0, 1],
+              [1, 0, 1, 4, 0, 6, 7, 1, 0, 1],
               [1, 0, 0, 0, 1, 1, 0, 0, 0, 1],
               [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
               [1, 0, 1, 0, 1, 1, 0, 1, 0, 1],
@@ -27,11 +27,16 @@ class TestLevel(unittest.TestCase):
         self.pellet_level = Level(test_pellet_level, size)
         self.pacman = self.level.pacman
         self.pellets = self.level.pellets
-        self.ghost1 = self.level.ghost1
-        self.ghost3 = self.level.ghost3
-        self.ghost4 = self.level.ghost4
         self.power_pellets = self.level.power_pellets
 
+        for ghost in self.level.ghosts:
+            if ghost.number == 1:
+                self.ghost1 = ghost
+            if ghost.number == 3:
+                self.ghost3 = ghost
+            if ghost.number == 4:
+                self.ghost4 = ghost
+            
     def coordinates_match(self, sprite, x, y):
         self.assertEqual(sprite.rect.x, x)
         self.assertEqual(sprite.rect.y, y)
@@ -40,7 +45,7 @@ class TestLevel(unittest.TestCase):
         self.coordinates_match(self.pacman, size * 3, size * 2)
 
     def test_ghost1_coordinates_when_starting(self):
-        self.coordinates_match(self.level.ghost1, size * 3, size * 4)
+        self.coordinates_match(self.ghost1, size * 3, size * 4)
 
     def test_moving_down(self):
         self.pacman.direction = [0, size]
@@ -111,8 +116,3 @@ class TestLevel(unittest.TestCase):
         path = self.level.find_path(self.ghost1)
         self.assertEqual(path, [3, 2])
 
-    def test_bfs_finds_correct_path_for_ghost4(self):
-        self.pacman.direction = [0, size]
-        self.level.move_pacman()
-        path = self.level.find_path(self.ghost4)
-        self.assertEqual(path, [5, 4])

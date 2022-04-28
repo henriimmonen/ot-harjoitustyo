@@ -50,24 +50,19 @@ class Level: # pylint: disable=too-many-instance-attributes
                     self.floors.add(Floor(normalized_x, normalized_y))
 
                 elif level_map[height][width] == 4:
-                    self.ghost1 = Ghost(1, normalized_x, normalized_y)
-                    self.ghosts.add(self.ghost1)
+                    self.ghosts.add(Ghost(1, normalized_x, normalized_y))
                     self.floors.add(Floor(normalized_x, normalized_y))
 
                 elif level_map[height][width] == 5:
-                    self.ghost2 = Ghost(2, normalized_x, normalized_y)
-                    self.ghosts.add(self.ghost2)
+                    self.ghosts.add(Ghost(2, normalized_x, normalized_y))
                     self.floors.add(Floor(normalized_x, normalized_y))
 
                 elif level_map[height][width] == 6:
-                    self.ghost3 = Ghost(3, normalized_x, normalized_y)
-                    self.ghosts.add(self.ghost3)
+                    self.ghosts.add(Ghost(3, normalized_x, normalized_y))
                     self.floors.add(Floor(normalized_x, normalized_y))
 
                 elif level_map[height][width] == 7:
-                    self.ghost4 = Ghost(4, normalized_x, normalized_y)
-                    print(normalized_x, normalized_y)
-                    self.ghosts.add(self.ghost4)
+                    self.ghosts.add(Ghost(4, normalized_x, normalized_y))
                     self.floors.add(Floor(normalized_x, normalized_y))
 
         self.all_sprites.add(
@@ -92,16 +87,16 @@ class Level: # pylint: disable=too-many-instance-attributes
         elif pygame.sprite.spritecollide(self.pacman, self.power_pellets, True):
             self.score += 20
             self.ghosts_are_vulnerable()
-    
+
     def ghosts_are_vulnerable(self):
         for ghost in self.ghosts:
             ghost.vulnerable = True
-
 
     def pacman_meets_ghost(self):
         list_of_colliding = pygame.sprite.spritecollide(self.pacman, self.ghosts, False)
         for ghost in list_of_colliding:
             if ghost.vulnerable == True:
+                self.score += 100
                 ghost.kill()
                 self.revive_ghost(ghost)
                 return False
@@ -109,7 +104,7 @@ class Level: # pylint: disable=too-many-instance-attributes
             self.lives -= 1
             return True
         return False
-    
+
     def revive_ghost(self, ghost):
         starting_point = 150 + 30*ghost.number
         self.ghosts.add(Ghost(ghost.number, starting_point, 210))
