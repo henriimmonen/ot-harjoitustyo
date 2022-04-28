@@ -18,3 +18,7 @@
 - Level-luokkaan lisätty haamujen liikkumisesta vastaavia funktioita 'move_ghost', 'centered', 'find_path' ja 'bfs', eli leveyshakualgoritmi. 
 - Pyritty eriyttämään funktioita niin, että yksi funktio tekee vain yhden asian ja selkeytetty samalla Gameloop-luokan toimintaa.
 - Mikäli Pacman törmää haamun kanssa, elämistä vähennetään yksi ja peli päättyy. Elämät eivät ole vielä näkyvillä.
+
+## Viikko 6
+- Haamut kuolevat ja palaavat aloitusruutuun, kun Pacman syö powerpelletin.
+- Haamujen eri persoonallisuudet jätettiin pois yksinkertaisuuden vuoksi. 

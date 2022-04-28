@@ -66,6 +66,7 @@ class Level: # pylint: disable=too-many-instance-attributes
 
                 elif level_map[height][width] == 7:
                     self.ghost4 = Ghost(4, normalized_x, normalized_y)
+                    print(normalized_x, normalized_y)
                     self.ghosts.add(self.ghost4)
                     self.floors.add(Floor(normalized_x, normalized_y))
 
@@ -90,12 +91,29 @@ class Level: # pylint: disable=too-many-instance-attributes
             self.score += 10
         elif pygame.sprite.spritecollide(self.pacman, self.power_pellets, True):
             self.score += 20
+            self.ghosts_are_vulnerable()
+    
+    def ghosts_are_vulnerable(self):
+        for ghost in self.ghosts:
+            ghost.vulnerable = True
+
 
     def pacman_meets_ghost(self):
+        list_of_colliding = pygame.sprite.spritecollide(self.pacman, self.ghosts, False)
+        for ghost in list_of_colliding:
+            if ghost.vulnerable == True:
+                ghost.kill()
+                self.revive_ghost(ghost)
+                return False
         if pygame.sprite.spritecollide(self.pacman, self.ghosts, False):
             self.lives -= 1
             return True
         return False
+    
+    def revive_ghost(self, ghost):
+        starting_point = 150 + 30*ghost.number
+        self.ghosts.add(Ghost(ghost.number, starting_point, 210))
+        self.all_sprites.add(self.ghosts)
 
     def move_pacman(self):
         if self.moving_is_possible(self.pacman):
@@ -121,50 +139,14 @@ class Level: # pylint: disable=too-many-instance-attributes
         return False
 
     def find_path(self, sprite):
-        if sprite.number in (1, 2):
+        if sprite.vulnerable == True:
+            target = [sprite.vulnerable_target[0], sprite.vulnerable_target[1]]
+        else:
+            target = [self.pacman.rect.x//self.cell_size, self.pacman.rect.y//self.cell_size]
+
+        if sprite.number in (1, 2, 3, 4):
             path = self.bfs([sprite.rect.x//self.cell_size, sprite.rect.y//self.cell_size]
-                ,[self.pacman.rect.x//self.cell_size, self.pacman.rect.y//self.cell_size])
-            if len(path) >= 2:
-                return path[1]
-            return path[0]
-
-        if sprite.number == 3:
-            start = [sprite.rect.x//self.cell_size,
-                     sprite.rect.y//self.cell_size]
-            if self.pacman.direction[0] == 0:
-                target = [self.pacman.rect.x//self.cell_size, self.pacman.rect.y //
-                          self.cell_size + (self.pacman.direction[1]//self.cell_size) - 2]
-            else:
-                target = [self.pacman.rect.x//self.cell_size +
-                    (self.pacman.direction[0]//self.cell_size) - 2,
-                    self.pacman.rect.y//self.cell_size]
-
-            if self.level[target[1]][target[0]] == 1 or self.level[target[1]][target[0]] == 9:
-                target = [self.pacman.rect.x//self.cell_size,
-                          self.pacman.rect.y//self.cell_size]
-
-            path = self.bfs(start, target)
-            if len(path) >= 2:
-                return path[1]
-            return path[0]
-
-        if sprite.number == 4:
-            start = [sprite.rect.x//self.cell_size,
-                     sprite.rect.y//self.cell_size]
-            if self.pacman.direction[0] == 0:
-                target = [self.pacman.rect.x//self.cell_size, self.pacman.rect.y //
-                          self.cell_size + (self.pacman.direction[1]//self.cell_size) * 2]
-
-            else:
-                target = [self.pacman.rect.x//self.cell_size + (
-                    self.pacman.direction[0]//self.cell_size) * 2,
-                    self.pacman.rect.y//self.cell_size]
-
-            if self.level[target[1]][target[0]] == 1 or self.level[target[1]][target[0]] == 9:
-                target = [self.pacman.rect.x//self.cell_size,
-                          self.pacman.rect.y//self.cell_size]
-
-            path = self.bfs(start, target)
+                , target)
             if len(path) >= 2:
                 return path[1]
             return path[0]

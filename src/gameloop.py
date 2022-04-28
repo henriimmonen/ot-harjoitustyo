@@ -32,8 +32,8 @@ class Gameloop:
             "START GAME BY PRESSING SPACE", False, (200, 150, 100))
         highscore_text = self.font.render(
             "HIGHSCORES", False, (107, 183, 210, 1))
-        self.screen.blit(start_text, (90, 200))
-        self.screen.blit(highscore_text, (180, 0))
+        self.screen.blit(start_text, (100, 200))
+        self.screen.blit(highscore_text, (190, 0))
         pygame.display.update()
 
     def initialize_gameloop(self):
@@ -88,7 +88,5 @@ class Gameloop:
         self.clock.tick(7)
 
     def move_ghosts(self):
-        self.level.move_ghost(self.level.ghost1)
-        self.level.move_ghost(self.level.ghost2)
-        self.level.move_ghost(self.level.ghost3)
-        self.level.move_ghost(self.level.ghost4)
+        for ghost in self.level.ghosts:
+            self.level.move_ghost(ghost)
