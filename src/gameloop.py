@@ -59,13 +59,13 @@ class Gameloop:
                 if event.key == pygame.K_ESCAPE:
                     return False
                 if event.key == pygame.K_LEFT:
-                    self.level.pacman.direction = (-self.size, 0)
+                    self.level.pacman.new_direction = (-self.size, 0)
                 if event.key == pygame.K_RIGHT:
-                    self.level.pacman.direction = (self.size, 0)
+                    self.level.pacman.new_direction = (self.size, 0)
                 if event.key == pygame.K_UP:
-                    self.level.pacman.direction = (0, -self.size)
+                    self.level.pacman.new_direction = (0, -self.size)
                 if event.key == pygame.K_DOWN:
-                    self.level.pacman.direction = (0, self.size)
+                    self.level.pacman.new_direction = (0, self.size)
             if event.type == pygame.QUIT:
                 return False
         self.update_round()
@@ -79,7 +79,7 @@ class Gameloop:
 
     def update_round(self):
         self.move_ghosts()
-        self.level.move_pacman(self.level.pacman.direction)
+        self.level.move_pacman(self.level.pacman.new_direction)
 
         self.update_score()
         pygame.display.update()

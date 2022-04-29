@@ -111,21 +111,21 @@ class Level: # pylint: disable=too-many-instance-attributes
         self.all_sprites.add(self.ghosts)
 
     def move_pacman(self, direction):
-        self.pacman.direction = direction
-        if self.moving_is_possible(self.pacman) and self.centered(self.pacman):
+        self.pacman.new_direction = direction
+        if self.centered(self.pacman):
+            self.pacman.direction = self.pacman.new_direction
+
+        if self.moving_is_possible(self.pacman):
             self.pacman.rect.move_ip(
                 self.pacman.direction[0]//self.pacman.speed, self.pacman.direction[1]//self.pacman.speed)
             self.pacman_eats()
-        elif self.moving_is_possible(self.pacman) and not self.centered(self.pacman):
-            self.pacman.rect.move_ip(
-                self.pacman.direction[0]//self.pacman.speed, self.pacman.direction[1]//self.pacman.speed)
 
     def move_ghost(self, sprite):
         if self.centered(sprite):
             next_cell = self.find_path(sprite)
             x_coordinate = next_cell[0] - sprite.rect.x//self.cell_size
             y_coordinate = next_cell[1] - sprite.rect.y//self.cell_size
-            sprite.direction = [x_coordinate, y_coordinate]
+            sprite.direction = (x_coordinate, y_coordinate)
             sprite.rect.move_ip(x_coordinate*(self.cell_size//sprite.speed),
                                 y_coordinate*(self.cell_size//sprite.speed))
         else:
@@ -168,7 +168,7 @@ class Level: # pylint: disable=too-many-instance-attributes
             if current_cell == target_cell:
                 break
 
-            for neighbour in [[0, 1], [0, -1], [1, 0], [-1, 0]]:
+            for neighbour in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
                 if self.neighbour_is_inside_matrix(neighbour, current_cell):
                     next_cell = [neighbour[0]+current_cell[0],
                         neighbour[1]+current_cell[1]]
