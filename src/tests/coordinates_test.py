@@ -107,3 +107,20 @@ class TestLevel(unittest.TestCase):
         self.level.move_ghost(self.ghost1)
         path = self.level.find_path(self.ghost1)
         self.assertEqual(path, [3, 2])
+
+    def test_ghost_is_vulnerable_if_powerpellet_is_eaten(self):
+        self.level.move_pacman((0, -size))
+        self.level.move_pacman((0, -size))
+        for x in range(1,5):
+            self.level.move_pacman((-size, 0))
+
+        for ghost in self.level.ghosts:
+            self.assertTrue(ghost.vulnerable)
+
+    def test_ghost_revives_to_correct_location(self):
+        self.ghost1.kill()
+        self.level.revive_ghost(self.ghost1)
+        self.coordinates_match(self.ghost1, size * 3, size * 4)
+    
+    def test_neighbour_inside_matrix_returns_false_if_not_inside_matrix(self):
+        self.assertFalse(self.level.neighbour_is_inside_matrix((0,-1), (0,0)))
