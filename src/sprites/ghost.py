@@ -11,7 +11,7 @@ class Ghost(pygame.sprite.Sprite):
             self.image = pygame.image.load(
                 os.path.join(dirname, "..", "assets", "ghost1.png")
             )
-            self.speed = 2
+            self.speed = 3
             self.vulnerable_target = [2, 2]
         elif number == 2:
             self.image = pygame.image.load(

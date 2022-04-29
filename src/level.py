@@ -75,10 +75,10 @@ class Level: # pylint: disable=too-many-instance-attributes
         )
 
     def moving_is_possible(self, sprite):
-        sprite.rect.move_ip(sprite.direction[0], sprite.direction[1])
+        sprite.rect.move_ip(sprite.direction[0]//sprite.speed, sprite.direction[1]//sprite.speed)
         crashing = pygame.sprite.spritecollide(sprite, self.walls, False)
         can_move = not crashing
-        sprite.rect.move_ip(-sprite.direction[0], -sprite.direction[1])
+        sprite.rect.move_ip(-sprite.direction[0]//sprite.speed, -sprite.direction[1]//sprite.speed)
         return can_move
 
     def pacman_eats(self):
@@ -110,11 +110,15 @@ class Level: # pylint: disable=too-many-instance-attributes
         self.ghosts.add(Ghost(ghost.number, starting_point, 210))
         self.all_sprites.add(self.ghosts)
 
-    def move_pacman(self):
-        if self.moving_is_possible(self.pacman):
+    def move_pacman(self, direction):
+        self.pacman.direction = direction
+        if self.moving_is_possible(self.pacman) and self.centered(self.pacman):
             self.pacman.rect.move_ip(
-                self.pacman.direction[0], self.pacman.direction[1])
+                self.pacman.direction[0]//self.pacman.speed, self.pacman.direction[1]//self.pacman.speed)
             self.pacman_eats()
+        elif self.moving_is_possible(self.pacman) and not self.centered(self.pacman):
+            self.pacman.rect.move_ip(
+                self.pacman.direction[0]//self.pacman.speed, self.pacman.direction[1]//self.pacman.speed)
 
     def move_ghost(self, sprite):
         if self.centered(sprite):
@@ -139,12 +143,11 @@ class Level: # pylint: disable=too-many-instance-attributes
         else:
             target = [self.pacman.rect.x//self.cell_size, self.pacman.rect.y//self.cell_size]
 
-        if sprite.number in (1, 2, 3, 4):
-            path = self.bfs([sprite.rect.x//self.cell_size, sprite.rect.y//self.cell_size]
-                , target)
-            if len(path) >= 2:
-                return path[1]
-            return path[0]
+        path = self.bfs([sprite.rect.x//self.cell_size, sprite.rect.y//self.cell_size]
+            , target)
+        if len(path) >= 2:
+            return path[1]
+        return path[0]
 
     def neighbour_is_inside_matrix(self, neighbour, current_cell):
         if neighbour[0]+current_cell[0] >= 0 and neighbour[0]+current_cell[0] < len(self.level[0]):
@@ -179,3 +182,20 @@ class Level: # pylint: disable=too-many-instance-attributes
                     target_cell = step[0]
                     direction.insert(0, step[0])
         return direction
+
+    def position_pacman_and_ghosts_to_start(self):
+        for ghost in self.ghosts:
+            ghost.kill()
+
+        self.all_sprites.remove(self.ghosts)
+
+        self.pacman.kill()
+        self.all_sprites.remove(self.pacman)
+
+        for x in range(1, 5):
+            self.revive_ghost(Ghost(x, 0, 0))
+
+        self.pacman = Pacman(8*self.cell_size, 11*self.cell_size)
+        self.all_sprites.add(self.pacman)
+
+

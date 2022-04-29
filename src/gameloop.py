@@ -59,18 +59,17 @@ class Gameloop:
                 if event.key == pygame.K_ESCAPE:
                     return False
                 if event.key == pygame.K_LEFT:
-                    self.level.pacman.direction = [-self.size, 0]
+                    self.level.pacman.direction = (-self.size, 0)
                 if event.key == pygame.K_RIGHT:
-                    self.level.pacman.direction = [self.size, 0]
+                    self.level.pacman.direction = (self.size, 0)
                 if event.key == pygame.K_UP:
-                    self.level.pacman.direction = [0, -self.size]
+                    self.level.pacman.direction = (0, -self.size)
                 if event.key == pygame.K_DOWN:
-                    self.level.pacman.direction = [0, self.size]
+                    self.level.pacman.direction = (0, self.size)
             if event.type == pygame.QUIT:
                 return False
         self.update_round()
-
-        if self.level.pacman_meets_ghost():
+        if self.check_collision():
             return False
 
     def update_score(self):
@@ -79,14 +78,29 @@ class Gameloop:
         self.screen.blit(score_text, self.score)
 
     def update_round(self):
-        self.level.move_pacman()
         self.move_ghosts()
+        self.level.move_pacman(self.level.pacman.direction)
 
         self.update_score()
         pygame.display.update()
         self.level.all_sprites.draw(self.screen)
-        self.clock.tick(7)
+        self.clock.tick(10)
 
     def move_ghosts(self):
         for ghost in self.level.ghosts:
             self.level.move_ghost(ghost)
+
+    def check_collision(self):
+        collision = self.level.pacman_meets_ghost()
+        if collision and self.level.lives >= 0:
+            pygame.time.delay(1500)
+            self.start_over()
+        elif collision and self.level.lives == -1:
+            return True
+
+    def start_over(self):
+        self.screen.fill((0, 0, 0))
+        pygame.draw.rect(self.screen, (0, 0, 0), self.score)
+        self.level.position_pacman_and_ghosts_to_start()
+        self.level.all_sprites.draw(self.screen)
+        pygame.display.update()
