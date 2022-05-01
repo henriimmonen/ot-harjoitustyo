@@ -23,6 +23,7 @@ class App:
 
         gameloop.draw_starting_screen()
         gameloop.gameloop()
+        gameloop.gameover()
 
 
 if __name__ == "__main__":

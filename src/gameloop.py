@@ -9,7 +9,7 @@ class Gameloop:
         self.size = size
         self.clock = clock
         self.font = pygame.font.SysFont('arial black', 16)
-        self.score = pygame.Rect(40, 0, 100, 30)
+        self.score_box = pygame.Rect(40, 0, 100, 30)
 
     def draw_starting_screen(self):
         self.initialize_starting_screen()
@@ -25,6 +25,13 @@ class Gameloop:
             if self.handle_gameloop_events() is False:
                 break
 
+    def gameover(self):
+        self.initialize_gameover()
+
+        while True:
+            if self.handle_gameover_events() is False:
+                break
+
     def initialize_starting_screen(self):
         self.screen.fill((0, 0, 0))
 
@@ -38,8 +45,17 @@ class Gameloop:
 
     def initialize_gameloop(self):
         self.screen.fill((0, 0, 0))
-        pygame.draw.rect(self.screen, (0, 0, 0), self.score)
+        pygame.draw.rect(self.screen, (0, 0, 0), self.score_box)
+        self.update_lives()
         self.level.all_sprites.draw(self.screen)
+        pygame.display.update()
+
+    def initialize_gameover(self):
+        self.screen.fill((0, 0, 0))
+
+        gameover_text = self.font.render(
+            "GAME OVER", False, (190, 150, 100))
+        self.screen.blit(gameover_text, (200, 200))
         pygame.display.update()
 
     def handle_starting_events(self): # pylint: disable=inconsistent-return-statements
@@ -68,19 +84,32 @@ class Gameloop:
                     self.level.pacman.new_direction = (0, self.size)
             if event.type == pygame.QUIT:
                 return False
+
         self.update_round()
+
         if self.check_collision():
             return False
+    
+    def handle_gameover_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return False
+            if event.type == pygame.QUIT:
+                return False
 
     def update_score(self):
-        score_text = self.font.render(f"SCORE: {self.level.score}", True, (107, 183, 210, 1))
-        self.screen.fill((0, 0, 0), self.score)
-        self.screen.blit(score_text, self.score)
+        score_text = self.font.render(f"SCORE: {self.level.score}", False, (107, 183, 210, 1))
+        self.screen.fill((0, 0, 0), self.score_box)
+        self.screen.blit(score_text, self.score_box)
+
+    def update_lives(self):
+        lives_text = self.font.render(f"LIVES: {self.level.lives}", False, (107, 183, 210, 1))
+        self.screen.blit(lives_text, (190, 0))
 
     def update_round(self):
         self.move_ghosts()
         self.level.move_pacman(self.level.pacman.new_direction)
-
         self.update_score()
         pygame.display.update()
         self.level.all_sprites.draw(self.screen)
@@ -93,14 +122,16 @@ class Gameloop:
     def check_collision(self):
         collision = self.level.pacman_meets_ghost()
         if collision and self.level.lives >= 0:
-            pygame.time.delay(1500)
+            pygame.time.delay(1000)
             self.start_over()
-        elif collision and self.level.lives == -1:
+        elif collision and self.level.lives < 0:
+            pygame.time.delay(1000)
             return True
 
     def start_over(self):
         self.screen.fill((0, 0, 0))
-        pygame.draw.rect(self.screen, (0, 0, 0), self.score)
+        self.update_lives()
+        self.update_score()
         self.level.position_pacman_and_ghosts_to_start()
         self.level.all_sprites.draw(self.screen)
         pygame.display.update()
