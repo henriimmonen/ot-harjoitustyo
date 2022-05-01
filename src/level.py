@@ -117,6 +117,7 @@ class Level: # pylint: disable=too-many-instance-attributes
             self.pacman.direction = self.pacman.new_direction
 
         if self.moving_is_possible(self.pacman):
+            self.pacman.set_image()
             self.pacman.rect.move_ip(
                 self.pacman.direction[0]//self.pacman.speed, self.pacman.direction[1]//self.pacman.speed)
             self.pacman_eats()

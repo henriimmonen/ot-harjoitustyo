@@ -16,3 +16,24 @@ class Pacman(pygame.sprite.Sprite):
         self.direction = (0,0)
         self.new_direction = (0,0)
         self.speed = 2
+
+    def set_image(self):
+        if self.direction[0] > 0 and self.direction[1] == 0:
+            self.image = pygame.image.load(
+                os.path.join(dirname, "..", "assets", "pacman.png")
+            )
+        
+        if self.direction[0] < 0 and self.direction[1] == 0:
+            self.image = pygame.image.load(
+                os.path.join(dirname, "..", "assets", "pacman_left.png")
+            )
+        
+        if self.direction[0] == 0 and self.direction[1] > 0:
+            self.image = pygame.image.load(
+                os.path.join(dirname, "..", "assets", "pacman_down.png")
+            )
+        
+        if self.direction[0] == 0 and self.direction[1] < 0:
+            self.image = pygame.image.load(
+                os.path.join(dirname, "..", "assets", "pacman_up.png")
+            )
