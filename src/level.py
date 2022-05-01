@@ -91,6 +91,7 @@ class Level: # pylint: disable=too-many-instance-attributes
     def ghosts_are_vulnerable(self):
         for ghost in self.ghosts:
             ghost.vulnerable = True
+            ghost.set_image_vulnerable()
 
     def pacman_meets_ghost(self):
         list_of_colliding = pygame.sprite.spritecollide(self.pacman, self.ghosts, False)
