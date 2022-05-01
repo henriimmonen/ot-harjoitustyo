@@ -21,6 +21,7 @@ class Level: # pylint: disable=too-many-instance-attributes
         self.all_sprites = pygame.sprite.Group()
         self.score = 0
         self.lives = 3
+        self.timer = None
         self.initialize_sprites(level_map)
 
     def initialize_sprites(self, level_map): # pylint: disable=too-many-statements
@@ -89,9 +90,10 @@ class Level: # pylint: disable=too-many-instance-attributes
             self.ghosts_are_vulnerable()
 
     def ghosts_are_vulnerable(self):
+        self.timer = pygame.time.get_ticks()
         for ghost in self.ghosts:
             ghost.vulnerable = True
-            ghost.set_image_vulnerable()
+            ghost.set_image()
 
     def pacman_meets_ghost(self):
         list_of_colliding = pygame.sprite.spritecollide(self.pacman, self.ghosts, False)
@@ -112,6 +114,7 @@ class Level: # pylint: disable=too-many-instance-attributes
         self.all_sprites.add(self.ghosts)
 
     def move_pacman(self, direction):
+        self.check_timer()
         self.pacman.new_direction = direction
         if self.centered(self.pacman):
             self.pacman.direction = self.pacman.new_direction
@@ -133,6 +136,13 @@ class Level: # pylint: disable=too-many-instance-attributes
         else:
             sprite.rect.move_ip(sprite.direction[0] * (
                 self.cell_size//sprite.speed), sprite.direction[1] * (self.cell_size//sprite.speed))
+
+    def check_timer(self):
+        if self.timer:
+            if pygame.time.get_ticks() - self.timer >= 5000:
+                for ghost in self.ghosts:
+                    ghost.vulnerable = False
+                    ghost.set_image()
 
     def centered(self, sprite):
         if sprite.rect.x % self.cell_size == 0 and sprite.rect.y % self.cell_size == 0:

@@ -38,8 +38,12 @@ class Ghost(pygame.sprite.Sprite):
         self.direction = (0, 0)
         self.number = number
 
-    def set_image_vulnerable(self):
+    def set_image(self):
         if self.vulnerable == True:
             self.image = pygame.image.load(
                 os.path.join(dirname, "..", "assets", "ghost.png")
+            )
+        else:
+            self.image = pygame.image.load(
+                os.path.join(dirname, "..", "assets", f"ghost{self.number}.png")
             )
