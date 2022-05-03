@@ -29,7 +29,9 @@ sequenceDiagram
 	Note left of Gameloop: event.key == pygame.K_DOWN:
 	Gameloop->>Pacman: new_direction = (0, self.size)
 	Gameloop->>Level: move_pacman(new_direction)
-	Note right of Level: if centered(self.pacman) -> self.pacman.direction = new direction;
+	Note right of Level: if centered(self.pacman)
+	Level->>Pacman: direction = new_direction
+	Pacman-->>Level: ;
 	Note right of Level: if moving_is_possible():
 	Level->>Pacman: Rect.move_ip(direction[0], direction[1])
 	Pacman-->>Level: ;
