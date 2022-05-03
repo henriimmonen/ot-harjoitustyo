@@ -1,6 +1,6 @@
 # Käyttöohje
 
-Lataa pelin viimeisin [Release](https://github.com/henriimmonen/ot-harjoitustyo/releases/tag/Viikko6).
+Lataa pelin viimeisin [release](https://github.com/henriimmonen/ot-harjoitustyo/releases/tag/Viikko6).
 
 Ennen ohjelman käynnistämistä, asenna riippuvuudet komennolla `poetry install`.
 
