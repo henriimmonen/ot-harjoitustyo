@@ -21,11 +21,12 @@ class Level:  # pylint: disable=too-many-instance-attributes
         self.all_sprites = pygame.sprite.Group()
         self.score = 0
         self.lives = 3
+        self.cleared = 0
         self.timer = None
         self.initialize_sprites(level_map)
 
     def initialize_sprites(self, level_map):  # pylint: disable=too-many-statements
-        # statements are required to initialize
+                                              # statements are required to initialize
         level_height = len(level_map)
         level_width = len(level_map[0])
 
@@ -59,15 +60,13 @@ class Level:  # pylint: disable=too-many-instance-attributes
                     self.floors.add(Floor(normalized_x, normalized_y))
 
                 elif level_map[height][width] == 6:
-                    self.ghosts.add(Ghost(3, normalized_x, normalized_y))
+                    if self.cleared < 1:
+                        self.ghosts.add(Ghost(3, normalized_x, normalized_y))
                     self.floors.add(Floor(normalized_x, normalized_y))
 
                 elif level_map[height][width] == 7:
                     self.ghosts.add(Ghost(4, normalized_x, normalized_y))
                     self.floors.add(Floor(normalized_x, normalized_y))
-
-                else:
-                    pass
 
         self.all_sprites.add(
             self.floors,
@@ -116,8 +115,16 @@ class Level:  # pylint: disable=too-many-instance-attributes
 
     def revive_ghost(self, ghost):
         starting_point = 150 + 30*ghost.number
-        self.ghosts.add(Ghost(ghost.number, starting_point, 210))
+        new_ghost = Ghost(ghost.number, starting_point, 210)
+        self.speed_up_ghost(new_ghost)
+        self.ghosts.add(new_ghost)
         self.all_sprites.add(self.ghosts)
+
+    def speed_up_ghost(self, ghost):
+        if self.cleared >= 1:
+            ghost.speed = ghost.speed-(self.cleared*3)
+            if ghost.speed < 3:
+                ghost.speed = 3
 
     def move_pacman(self, direction):
         self.check_timer()
@@ -216,3 +223,8 @@ class Level:  # pylint: disable=too-many-instance-attributes
 
         self.pacman = Pacman(8*self.cell_size, 11*self.cell_size)
         self.all_sprites.add(self.pacman)
+    
+    def all_pellets_eaten(self):
+        if len(self.pellets) == 0 and len(self.power_pellets) == 0:
+            return True
+        return False

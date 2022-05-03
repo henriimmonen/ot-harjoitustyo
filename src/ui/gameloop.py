@@ -114,6 +114,10 @@ class Gameloop:
         self.level.move_pacman(self.level.pacman.new_direction)
         self.update_score()
         pygame.display.update()
+
+        if self.level.all_pellets_eaten():
+            self.start_over_with_pellets()
+
         self.level.all_sprites.draw(self.screen)
         self.clock.tick(10)
 
@@ -138,3 +142,10 @@ class Gameloop:
         self.level.position_pacman_and_ghosts_to_start()
         self.level.all_sprites.draw(self.screen)
         pygame.display.update()
+
+    def start_over_with_pellets(self):
+        pygame.time.delay(1500)
+        self.level.cleared += 1
+        self.level.initialize_sprites(self.level.level)
+        self.level.position_pacman_and_ghosts_to_start()
+

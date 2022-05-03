@@ -11,25 +11,25 @@ class Ghost(pygame.sprite.Sprite):
             self.image = pygame.image.load(
                 os.path.join(dirname, "..", "assets", "ghost1.png")
             )
-            self.speed = 3
+            self.speed = 6
             self.vulnerable_target = (2, 2)
         elif number == 2:
             self.image = pygame.image.load(
                 os.path.join(dirname, "..", "assets", "ghost2.png")
             )
-            self.speed = 3
+            self.speed = 6
             self.vulnerable_target = (14, 2)
         elif number == 3:
             self.image = pygame.image.load(
                 os.path.join(dirname, "..", "assets", "ghost3.png")
             )
-            self.speed = 6
+            self.speed = 9
             self.vulnerable_target = (2, 14)
         else:
             self.image = pygame.image.load(
                 os.path.join(dirname, "..", "assets", "ghost4.png")
             )
-            self.speed = 6
+            self.speed = 12
             self.vulnerable_target = (14, 14)
         self.vulnerable = False
         self.rect = self.image.get_rect()
