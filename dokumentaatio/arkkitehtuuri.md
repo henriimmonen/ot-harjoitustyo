@@ -32,7 +32,7 @@ sequenceDiagram
 	Note right of Level: if centered(self.pacman)
 	Level->>Pacman: direction = new_direction
 	Pacman-->>Level: ;
-	Note right of Level: if moving_is_possible():
+	Note right of Level: if moving_is_possible()
 	Level->>Pacman: Rect.move_ip(direction[0], direction[1])
 	Pacman-->>Level: ;
 	Note right of Level: self.pacman_eats()
