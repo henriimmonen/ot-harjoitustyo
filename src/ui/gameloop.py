@@ -52,9 +52,11 @@ class Gameloop:
 
     def initialize_gameover(self):
         self.screen.fill((0, 0, 0))
-
         gameover_text = self.font.render(
             "GAME OVER", False, (190, 150, 100))
+        score_text = self.font.render(
+            f"SCORE: {self.level.score}", False, (107, 183, 210))
+        self.screen.blit(score_text, (200, 0))
         self.screen.blit(gameover_text, (200, 200))
         pygame.display.update()
 
@@ -107,7 +109,7 @@ class Gameloop:
     def update_lives(self):
         lives_text = self.font.render(
             f"LIVES: {self.level.lives}", False, (107, 183, 210, 1))
-        self.screen.blit(lives_text, (250, 0))
+        self.screen.blit(lives_text, (400, 0))
 
     def update_round(self):
         self.move_ghosts()
