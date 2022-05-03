@@ -4,7 +4,7 @@ import pygame
 
 class Gameloop:
     def __init__(self, level, screen, clock, size):
-        """Luodaan muuttujat vaadittaville parametreille. 
+        """Luodaan muuttujat vaadittaville parametreille.
 
         Args:
             level: Level-luokan instanssi.
@@ -44,6 +44,9 @@ class Gameloop:
                 break
 
     def gameover(self):
+        """Piirretään game over-ruutu initialize_gameover-metodilla ja käynnistetään
+        silmukka tapahtumien käsittelyä varten.
+        """
         self.initialize_gameover()
 
         while True:
@@ -79,6 +82,14 @@ class Gameloop:
         pygame.display.update()
 
     def handle_starting_events(self):
+        """Tarkistetaan tapahtumat ja palautetaan jokin arvo
+        jos painettu näppäin on välilyönti, escape tai
+        ikkuna on suljettu.
+
+        Returns:
+            False, jos painettu näppäin on välilyönti. Escape-näppäimestä
+            tai quit-tapahtumasta palautetaan None, jolloin ohjelma suljetaan.
+        """
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -90,6 +101,15 @@ class Gameloop:
         return True
 
     def handle_gameloop_events(self):
+        """Tarkistetaan itse pelin aikaiset tapahtumat. Jos painettu näppäin on
+        jokin nuolinäppäimistä, asetetaan Pacman-luokan spritelle uusi suunta.
+        Tämän jälkeen päivitetään kierroksen tapahtumat ja tarkistetaan tapahtuuko
+        törmäystä.
+
+        Returns:
+            Jos painettu näppäin on escape, tapahtuma on quit-tyyppinen tai pacman-sprite
+            törmää haamuun eikä elämiä enää ole, palautetaan False.
+        """
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -112,6 +132,11 @@ class Gameloop:
         return True
 
     def handle_gameover_events(self):
+        """Tarkistetaan game over-ruudun aikaset tapahtumat.
+
+        Returns:
+            False, jos painetaan escape-näppäintä tai tapahtuman tyyppi on quit.
+        """
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -121,17 +146,24 @@ class Gameloop:
         return True
 
     def update_score(self):
+        """Päivitetään vasemman yläkulman pistetilanne.
+        """
         score_text = self.font.render(
             f"SCORE: {self.level.score}", False, (107, 183, 210, 1))
         self.screen.fill((0, 0, 0), self.score_box)
         self.screen.blit(score_text, self.score_box)
 
     def update_lives(self):
+        """Päivitetään oikean yläkulman elämät-näyttävä ruutu.
+        """
         lives_text = self.font.render(
             f"LIVES: {self.level.lives}", False, (107, 183, 210, 1))
         self.screen.blit(lives_text, (400, 0))
 
     def update_round(self):
+        """Päivitetään kierros. Liikutetaan haamut, liikutetaan pacman-sprite,
+        päivitetään pisteet ja tarkistetaan onko kaikki pelletit syöty.
+        """
         self.move_ghosts()
         self.level.move_pacman(self.level.pacman.new_direction)
         self.update_score()
@@ -144,10 +176,18 @@ class Gameloop:
         self.clock.tick(10)
 
     def move_ghosts(self):
+        """Liikutetaan kaikki haamut.
+        """
         for ghost in self.level.ghosts:
             self.level.move_ghost(ghost)
 
     def check_collision(self):
+        """Tarkistetaan törmääkö pacman-sprite ghost-spritejen kanssa
+        ja tarvittaessa aloitetaan uudelleen tai näytetään game over-ruutu.
+
+        Returns:
+            _type_: _description_
+        """
         collision = self.level.pacman_meets_ghost()
         if collision and self.level.lives >= 0:
             pygame.time.delay(1000)
@@ -158,7 +198,10 @@ class Gameloop:
             self.gameover()
             return True
         return None
+
     def start_over(self):
+        """Aloitetaan uudelleen kun pacman-sprite menettää elämän.
+        """
         self.screen.fill((0, 0, 0))
         self.update_lives()
         self.update_score()
@@ -167,6 +210,8 @@ class Gameloop:
         pygame.display.update()
 
     def start_over_with_pellets(self):
+        """Aloitetaan uudelleen kun kaikki pelletit on syöty.
+        """
         pygame.time.delay(1500)
         self.level.cleared += 1
         self.level.initialize_sprites(self.level.level)

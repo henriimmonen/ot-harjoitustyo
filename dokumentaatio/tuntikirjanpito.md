@@ -23,4 +23,5 @@
 | 28.4.  |  3,5h  | Haamut kuolevat, kun pacman on syönyt powerpelletin. |
 | 29.4.  |  2,5h  | Hiottu Pacmanin liikkumista ja siistitty funktioita. |
 | 1.5.   |  3h    | Haamut palautuvat vulnerable-tilasta ja peli päättyy kolmen elämän kuluttua loppuun. |
-| Yhteensä | 63h |  |
+| 3.5.   |  8h    | Tehty docstring-kommentointi, käyttöohje, arkkitehtuurikuvaus ja viilattu viimeisiä pylint-virheitä. |
+| Yhteensä | 71h |  |
