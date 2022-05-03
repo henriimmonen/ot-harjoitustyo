@@ -9,6 +9,7 @@ Harjoitustyön aiheena on Pacman pelin versio. Tarkempi määrittely pelin omina
 - [Tuntikirjanpito](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/tuntikirjanpito.md)
 - [Changelog](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/changelog.md)
 - [Arkkitehtuuri](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
+- [Käyttöohje](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/kayttoohje.md)
 
 ## Harjoitustyön komentorivitoiminnot
 - Riippuvuuksien asentaminen lataamisen jälkeen:
