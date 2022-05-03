@@ -1,6 +1,6 @@
 import unittest
 import pygame
-from level import Level
+from gamelogic.level import Level
 
 test_level = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
               [1, 2, 0, 0, 0, 0, 0, 0, 2, 1],
@@ -149,7 +149,10 @@ class TestLevel(unittest.TestCase):
         score_after_colliding = self.level.score
         self.assertEqual(score_after_colliding, score+100)
 
-    def test_ghost1_is_centered_after_3_moves(self):
+    def test_ghost1_is_centered_after_6_moves(self):
+        self.level.move_ghost(self.ghost1)
+        self.level.move_ghost(self.ghost1)
+        self.level.move_ghost(self.ghost1)
         self.level.move_ghost(self.ghost1)
         self.level.move_ghost(self.ghost1)
         self.level.move_ghost(self.ghost1)
