@@ -11,7 +11,7 @@ Harjoitustyön aiheena on Pacman pelin versio. Tarkempi määrittely pelin omina
 - [Arkkitehtuuri](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
 
 ## Harjoitustyön komentorivitoiminnot
--Riippuvuuksien asentaminen lataamisen jälkeen:
+- Riippuvuuksien asentaminen lataamisen jälkeen:
 ```bash
 poetry install
 ```
