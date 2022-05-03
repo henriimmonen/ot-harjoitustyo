@@ -6,6 +6,12 @@ dirname = os.path.dirname(__file__)
 
 class Pacman(pygame.sprite.Sprite):
     def __init__(self, coordinate_x=0, coordinate_y=0):
+        """Luodaan Pacman-luokan sprite
+
+        Args:
+            coordinate_x: Aloituskoordinaatti x.
+            coordinate_y: Aloituskoordinaatti y.
+        """
         super().__init__()
         self.image = pygame.image.load(
             os.path.join(dirname, "..", "assets", "pacman.png")
@@ -18,6 +24,8 @@ class Pacman(pygame.sprite.Sprite):
         self.speed = 2
 
     def set_image(self):
+        """Päivitetään kuva vastaamaan kulkusuuntaa.
+        """
         if self.direction[0] > 0 and self.direction[1] == 0:
             self.image = pygame.image.load(
                 os.path.join(dirname, "..", "assets", "pacman.png")

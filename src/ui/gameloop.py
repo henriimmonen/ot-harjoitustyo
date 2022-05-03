@@ -4,6 +4,14 @@ import pygame
 
 class Gameloop:
     def __init__(self, level, screen, clock, size):
+        """Luodaan muuttujat vaadittaville parametreille. 
+
+        Args:
+            level: Level-luokan instanssi.
+            screen: Pygamen display-olio.
+            clock: Pygamen kello.
+            size: Solun koko pikseleinä.
+        """
         self.screen = screen
         self.level = level
         self.size = size
@@ -12,17 +20,27 @@ class Gameloop:
         self.score_box = pygame.Rect(40, 0, 100, 30)
 
     def draw_starting_screen(self):
+        """Piirretään aloitusruutu initialize_starting_screen-metodilla ja
+        käynnistetään silmukka tapahtumien käsittelyä varten.
+        """
         self.initialize_starting_screen()
 
         while True:
-            if self.handle_starting_events() is False:
+            handle_events = self.handle_starting_events()
+            if handle_events is False:
                 break
+            if handle_events is None:
+                sys.exit()
 
     def gameloop(self):
+        """Piirretään peliruutu initialize_gameloop-metodilla ja käynnistetään
+        silmukka tapahtumien käsittelyä varten.
+        """
         self.initialize_gameloop()
 
         while True:
-            if self.handle_gameloop_events() is False:
+            handle_events = self.handle_gameloop_events()
+            if handle_events is False:
                 break
 
     def gameover(self):
@@ -60,18 +78,18 @@ class Gameloop:
         self.screen.blit(gameover_text, (200, 200))
         pygame.display.update()
 
-    def handle_starting_events(self):  # pylint: disable=inconsistent-return-statements
-        # could not figure out a way to avoid this
+    def handle_starting_events(self):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     return False
                 if event.key == pygame.K_ESCAPE:
-                    sys.exit()
+                    return None
             if event.type == pygame.QUIT:
-                sys.exit()
+                return None
+        return True
 
-    def handle_gameloop_events(self):  # pylint: disable=inconsistent-return-statements
+    def handle_gameloop_events(self):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -91,6 +109,7 @@ class Gameloop:
 
         if self.check_collision():
             return False
+        return True
 
     def handle_gameover_events(self):
         for event in pygame.event.get():
@@ -99,6 +118,7 @@ class Gameloop:
                     return False
             if event.type == pygame.QUIT:
                 return False
+        return True
 
     def update_score(self):
         score_text = self.font.render(
@@ -132,11 +152,12 @@ class Gameloop:
         if collision and self.level.lives >= 0:
             pygame.time.delay(1000)
             self.start_over()
-        elif collision and self.level.lives < 0:
+            return False
+        if collision and self.level.lives < 0:
             pygame.time.delay(1000)
             self.gameover()
             return True
-
+        return None
     def start_over(self):
         self.screen.fill((0, 0, 0))
         self.update_lives()
@@ -150,4 +171,3 @@ class Gameloop:
         self.level.cleared += 1
         self.level.initialize_sprites(self.level.level)
         self.level.position_pacman_and_ghosts_to_start()
-

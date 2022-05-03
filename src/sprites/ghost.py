@@ -5,7 +5,15 @@ dirname = os.path.dirname(__file__)
 
 
 class Ghost(pygame.sprite.Sprite):
-    def __init__(self, number, coordinate_x=0, coordinate_y=0):
+    def __init__(self, number, coordinate_x=0, coordinate_y=0): # pylint: disable=too-many-statements
+        """Luodaan Ghost-luokan sprite.
+
+        Args:
+            number: Numero, jonka perusteella haamu saa kuvan ja oman vulnerable-
+            kohteen.
+            coordinate_x: Aloituskoordinaatti x.
+            coordinate_y: Aloituskoordinaatti y.
+        """
         super().__init__()
         if number == 1:
             self.image = pygame.image.load(
@@ -39,7 +47,10 @@ class Ghost(pygame.sprite.Sprite):
         self.number = number
 
     def set_image(self):
-        if self.vulnerable == True:
+        """Jos luokan sprite on vulnerable-tilassa, kuva on valkoinen.
+        Muulloin normaali numeron mukainen kuva.
+        """
+        if self.vulnerable is True:
             self.image = pygame.image.load(
                 os.path.join(dirname, "..", "assets", "ghost.png")
             )

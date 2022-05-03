@@ -6,6 +6,8 @@ from ui.gameloop import Gameloop
 
 class App:
     def __init__(self):
+        """Alustetaan parametrit pelin käynnistämistä varten.
+        """
         self.size = 30
         self.clock = pygame.time.Clock()
         self.display_height = len(level_1) * self.size
@@ -16,6 +18,8 @@ class App:
         self.level_class1 = Level(level_1, self.size)
 
     def run(self):
+        """Käynnistetään pygame ja luodaan Gameloop-luokan instanssi.
+        """
         pygame.init()
         gameloop = Gameloop(self.level_class1, self.screen,
                             self.clock, self.size)

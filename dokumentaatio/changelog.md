@@ -22,3 +22,7 @@
 ## Viikko 6
 - Haamut kuolevat ja palaavat aloitusruutuun, kun Pacman syö powerpelletin.
 - Haamujen eri persoonallisuudet jätettiin pois yksinkertaisuuden vuoksi. 
+- Kun kaikki pelletit on syöty, alkaa kenttä uudelleen alusta, mutta haamut liikkuvat nopeammin.
+- Pelin päätyttyä näytetään "Game Over"-näkymä ja kerätty pistesaldo.
+- Luotu hakemistot ui- ja gamelogic, johon sijoitettiin gameloop.py ja level.py.
+- Testejä lisätty.

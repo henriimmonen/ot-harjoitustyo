@@ -1,5 +1,4 @@
 import unittest
-import pygame
 from gamelogic.level import Level
 
 test_level = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
