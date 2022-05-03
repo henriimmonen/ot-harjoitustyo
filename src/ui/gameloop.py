@@ -58,8 +58,8 @@ class Gameloop:
         self.screen.blit(gameover_text, (200, 200))
         pygame.display.update()
 
-    def handle_starting_events(self): # pylint: disable=inconsistent-return-statements
-                                      # could not figure out a way to avoid this
+    def handle_starting_events(self):  # pylint: disable=inconsistent-return-statements
+        # could not figure out a way to avoid this
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -69,7 +69,7 @@ class Gameloop:
             if event.type == pygame.QUIT:
                 sys.exit()
 
-    def handle_gameloop_events(self): # pylint: disable=inconsistent-return-statements
+    def handle_gameloop_events(self):  # pylint: disable=inconsistent-return-statements
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -89,7 +89,7 @@ class Gameloop:
 
         if self.check_collision():
             return False
-    
+
     def handle_gameover_events(self):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -99,13 +99,15 @@ class Gameloop:
                 return False
 
     def update_score(self):
-        score_text = self.font.render(f"SCORE: {self.level.score}", False, (107, 183, 210, 1))
+        score_text = self.font.render(
+            f"SCORE: {self.level.score}", False, (107, 183, 210, 1))
         self.screen.fill((0, 0, 0), self.score_box)
         self.screen.blit(score_text, self.score_box)
 
     def update_lives(self):
-        lives_text = self.font.render(f"LIVES: {self.level.lives}", False, (107, 183, 210, 1))
-        self.screen.blit(lives_text, (190, 0))
+        lives_text = self.font.render(
+            f"LIVES: {self.level.lives}", False, (107, 183, 210, 1))
+        self.screen.blit(lives_text, (250, 0))
 
     def update_round(self):
         self.move_ghosts()
@@ -126,6 +128,7 @@ class Gameloop:
             self.start_over()
         elif collision and self.level.lives < 0:
             pygame.time.delay(1000)
+            self.gameover()
             return True
 
     def start_over(self):

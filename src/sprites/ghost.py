@@ -45,5 +45,6 @@ class Ghost(pygame.sprite.Sprite):
             )
         else:
             self.image = pygame.image.load(
-                os.path.join(dirname, "..", "assets", f"ghost{self.number}.png")
+                os.path.join(dirname, "..", "assets",
+                             f"ghost{self.number}.png")
             )

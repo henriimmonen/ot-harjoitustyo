@@ -1,7 +1,7 @@
 import pygame
-from layouts import level_1
-from level import Level
-from gameloop import Gameloop
+from levels.layouts import level_1
+from gamelogic.level import Level
+from ui.gameloop import Gameloop
 
 
 class App:
@@ -23,7 +23,6 @@ class App:
 
         gameloop.draw_starting_screen()
         gameloop.gameloop()
-        gameloop.gameover()
 
 
 if __name__ == "__main__":

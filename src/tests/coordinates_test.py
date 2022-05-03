@@ -4,7 +4,7 @@ from level import Level
 
 test_level = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
               [1, 2, 0, 0, 0, 0, 0, 0, 2, 1],
-              [1, 5, 1, 3, 1, 1, 0, 1, 0, 1],
+              [1, 5, 1, 3, 0, 1, 0, 1, 0, 1],
               [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
               [1, 0, 1, 4, 0, 6, 7, 1, 0, 1],
               [1, 0, 0, 0, 1, 1, 0, 0, 0, 1],
@@ -32,6 +32,8 @@ class TestLevel(unittest.TestCase):
         for ghost in self.level.ghosts:
             if ghost.number == 1:
                 self.ghost1 = ghost
+            if ghost.number == 2:
+                self.ghost2 = ghost
             if ghost.number == 3:
                 self.ghost3 = ghost
             if ghost.number == 4:
@@ -57,6 +59,11 @@ class TestLevel(unittest.TestCase):
         self.level.move_pacman((0, -size))
         self.coordinates_match(self.pacman, size * 3, size * 1)
 
+    def test_moving_right(self):
+        self.level.move_pacman((size, 0))
+        self.level.move_pacman((size, 0))
+        self.coordinates_match(self.pacman, size * 4, size * 2)
+
     def test_not_going_through_walls(self):
         self.level.move_pacman((-size, 0))
         self.coordinates_match(self.pacman, size * 3, size * 2)
@@ -78,13 +85,13 @@ class TestLevel(unittest.TestCase):
         all_power_pellets = len(self.power_pellets)
         self.level.move_pacman((0, -size))
         self.level.move_pacman((0, -size))
-        for x in range(1,5):
+        for x in range(1, 5):
             self.level.move_pacman((-size, 0))
         power_pellets_after_moving = len(self.power_pellets)
         self.assertLess(power_pellets_after_moving, all_power_pellets)
 
     def test_colliding_with_ghost_returns_true(self):
-        for x in range(1,5):
+        for x in range(1, 5):
             self.level.move_pacman((0, size))
         self.assertTrue(self.level.pacman_meets_ghost())
 
@@ -111,7 +118,7 @@ class TestLevel(unittest.TestCase):
     def test_ghost_is_vulnerable_if_powerpellet_is_eaten(self):
         self.level.move_pacman((0, -size))
         self.level.move_pacman((0, -size))
-        for x in range(1,5):
+        for x in range(1, 5):
             self.level.move_pacman((-size, 0))
 
         for ghost in self.level.ghosts:
@@ -121,6 +128,29 @@ class TestLevel(unittest.TestCase):
         self.ghost1.kill()
         self.level.revive_ghost(self.ghost1)
         self.coordinates_match(self.ghost1, size * 3, size * 4)
-    
+
     def test_neighbour_inside_matrix_returns_false_if_not_inside_matrix(self):
-        self.assertFalse(self.level.neighbour_is_inside_matrix((0,-1), (0,0)))
+        self.assertFalse(
+            self.level.neighbour_is_inside_matrix((0, -1), (0, 0)))
+
+    def test_ghost_starts_not_vulnerable(self):
+        for ghost in self.level.ghosts:
+            self.assertFalse(ghost.vulnerable)
+
+    def test_score_raised_by_100_when_colliding_to_vulnerable_ghost(self):
+        self.level.move_pacman((0, -size))
+        self.level.move_pacman((0, -size))
+        for x in range(1, 5):
+            self.level.move_pacman((-size, 0))
+        self.level.move_pacman((0, size))
+        score = self.level.score
+        self.level.move_pacman((0, size))
+        self.level.pacman_meets_ghost()
+        score_after_colliding = self.level.score
+        self.assertEqual(score_after_colliding, score+100)
+
+    def test_ghost1_is_centered_after_3_moves(self):
+        self.level.move_ghost(self.ghost1)
+        self.level.move_ghost(self.ghost1)
+        self.level.move_ghost(self.ghost1)
+        self.assertTrue(self.level.centered(self.ghost1))
