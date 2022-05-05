@@ -85,15 +85,7 @@ class Level: # pylint: disable=too-many-instance-attributes
             self.ghosts
         )
 
-    def moving_is_possible(self, sprite):
-        """Testaa törmääkö sprite liikkuessaan seinään.
-
-        Args:
-            sprite: mikä tahansa sprite-luokan olio.
-
-        Returns:
-            Boolean arvon törmääkö annettu sprite seinään.
-        """
+    def _moving_is_possible(self, sprite):
         sprite.rect.move_ip(
             sprite.direction[0]//sprite.speed, sprite.direction[1]//sprite.speed)
         crashing = pygame.sprite.spritecollide(sprite, self.walls, False)
@@ -102,19 +94,14 @@ class Level: # pylint: disable=too-many-instance-attributes
                             sprite.speed, -sprite.direction[1]//sprite.speed)
         return can_move
 
-    def pacman_eats(self):
-        """Tarkistaa pygamen metodilla törmäävätkö
-        pacman-sprite ja pellet- tai powerpellet-sprite ja lisää pisteitä tämän mukaan.
-        """
+    def _pacman_eats(self):
         if pygame.sprite.spritecollide(self.pacman, self.pellets, True):
             self.score += 10
         elif pygame.sprite.spritecollide(self.pacman, self.power_pellets, True):
             self.score += 20
-            self.ghosts_are_vulnerable()
+            self._ghosts_are_vulnerable()
 
-    def ghosts_are_vulnerable(self):
-        """Asettaa Ghost-luokan spritet vulnerable-tilaan ja vaihtaa kuvan.
-        """
+    def _ghosts_are_vulnerable(self):
         self.timer = pygame.time.get_ticks()
         for ghost in self.ghosts:
             ghost.vulnerable = True
@@ -138,19 +125,19 @@ class Level: # pylint: disable=too-many-instance-attributes
         for ghost in list_of_colliding:
             if self.pacman.rect.x == ghost.rect.x and abs(self.pacman.rect.y -
                 ghost.rect.y) <= CELL_SIZE//2:
-                if self.ghost_vulnerable(ghost):
+                if self._ghost_vulnerable(ghost):
                     return False
                 self.lives -= 1
                 return True
             if self.pacman.rect.y == ghost.rect.y and abs(self.pacman.rect.x -
                 ghost.rect.x) <= CELL_SIZE//2:
-                if self.ghost_vulnerable(ghost):
+                if self._ghost_vulnerable(ghost):
                     return False
                 self.lives -= 1
                 return True
         return False
 
-    def ghost_vulnerable(self, sprite):
+    def _ghost_vulnerable(self, sprite):
         if sprite.vulnerable is True:
             self.score += 100
             sprite.kill()
@@ -167,16 +154,11 @@ class Level: # pylint: disable=too-many-instance-attributes
         """
         starting_point = 150 + 30*ghost.number
         new_ghost = Ghost(ghost.number, starting_point, 210)
-        self.speed_up_ghost(new_ghost)
+        self._speed_up_ghost(new_ghost)
         self.ghosts.add(new_ghost)
         self.all_sprites.add(self.ghosts)
 
-    def speed_up_ghost(self, ghost):
-        """Jos kenttiä on läpäisty yksi tai enemmän, haamun liikkumista nopeutetaan.
-
-        Args:
-            ghost: Ghost-luokan sprite.
-        """
+    def _speed_up_ghost(self, ghost):
         if self.cleared >= 1:
             ghost.speed = max(ghost.speed-(self.cleared*3), 3)
 
@@ -186,21 +168,21 @@ class Level: # pylint: disable=too-many-instance-attributes
         Args:
             direction: Tuple suunnasta, johon spriten tulisi liikkua.
         """
-        self.check_timer()
+        self._check_timer()
         self.pacman.new_direction = direction
-        if self.centered(self.pacman):
+        if self._centered(self.pacman):
             self.pacman.direction = self.pacman.new_direction
 
-        if self.moving_is_possible(self.pacman):
+        if self._moving_is_possible(self.pacman):
             self.pacman.set_image()
             self.pacman.rect.move_ip(
                 self.pacman.direction[0]//self.pacman.speed,
                 self.pacman.direction[1]//self.pacman.speed)
-            self.pacman_eats()
+            self._pacman_eats()
 
     def move_ghost(self, sprite):
-        if self.centered(sprite):
-            next_cell = self.find_path(sprite)
+        if self._centered(sprite):
+            next_cell = self._find_path(sprite)
             x_coordinate = next_cell[0] - sprite.rect.x//CELL_SIZE
             y_coordinate = next_cell[1] - sprite.rect.y//CELL_SIZE
             sprite.direction = (x_coordinate, y_coordinate)
@@ -210,55 +192,38 @@ class Level: # pylint: disable=too-many-instance-attributes
             sprite.rect.move_ip(sprite.direction[0] * (
                 CELL_SIZE//sprite.speed), sprite.direction[1] * (CELL_SIZE//sprite.speed))
 
-    def check_timer(self):
+    def _check_timer(self):
         if self.timer:
             if pygame.time.get_ticks() - self.timer >= 5000:
                 for ghost in self.ghosts:
                     ghost.vulnerable = False
                     ghost.set_image()
 
-    def centered(self, sprite):
-        """_summary_
-
-        Args:
-            sprite (_type_): _description_
-
-        Returns:
-            _type_: _description_
-        """
+    def _centered(self, sprite):
         if sprite.rect.x % CELL_SIZE == 0 and sprite.rect.y % CELL_SIZE == 0:
             return True
         return False
 
-    def find_path(self, sprite):
+    def _find_path(self, sprite):
         if sprite.vulnerable is True:
             target = [sprite.vulnerable_target[0], sprite.vulnerable_target[1]]
         else:
             target = [self.pacman.rect.x//CELL_SIZE,
                       self.pacman.rect.y//CELL_SIZE]
 
-        path = self.bfs([sprite.rect.x//CELL_SIZE,
+        path = self._bfs([sprite.rect.x//CELL_SIZE,
                         sprite.rect.y//CELL_SIZE], target)
         if len(path) >= 2:
             return path[1]
         return path[0]
 
-    def neighbour_is_inside_matrix(self, neighbour, current_cell):
-        """Tarkistetaan kuuluuko annettu solu kentän sisälle.
-
-        Args:
-            neighbour: Naapurisolu.
-            current_cell: Tämän hetkinen solu.
-
-        Returns:
-            Boolean arvo True, jos naapurisolu on ruudukon sisällä, muuten False.
-        """
+    def _neighbour_is_inside_matrix(self, neighbour, current_cell):
         if neighbour[0]+current_cell[0] >= 0 and neighbour[0]+current_cell[0] < len(LEVEL_1[0]):
             if neighbour[1]+current_cell[1] >= 0 and neighbour[1]+current_cell[1] < len(LEVEL_1):
                 return True
         return False
 
-    def bfs(self, starting_cell, target_cell):
+    def _bfs(self, starting_cell, target_cell):
         queue = deque()
         visited = []
         path = []
@@ -272,7 +237,7 @@ class Level: # pylint: disable=too-many-instance-attributes
                 break
 
             for neighbour in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-                if self.neighbour_is_inside_matrix(neighbour, current_cell):
+                if self._neighbour_is_inside_matrix(neighbour, current_cell):
                     next_cell = [neighbour[0]+current_cell[0],
                                  neighbour[1]+current_cell[1]]
                     if next_cell not in visited and LEVEL_1[next_cell[1]][next_cell[0]] != 1:
