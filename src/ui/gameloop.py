@@ -214,5 +214,5 @@ class Gameloop:
         """
         pygame.time.delay(1500)
         self.level.cleared += 1
-        self.level.initialize_sprites(self.level.level)
+        self.level.initialize_sprites()
         self.level.position_pacman_and_ghosts_to_start()

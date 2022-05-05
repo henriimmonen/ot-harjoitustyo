@@ -6,18 +6,16 @@ from sprites.floor import Floor
 from sprites.pellet import Pellet
 from sprites.powerpellet import PowerPellet
 from sprites.ghost import Ghost
+from levels.layouts import LEVEL_1, CELL_SIZE
 
 
 class Level: # pylint: disable=too-many-instance-attributes
-             # all instance attributes are necessary for this class
     """Luokka, joka vastaa pelilogiikasta.
 
     Attributes: level_map: pelattava kenttä ruudukkona.
                 cell_size: luotavan pohjan solujen koko pikseleinä.
     """
-    def __init__(self, level_map, cell_size):
-        self.cell_size = cell_size
-        self.level = level_map
+    def __init__(self):
         self.walls = pygame.sprite.Group()
         self.floors = pygame.sprite.Group()
         self.pellets = pygame.sprite.Group()
@@ -25,10 +23,10 @@ class Level: # pylint: disable=too-many-instance-attributes
         self.ghosts = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
         self.pacman = None
+        self.timer = pygame.time.get_ticks()
         self.score = 0
         self.lives = 3
         self.cleared = 0
-        self.timer = None
         self.initialize_sprites()
 
     def initialize_sprites(self): # pylint: disable=too-many-statements
@@ -38,43 +36,43 @@ class Level: # pylint: disable=too-many-instance-attributes
         Args:
             level_map: pelattava kenttä ruudukkona.
         """
-        level_height = len(self.level)
-        level_width = len(self.level[0])
+        level_height = len(LEVEL_1)
+        level_width = len(LEVEL_1[0])
 
         for height in range(level_height):
             for width in range(level_width):
-                normalized_y = height * self.cell_size
-                normalized_x = width * self.cell_size
+                normalized_y = height * CELL_SIZE
+                normalized_x = width * CELL_SIZE
 
-                if self.level[height][width] == 0:
+                if LEVEL_1[height][width] == 0:
                     self.floors.add(Floor(normalized_x, normalized_y))
                     self.pellets.add(Pellet(normalized_x, normalized_y))
 
-                elif self.level[height][width] == 1:
+                elif LEVEL_1[height][width] == 1:
                     self.walls.add(Wall(normalized_x, normalized_y))
 
-                elif self.level[height][width] == 2:
+                elif LEVEL_1[height][width] == 2:
                     self.floors.add(Floor(normalized_x, normalized_y))
                     self.power_pellets.add(
                         PowerPellet(normalized_x, normalized_y))
 
-                elif self.level[height][width] == 3:
+                elif LEVEL_1[height][width] == 3:
                     self.pacman = Pacman(normalized_x, normalized_y)
                     self.floors.add(Floor(normalized_x, normalized_y))
 
-                elif self.level[height][width] == 4:
+                elif LEVEL_1[height][width] == 4:
                     self.ghosts.add(Ghost(1, normalized_x, normalized_y))
                     self.floors.add(Floor(normalized_x, normalized_y))
 
-                elif self.level[height][width] == 5:
+                elif LEVEL_1[height][width] == 5:
                     self.ghosts.add(Ghost(2, normalized_x, normalized_y))
                     self.floors.add(Floor(normalized_x, normalized_y))
 
-                elif self.level[height][width] == 6:
+                elif LEVEL_1[height][width] == 6:
                     self.ghosts.add(Ghost(3, normalized_x, normalized_y))
                     self.floors.add(Floor(normalized_x, normalized_y))
 
-                elif self.level[height][width] == 7:
+                elif LEVEL_1[height][width] == 7:
                     self.ghosts.add(Ghost(4, normalized_x, normalized_y))
                     self.floors.add(Floor(normalized_x, normalized_y))
 
@@ -124,23 +122,39 @@ class Level: # pylint: disable=too-many-instance-attributes
 
     def pacman_meets_ghost(self):
         """Metodi tarkistaa törmäävätkö pacman-sprite ja joku haamuista.
-        Jos haamu on vulnerable-tilassa, se kuolee ja uusi luodaan
-        lähtöpaikkaan self.revive_ghost-metodilla. True palautetaan
-        ainoastaan, kun pacman-sprite menettää elämän.
+        Jos jokin törmää pygamen spritecollide metodin mielestä, tarkistetaan onko
+        haamu vulnerable-tilassa. Jos haamu ei ole vulnerable-tilassa, palautetaan True ja
+        vähennetään elämiä, mutta vasta kun koordinaatit ovat tarpeeksi lähellä
+        toisiaan.
 
         Returns:
-            Boolean arvo törmäävätkö pacman- ja ghost-sprite.
+            Boolean arvo törmäävätkö pacman- ja ghost-sprite. False viittaa tilanteeseen,
+            jossa ei menetetä elämää eli peli ei ala alkuasetelmasta.
         """
         list_of_colliding = pygame.sprite.spritecollide(
             self.pacman, self.ghosts, False)
+        if len(list_of_colliding) == 0:
+            return False
         for ghost in list_of_colliding:
-            if ghost.vulnerable is True:
-                self.score += 100
-                ghost.kill()
-                self.revive_ghost(ghost)
-                return False
-        if pygame.sprite.spritecollide(self.pacman, self.ghosts, False):
-            self.lives -= 1
+            if self.pacman.rect.x == ghost.rect.x and abs(self.pacman.rect.y -
+                ghost.rect.y) <= CELL_SIZE//2:
+                if self.ghost_vulnerable(ghost):
+                    return False
+                self.lives -= 1
+                return True
+            if self.pacman.rect.y == ghost.rect.y and abs(self.pacman.rect.x -
+                ghost.rect.x) <= CELL_SIZE//2:
+                if self.ghost_vulnerable(ghost):
+                    return False
+                self.lives -= 1
+                return True
+        return False
+
+    def ghost_vulnerable(self, sprite):
+        if sprite.vulnerable is True:
+            self.score += 100
+            sprite.kill()
+            self.revive_ghost(sprite)
             return True
         return False
 
@@ -187,14 +201,14 @@ class Level: # pylint: disable=too-many-instance-attributes
     def move_ghost(self, sprite):
         if self.centered(sprite):
             next_cell = self.find_path(sprite)
-            x_coordinate = next_cell[0] - sprite.rect.x//self.cell_size
-            y_coordinate = next_cell[1] - sprite.rect.y//self.cell_size
+            x_coordinate = next_cell[0] - sprite.rect.x//CELL_SIZE
+            y_coordinate = next_cell[1] - sprite.rect.y//CELL_SIZE
             sprite.direction = (x_coordinate, y_coordinate)
-            sprite.rect.move_ip(x_coordinate*(self.cell_size//sprite.speed),
-                                y_coordinate*(self.cell_size//sprite.speed))
+            sprite.rect.move_ip(x_coordinate*(CELL_SIZE//sprite.speed),
+                                y_coordinate*(CELL_SIZE//sprite.speed))
         else:
             sprite.rect.move_ip(sprite.direction[0] * (
-                self.cell_size//sprite.speed), sprite.direction[1] * (self.cell_size//sprite.speed))
+                CELL_SIZE//sprite.speed), sprite.direction[1] * (CELL_SIZE//sprite.speed))
 
     def check_timer(self):
         if self.timer:
@@ -204,7 +218,15 @@ class Level: # pylint: disable=too-many-instance-attributes
                     ghost.set_image()
 
     def centered(self, sprite):
-        if sprite.rect.x % self.cell_size == 0 and sprite.rect.y % self.cell_size == 0:
+        """_summary_
+
+        Args:
+            sprite (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        if sprite.rect.x % CELL_SIZE == 0 and sprite.rect.y % CELL_SIZE == 0:
             return True
         return False
 
@@ -212,11 +234,11 @@ class Level: # pylint: disable=too-many-instance-attributes
         if sprite.vulnerable is True:
             target = [sprite.vulnerable_target[0], sprite.vulnerable_target[1]]
         else:
-            target = [self.pacman.rect.x//self.cell_size,
-                      self.pacman.rect.y//self.cell_size]
+            target = [self.pacman.rect.x//CELL_SIZE,
+                      self.pacman.rect.y//CELL_SIZE]
 
-        path = self.bfs([sprite.rect.x//self.cell_size,
-                        sprite.rect.y//self.cell_size], target)
+        path = self.bfs([sprite.rect.x//CELL_SIZE,
+                        sprite.rect.y//CELL_SIZE], target)
         if len(path) >= 2:
             return path[1]
         return path[0]
@@ -231,8 +253,8 @@ class Level: # pylint: disable=too-many-instance-attributes
         Returns:
             Boolean arvo True, jos naapurisolu on ruudukon sisällä, muuten False.
         """
-        if neighbour[0]+current_cell[0] >= 0 and neighbour[0]+current_cell[0] < len(self.level[0]):
-            if neighbour[1]+current_cell[1] >= 0 and neighbour[1]+current_cell[1] < len(self.level):
+        if neighbour[0]+current_cell[0] >= 0 and neighbour[0]+current_cell[0] < len(LEVEL_1[0]):
+            if neighbour[1]+current_cell[1] >= 0 and neighbour[1]+current_cell[1] < len(LEVEL_1):
                 return True
         return False
 
@@ -253,7 +275,7 @@ class Level: # pylint: disable=too-many-instance-attributes
                 if self.neighbour_is_inside_matrix(neighbour, current_cell):
                     next_cell = [neighbour[0]+current_cell[0],
                                  neighbour[1]+current_cell[1]]
-                    if next_cell not in visited and self.level[next_cell[1]][next_cell[0]] != 1:
+                    if next_cell not in visited and LEVEL_1[next_cell[1]][next_cell[0]] != 1:
                         queue.append(next_cell)
                         path.append([current_cell, next_cell])
         direction = [target_cell]
@@ -279,7 +301,7 @@ class Level: # pylint: disable=too-many-instance-attributes
         for number in range(1, 5):
             self.revive_ghost(Ghost(number, 0, 0))
 
-        self.pacman = Pacman(8*self.cell_size, 11*self.cell_size)
+        self.pacman = Pacman(8*CELL_SIZE, 11*CELL_SIZE)
         self.all_sprites.add(self.pacman)
 
     def all_pellets_eaten(self):
