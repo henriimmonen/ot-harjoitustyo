@@ -1,5 +1,8 @@
+import os
 import sys
 import pygame
+import sqlite3
+from levels.layouts import CELL_SIZE
 
 
 class Gameloop:
@@ -55,13 +58,18 @@ class Gameloop:
 
     def initialize_starting_screen(self):
         self.screen.fill((0, 0, 0))
-
+        highscore_font = pygame.font.SysFont('arial black', 20)
         start_text = self.font.render(
             "START GAME BY PRESSING SPACE", False, (200, 150, 100))
-        highscore_text = self.font.render(
-            "HIGHSCORES", False, (107, 183, 210, 1))
-        self.screen.blit(start_text, (100, 200))
-        self.screen.blit(highscore_text, (190, 0))
+        highscore_text = highscore_font.render(
+            "HIGHSCORES", False, (107, 183, 210))
+        logo_image = pygame.image.load(
+            os.path.join(os.path.dirname(__file__), "..", "assets", "logo.png")
+        )
+        self.screen.blit(logo_image, (100, 200))
+        self.screen.blit(start_text, (100, 300))
+        self.screen.blit(highscore_text, (170, 0))
+        self.get_highscores_from_db()
         pygame.display.update()
 
     def initialize_gameloop(self):
@@ -145,11 +153,23 @@ class Gameloop:
                 return False
         return True
 
+    def get_highscores_from_db(self):
+        connection = sqlite3.connect('highscores.db')
+        cur = connection.cursor()
+        connection.commit()
+        y_coordinate = 2*CELL_SIZE
+        for player, score in cur.execute('SELECT player, score FROM highscores ORDER BY score DESC LIMIT 3'):
+            player_score = player + ": " + str(score)
+            highscores = self.font.render(player_score, False, (107, 183, 210))
+            self.screen.blit(highscores, (170, y_coordinate))
+            y_coordinate += CELL_SIZE
+        connection.close()
+
     def update_score(self):
         """Päivitetään vasemman yläkulman pistetilanne.
         """
         score_text = self.font.render(
-            f"SCORE: {self.level.score}", False, (107, 183, 210, 1))
+            f"SCORE: {self.level.score}", False, (107, 183, 210))
         self.screen.fill((0, 0, 0), self.score_box)
         self.screen.blit(score_text, self.score_box)
 
@@ -157,7 +177,7 @@ class Gameloop:
         """Päivitetään oikean yläkulman elämät-näyttävä ruutu.
         """
         lives_text = self.font.render(
-            f"LIVES: {self.level.lives}", False, (107, 183, 210, 1))
+            f"LIVES: {self.level.lives}", False, (107, 183, 210))
         self.screen.blit(lives_text, (400, 0))
 
     def update_round(self):
@@ -216,3 +236,4 @@ class Gameloop:
         self.level.cleared += 1
         self.level.initialize_sprites()
         self.level.position_pacman_and_ghosts_to_start()
+

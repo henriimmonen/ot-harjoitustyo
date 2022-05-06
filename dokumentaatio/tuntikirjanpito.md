@@ -24,4 +24,5 @@
 | 29.4.  |  2,5h  | Hiottu Pacmanin liikkumista ja siistitty funktioita. |
 | 1.5.   |  3h    | Haamut palautuvat vulnerable-tilasta ja peli päättyy kolmen elämän kuluttua loppuun. |
 | 3.5.   |  8h    | Tehty docstring-kommentointi, käyttöohje, arkkitehtuurikuvaus ja viilattu viimeisiä pylint-virheitä. |
-| Yhteensä | 71h |  |
+| 6.5.   |  2h    | Muokattu törmäyksen havaitsevaa metodia tarkemmaksi. Aloitettu tietokannan käyttöönotto. |
+| Yhteensä | 73h |  |
