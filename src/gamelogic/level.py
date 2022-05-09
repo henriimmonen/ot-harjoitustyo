@@ -6,7 +6,7 @@ from sprites.floor import Floor
 from sprites.pellet import Pellet
 from sprites.powerpellet import PowerPellet
 from sprites.ghost import Ghost
-from levels.layouts import LEVEL_1, CELL_SIZE
+from levels.layouts import CELL_SIZE
 
 
 class Level:  # pylint: disable=too-many-instance-attributes
@@ -16,7 +16,7 @@ class Level:  # pylint: disable=too-many-instance-attributes
                 cell_size: luotavan pohjan solujen koko pikseleinä.
     """
 
-    def __init__(self):
+    def __init__(self, LEVEL_1):
         self.walls = pygame.sprite.Group()
         self.floors = pygame.sprite.Group()
         self.pellets = pygame.sprite.Group()
@@ -25,11 +25,11 @@ class Level:  # pylint: disable=too-many-instance-attributes
         self.all_sprites = pygame.sprite.Group()
         self.pacman = None
         self.timer = pygame.time.get_ticks()
+        self.level1 = LEVEL_1
         self.score = 0
         self.lives = 3
         self.cleared = 0
-        self.normalized_x = 0
-        self.normalized_y = 0
+
         self.initialize_sprites()
 
     def initialize_sprites(self):
@@ -38,8 +38,8 @@ class Level:  # pylint: disable=too-many-instance-attributes
         Args:
             level_map: pelattava kenttä ruudukkona.
         """
-        level_height = len(LEVEL_1)
-        level_width = len(LEVEL_1[0])
+        level_height = len(self.level1)
+        level_width = len(self.level1[0])
 
         actions = {0: self._add_pellets,
                    1: self._add_walls,
@@ -56,7 +56,7 @@ class Level:  # pylint: disable=too-many-instance-attributes
                 self.normalized_y = height * CELL_SIZE
                 self.normalized_x = width * CELL_SIZE
 
-                actions[LEVEL_1[height][width]]()
+                actions[self.level1[height][width]]()
 
         self.all_sprites.add(
             self.floors,
@@ -235,8 +235,8 @@ class Level:  # pylint: disable=too-many-instance-attributes
         return path[0]
 
     def _neighbour_is_inside_matrix(self, neighbour, current_cell):
-        if neighbour[0]+current_cell[0] >= 0 and neighbour[0]+current_cell[0] < len(LEVEL_1[0]):
-            if neighbour[1]+current_cell[1] >= 0 and neighbour[1]+current_cell[1] < len(LEVEL_1):
+        if neighbour[0]+current_cell[0] >= 0 and neighbour[0]+current_cell[0] < len(self.level1[0]):
+            if neighbour[1]+current_cell[1] >= 0 and neighbour[1]+current_cell[1] < len(self.level1):
                 return True
         return False
 
@@ -257,7 +257,7 @@ class Level:  # pylint: disable=too-many-instance-attributes
                 if self._neighbour_is_inside_matrix(neighbour, current_cell):
                     next_cell = [neighbour[0]+current_cell[0],
                                  neighbour[1]+current_cell[1]]
-                    if next_cell not in visited and LEVEL_1[next_cell[1]][next_cell[0]] != 1:
+                    if next_cell not in visited and self.level1[next_cell[1]][next_cell[0]] != 1:
                         queue.append(next_cell)
                         path.append([current_cell, next_cell])
         direction = [target_cell]

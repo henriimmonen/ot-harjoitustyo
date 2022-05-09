@@ -22,8 +22,8 @@ size = 30
 class TestLevel(unittest.TestCase):
 
     def setUp(self):
-        self.level = Level(test_level, size)
-        self.pellet_level = Level(test_pellet_level, size)
+        self.level = Level(test_level)
+        self.pellet_level = Level(test_pellet_level)
         self.pacman = self.level.pacman
         self.pellets = self.level.pellets
         self.power_pellets = self.level.power_pellets
@@ -99,19 +99,19 @@ class TestLevel(unittest.TestCase):
         self.assertFalse(self.level.pacman_meets_ghost())
 
     def test_ghost_starts_centered(self):
-        self.assertEqual(self.level.centered(self.ghost1), True)
+        self.assertEqual(self.level._centered(self.ghost1), True)
 
     def test_ghost_is_not_centered_after_first_move(self):
         self.level.move_ghost(self.ghost1)
-        self.assertEqual(self.level.centered(self.ghost1), False)
+        self.assertEqual(self.level._centered(self.ghost1), False)
 
     def test_bfs_finds_correct_path(self):
-        path = self.level.find_path(self.ghost1)
+        path = self.level._find_path(self.ghost1)
         self.assertEqual(path, [3, 3])
 
     def test_bfs_returns_path0_if_next_to_pacman(self):
         self.level.move_ghost(self.ghost1)
-        path = self.level.find_path(self.ghost1)
+        path = self.level._find_path(self.ghost1)
         self.assertEqual(path, [3, 2])
 
     def test_ghost_is_vulnerable_if_powerpellet_is_eaten(self):
@@ -130,7 +130,7 @@ class TestLevel(unittest.TestCase):
 
     def test_neighbour_inside_matrix_returns_false_if_not_inside_matrix(self):
         self.assertFalse(
-            self.level.neighbour_is_inside_matrix((0, -1), (0, 0)))
+            self.level._neighbour_is_inside_matrix((0, -1), (0, 0)))
 
     def test_ghost_starts_not_vulnerable(self):
         for ghost in self.level.ghosts:
@@ -155,4 +155,4 @@ class TestLevel(unittest.TestCase):
         self.level.move_ghost(self.ghost1)
         self.level.move_ghost(self.ghost1)
         self.level.move_ghost(self.ghost1)
-        self.assertTrue(self.level.centered(self.ghost1))
+        self.assertTrue(self.level._centered(self.ghost1))

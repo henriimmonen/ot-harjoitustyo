@@ -15,7 +15,7 @@ class App:
         self.screen = pygame.display.set_mode(
             (self.display_width, self.display_height))
         pygame.display.set_caption("Pacman")
-        self.level_class1 = Level()
+        self.level_class1 = Level(LEVEL_1)
 
     def _establish_database(self):
         connection = sqlite3.connect('highscores.db')

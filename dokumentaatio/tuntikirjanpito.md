@@ -26,4 +26,5 @@
 | 3.5.   |  8h    | Tehty docstring-kommentointi, käyttöohje, arkkitehtuurikuvaus ja viilattu viimeisiä pylint-virheitä. |
 | 5.5.   |  2h    | Muokattu törmäyksen havaitsevaa metodia tarkemmaksi. Aloitettu tietokannan käyttöönotto. |
 | 6.5.   |  3h    | Tietokannan perusteet toimivat. |
-| Yhteensä | 76h |  |
+| 9.5.   |  6,5h  | Tietokanta toimii kokonaisuudessaan. Päivitetty dokumentaatiota ja refaktoroitu Level-luokkaa. |
+| Yhteensä | 86h |  |

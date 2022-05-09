@@ -217,13 +217,13 @@ class Gameloop:
         if cur.fetchall() == []:
             no_scores_text = self.font.render(
                 "NO SCORES YET", False, (107, 183, 210))
-            self.screen.blit(no_scores_text, (170, y_coordinate))
+            self.screen.blit(no_scores_text, (6 * CELL_SIZE-10, y_coordinate))
 
         for player, score in cur.execute(
                 'SELECT player, score FROM highscores ORDER BY score DESC LIMIT 3'):
             player_score = player + ": " + str(score)
             highscores = self.font.render(player_score, False, (107, 183, 210))
-            self.screen.blit(highscores, (170, y_coordinate))
+            self.screen.blit(highscores, (6 * CELL_SIZE-10, y_coordinate))
             y_coordinate += CELL_SIZE
         connection.close()
 
