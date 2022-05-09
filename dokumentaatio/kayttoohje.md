@@ -5,7 +5,8 @@
 - Ennen ohjelman käynnistämistä, asenna riippuvuudet komennolla `poetry install`.
 - Tämän jälkeen ohjelman käynnistäminen tapahtuu juurihakemistosta komennolla `poetry run invoke start`.
 - Muita komentoja, joita voit suorittaa ovat: `poetry run invoke test` (ajaa pelin testit), `poetry run invoke coverage` (tarkistaa testien kattavuuden), `poetry run invoke coverage-report` (tarkistaa testien kattavuuden ja muodostaa tästä raportin hmtlcov/index.html tiedostoon), `poetry run invoke lint`(suorittaa pylint-pisteytyksen pelin lähdekoodille) ja `poetry run invoke format`(muotoilee lähdekoodin autopep8:lla). 
-- Peli käynnistyy aloitusruutuun, josta pääset pelaamaan painamalla välilyöntiä. Ohjelman voi sulkea missä tahansa vaiheessa Esc-näppäimellä tai painamalla yläkulman raksia. 
+- Aloituskomennon jälkeen peli käynnistyy aloitusruutuun, josta pääset pelaamaan painamalla välilyöntiä. Tässä ruudussa näet kolme parasta pelaajaa pisteineen (jos sellaisia jo on).
+- Ohjelman voi sulkea missä tahansa vaiheessa Esc-näppäimellä tai painamalla yläkulman vinoristiä. 
 - Peliä ohjataan nuolinäppäimillä. Tavoitteena on syödä kaikki pelikentän nappulat ennen kuin elämät loppuvat.
 - Jokaisen kerran kun saat tyhjennettyä koko kentän, haamujen nopeus kasvaa ja kenttä alkaa alusta.
 - Peli jatkuu kunnes kaikki elämät on käytetty.
