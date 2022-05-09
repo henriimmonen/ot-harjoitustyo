@@ -5,7 +5,7 @@ dirname = os.path.dirname(__file__)
 
 
 class Ghost(pygame.sprite.Sprite):
-    def __init__(self, number, coordinate_x=0, coordinate_y=0): # pylint: disable=too-many-statements
+    def __init__(self, number, coordinate_x=0, coordinate_y=0):  # pylint: disable=too-many-statements
         """Luodaan Ghost-luokan sprite.
 
         Args:

@@ -9,12 +9,13 @@ from sprites.ghost import Ghost
 from levels.layouts import LEVEL_1, CELL_SIZE
 
 
-class Level: # pylint: disable=too-many-instance-attributes
+class Level:  # pylint: disable=too-many-instance-attributes
     """Luokka, joka vastaa pelilogiikasta.
 
     Attributes: level_map: pelattava kenttä ruudukkona.
                 cell_size: luotavan pohjan solujen koko pikseleinä.
     """
+
     def __init__(self):
         self.walls = pygame.sprite.Group()
         self.floors = pygame.sprite.Group()
@@ -27,10 +28,11 @@ class Level: # pylint: disable=too-many-instance-attributes
         self.score = 0
         self.lives = 3
         self.cleared = 0
+        self.normalized_x = 0
+        self.normalized_y = 0
         self.initialize_sprites()
 
-    def initialize_sprites(self): # pylint: disable=too-many-statements
-                                  # statements are required to initialize
+    def initialize_sprites(self):
         """Luodaan spritet käyttäen annettua ruudukkoa.
 
         Args:
@@ -39,42 +41,22 @@ class Level: # pylint: disable=too-many-instance-attributes
         level_height = len(LEVEL_1)
         level_width = len(LEVEL_1[0])
 
+        actions = {0: self._add_pellets,
+                   1: self._add_walls,
+                   2: self._add_powerpellets,
+                   3: self._add_pacman,
+                   4: self._add_ghost1,
+                   5: self._add_ghost2,
+                   6: self._add_ghost3,
+                   7: self._add_ghost4,
+                   9: self._add_empty}
+
         for height in range(level_height):
             for width in range(level_width):
-                normalized_y = height * CELL_SIZE
-                normalized_x = width * CELL_SIZE
+                self.normalized_y = height * CELL_SIZE
+                self.normalized_x = width * CELL_SIZE
 
-                if LEVEL_1[height][width] == 0:
-                    self.floors.add(Floor(normalized_x, normalized_y))
-                    self.pellets.add(Pellet(normalized_x, normalized_y))
-
-                elif LEVEL_1[height][width] == 1:
-                    self.walls.add(Wall(normalized_x, normalized_y))
-
-                elif LEVEL_1[height][width] == 2:
-                    self.floors.add(Floor(normalized_x, normalized_y))
-                    self.power_pellets.add(
-                        PowerPellet(normalized_x, normalized_y))
-
-                elif LEVEL_1[height][width] == 3:
-                    self.pacman = Pacman(normalized_x, normalized_y)
-                    self.floors.add(Floor(normalized_x, normalized_y))
-
-                elif LEVEL_1[height][width] == 4:
-                    self.ghosts.add(Ghost(1, normalized_x, normalized_y))
-                    self.floors.add(Floor(normalized_x, normalized_y))
-
-                elif LEVEL_1[height][width] == 5:
-                    self.ghosts.add(Ghost(2, normalized_x, normalized_y))
-                    self.floors.add(Floor(normalized_x, normalized_y))
-
-                elif LEVEL_1[height][width] == 6:
-                    self.ghosts.add(Ghost(3, normalized_x, normalized_y))
-                    self.floors.add(Floor(normalized_x, normalized_y))
-
-                elif LEVEL_1[height][width] == 7:
-                    self.ghosts.add(Ghost(4, normalized_x, normalized_y))
-                    self.floors.add(Floor(normalized_x, normalized_y))
+                actions[LEVEL_1[height][width]]()
 
         self.all_sprites.add(
             self.floors,
@@ -84,6 +66,41 @@ class Level: # pylint: disable=too-many-instance-attributes
             self.pellets,
             self.ghosts
         )
+
+    def _add_pellets(self):
+        self.floors.add(Floor(self.normalized_x, self.normalized_y))
+        self.pellets.add(Pellet(self.normalized_x, self.normalized_y))
+
+    def _add_walls(self):
+        self.walls.add(Wall(self.normalized_x, self.normalized_y))
+
+    def _add_powerpellets(self):
+        self.floors.add(Floor(self.normalized_x, self.normalized_y))
+        self.power_pellets.add(
+            PowerPellet(self.normalized_x, self.normalized_y))
+
+    def _add_pacman(self):
+        self.pacman = Pacman(self.normalized_x, self.normalized_y)
+        self.floors.add(Floor(self.normalized_x, self.normalized_y))
+
+    def _add_ghost1(self):
+        self.ghosts.add(Ghost(1, self.normalized_x, self.normalized_y))
+        self.floors.add(Floor(self.normalized_x, self.normalized_y))
+
+    def _add_ghost2(self):
+        self.ghosts.add(Ghost(2, self.normalized_x, self.normalized_y))
+        self.floors.add(Floor(self.normalized_x, self.normalized_y))
+
+    def _add_ghost3(self):
+        self.ghosts.add(Ghost(3, self.normalized_x, self.normalized_y))
+        self.floors.add(Floor(self.normalized_x, self.normalized_y))
+
+    def _add_ghost4(self):
+        self.ghosts.add(Ghost(4, self.normalized_x, self.normalized_y))
+        self.floors.add(Floor(self.normalized_x, self.normalized_y))
+
+    def _add_empty(self):
+        pass
 
     def _moving_is_possible(self, sprite):
         sprite.rect.move_ip(
@@ -124,13 +141,13 @@ class Level: # pylint: disable=too-many-instance-attributes
             return False
         for ghost in list_of_colliding:
             if self.pacman.rect.x == ghost.rect.x and abs(self.pacman.rect.y -
-                ghost.rect.y) <= CELL_SIZE//2:
+                                                          ghost.rect.y) <= CELL_SIZE//2:
                 if self._ghost_vulnerable(ghost):
                     return False
                 self.lives -= 1
                 return True
             if self.pacman.rect.y == ghost.rect.y and abs(self.pacman.rect.x -
-                ghost.rect.x) <= CELL_SIZE//2:
+                                                          ghost.rect.x) <= CELL_SIZE//2:
                 if self._ghost_vulnerable(ghost):
                     return False
                 self.lives -= 1
@@ -212,7 +229,7 @@ class Level: # pylint: disable=too-many-instance-attributes
                       self.pacman.rect.y//CELL_SIZE]
 
         path = self._bfs([sprite.rect.x//CELL_SIZE,
-                        sprite.rect.y//CELL_SIZE], target)
+                          sprite.rect.y//CELL_SIZE], target)
         if len(path) >= 2:
             return path[1]
         return path[0]
@@ -229,7 +246,7 @@ class Level: # pylint: disable=too-many-instance-attributes
         path = []
         queue.append(starting_cell)
         while queue:  # pylint: disable=too-many-nested-blocks
-                      # nested blocks can not be avoided in this algorithm
+            # nested blocks can not be avoided in this algorithm
             current_cell = queue.popleft()
             visited.append(current_cell)
 

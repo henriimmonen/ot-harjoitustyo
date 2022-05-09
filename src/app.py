@@ -1,5 +1,5 @@
-import pygame
 import sqlite3
+import pygame
 from gamelogic.level import Level
 from levels.layouts import LEVEL_1, CELL_SIZE
 from ui.gameloop import Gameloop
@@ -20,7 +20,8 @@ class App:
     def _establish_database(self):
         connection = sqlite3.connect('highscores.db')
         cursor = connection.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='highscores'")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='highscores'")
         result = cursor.fetchall()
         if result == []:
             cursor.execute('''CREATE TABLE highscores (player, score)''')

@@ -1,7 +1,7 @@
 import os
 import sys
-import pygame
 import sqlite3
+import pygame
 from levels.layouts import CELL_SIZE
 
 
@@ -178,7 +178,8 @@ class Gameloop:
         cur.execute(
             'SELECT player, score FROM highscores ORDER BY score DESC LIMIT 3')
         if cur.fetchall() == []:
-            no_scores_text = self.font.render("NO SCORES YET", False, (107, 183, 210))
+            no_scores_text = self.font.render(
+                "NO SCORES YET", False, (107, 183, 210))
             self.screen.blit(no_scores_text, (170, y_coordinate))
 
         for player, score in cur.execute('SELECT player, score FROM highscores ORDER BY score DESC LIMIT 3'):
