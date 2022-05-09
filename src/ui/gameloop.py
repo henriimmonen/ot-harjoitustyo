@@ -19,8 +19,10 @@ class Gameloop:
         self.level = level
         self.size = size
         self.clock = clock
+        self.user_text = ''
         self.font = pygame.font.SysFont('arial black', 16)
-        self.score_box = pygame.Rect(40, 0, 100, 30)
+        self.score_box = pygame.Rect(CELL_SIZE, 0, 100, 30)
+        self.input_box = pygame.Rect(7*CELL_SIZE, 5*CELL_SIZE, 100, 30)
 
     def draw_starting_screen(self):
         """Piirretään aloitusruutu initialize_starting_screen-metodilla ja
@@ -50,16 +52,22 @@ class Gameloop:
         """Piirretään game over-ruutu initialize_gameover-metodilla ja käynnistetään
         silmukka tapahtumien käsittelyä varten.
         """
-        self.initialize_gameover()
-
-        while True:
-            if self.handle_gameover_events() is False:
-                break
-            name_text = self.font.render(
-                self.user_text, False, (255, 255, 255))
-            self.screen.blit(name_text, self.input_box)
-            pygame.display.flip()
-            self.clock.tick(60)
+        score_check = self._check_highscores_from_db()
+        score_check = score_check[0]
+        self.initialize_gameover(score_check)
+        if self.level.score > score_check:
+            while True:
+                if self.handle_gameover_events() is False:
+                    break
+                name_text = self.font.render(
+                    self.user_text, False, (255, 255, 255))
+                self.screen.blit(name_text, self.input_box)
+                pygame.display.flip()
+                self.clock.tick(60)
+        if self.level.score <= score_check:
+            while True:
+                if self.handle_gameover_events_no_entry() is False:
+                    break
 
     def initialize_starting_screen(self):
         self.screen.fill((0, 0, 0))
@@ -84,19 +92,38 @@ class Gameloop:
         self.level.all_sprites.draw(self.screen)
         pygame.display.update()
 
-    def initialize_gameover(self):
+    def initialize_gameover(self, score_check):
+        print(score_check)
         self.screen.fill((0, 0, 0))
         gameover_text = self.font.render(
             "GAME OVER", False, (190, 150, 100))
         score_text = self.font.render(
             f"SCORE: {self.level.score}", False, (107, 183, 210))
-        score_check = self._check_highscores_from_db()
+        pygame.draw.rect(self.screen, (0, 0, 0), self.input_box)
         if self.level.score > score_check:
-            self.input_box = pygame.Rect(190, 100, 100, 30)
-            self.user_text = ''
+            input_text = self.font.render(
+                "PLEASE INPUT YOUR NAME TO HIGHSCORE LIST",
+                False, (190, 150, 100)
+            )
+            enter_text = self.font.render(
+                "PRESS ENTER TO SUBMIT",
+                False, (190, 150, 100)
+            )
+            self.screen.blit(input_text, (2*CELL_SIZE, 2*CELL_SIZE))
+            self.screen.blit(enter_text, (5*CELL_SIZE, 3*CELL_SIZE))
+        if self.level.score <= score_check:
+            did_not_make_it_text = self.font.render(
+                "YOU DID NOT MAKE IT",
+                False, (190, 150, 100)
+            )
+            to_highscores_text = self.font.render(
+                "TO HIGHSCORES :(",
+                False, (190, 150, 100)
+            )
+            self.screen.blit(did_not_make_it_text, (5*CELL_SIZE, 2*CELL_SIZE))
+            self.screen.blit(to_highscores_text, (5*CELL_SIZE+10, 3*CELL_SIZE))
         self.screen.blit(score_text, (200, 0))
         self.screen.blit(gameover_text, (200, 200))
-        pygame.draw.rect(self.screen, (0, 0, 0), self.input_box)
         pygame.display.update()
 
     def handle_starting_events(self):
@@ -162,11 +189,21 @@ class Gameloop:
                 if event.key == pygame.K_BACKSPACE:
                     self.user_text = self.user_text[:-1]
                     pygame.draw.rect(self.screen, (0, 0, 0), self.input_box)
+                    return True
                 if event.key == pygame.K_RETURN:
                     self.enter_name_to_db()
                     return False
-                else:
-                    self.user_text += event.unicode
+                self.user_text += event.unicode
+                return True
+            if event.type == pygame.QUIT:
+                return False
+        return True
+
+    def handle_gameover_events_no_entry(self):
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return False
             if event.type == pygame.QUIT:
                 return False
         return True
@@ -182,7 +219,8 @@ class Gameloop:
                 "NO SCORES YET", False, (107, 183, 210))
             self.screen.blit(no_scores_text, (170, y_coordinate))
 
-        for player, score in cur.execute('SELECT player, score FROM highscores ORDER BY score DESC LIMIT 3'):
+        for player, score in cur.execute(
+                'SELECT player, score FROM highscores ORDER BY score DESC LIMIT 3'):
             player_score = player + ": " + str(score)
             highscores = self.font.render(player_score, False, (107, 183, 210))
             self.screen.blit(highscores, (170, y_coordinate))
@@ -192,12 +230,12 @@ class Gameloop:
     def _check_highscores_from_db(self):
         connection = sqlite3.connect('highscores.db')
         cur = connection.cursor()
-        cur.execute('SELECT score FROM highscores ORDER BY score ASC LIMIT 3')
-        result = cur.fetchone()
+        cur.execute('SELECT score FROM highscores ORDER BY score DESC LIMIT 3')
+        result = cur.fetchall()
         connection.close()
-        if result == None:
+        if result is None or len(result) < 3:
             return 0
-        return result[0]
+        return result[2]
 
     def enter_name_to_db(self):
         connection = sqlite3.connect('highscores.db')
