@@ -26,3 +26,9 @@
 - Pelin päätyttyä näytetään "Game Over"-näkymä ja kerätty pistesaldo.
 - Luotu hakemistot ui- ja gamelogic, johon sijoitettiin gameloop.py ja level.py.
 - Testejä lisätty.
+
+### Viikko 7
+- Initialize_sprites-metodi refaktoroitu koodikatselmoinnista saadun palautteen perusteella sanakirja-muotoon.
+- Peliin lisätty yksinkertainen tietokanta. Tietokanta kerää highscores.db tiedostoon paikallisen scoreboardin.
+- Pelin alussa näytetään kolmen parhaan pelaajan nimet ja pisteet.
+- Jos pelaaja saa enemmän pisteitä, kuin kolmanneksi paras pelaaja, annetaan mahdollisuus lisätä oma nimi listalle.
