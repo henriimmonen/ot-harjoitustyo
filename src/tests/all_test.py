@@ -89,6 +89,18 @@ class TestLevel(unittest.TestCase):
         power_pellets_after_moving = len(self.power_pellets)
         self.assertLess(power_pellets_after_moving, all_power_pellets)
 
+    def test_all_pellets_eaten_returns_true(self):
+        self.pellet_level.move_pacman((-size, 0))
+        self.pellet_level.move_pacman((-size, 0))
+        self.pellet_level.move_pacman((0, -size))
+        self.pellet_level.move_pacman((0, -size))
+        self.pellet_level.move_pacman((size, 0))
+        self.pellet_level.move_pacman((size, 0))
+        self.assertTrue(self.pellet_level.all_pellets_eaten())
+
+    def test_not_all_pellets_eaten_returns_false(self):
+        self.assertFalse(self.pellet_level.all_pellets_eaten())
+
     def test_colliding_with_ghost_returns_true(self):
         for x in range(1, 5):
             self.level.move_pacman((0, size))
@@ -156,3 +168,14 @@ class TestLevel(unittest.TestCase):
         self.level.move_ghost(self.ghost1)
         self.level.move_ghost(self.ghost1)
         self.assertTrue(self.level._centered(self.ghost1))
+
+    def test_speed_up_ghost(self):
+        self.level.cleared = 1
+        self.level._speed_up_ghost(self.ghost1)
+        self.assertEqual(self.ghost1.speed, 3)
+
+    def test_speed_up_ghost_only_to_3(self):
+        self.level.cleared = 2
+        self.level._speed_up_ghost(self.ghost1)
+        self.assertEqual(self.ghost1.speed, 3)
+    
