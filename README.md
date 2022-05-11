@@ -11,34 +11,23 @@ Harjoitustyön aiheena on Pacman pelin versio. Tarkempi määrittely pelin omina
 - [Changelog](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/changelog.md)
 - [Arkkitehtuuri](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
 - [Käyttöohje](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/kayttoohje.md)
+- [Testausdokumentti](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/testausdokumentti.md)
 
 ## Harjoitustyön komentorivitoiminnot
 - Riippuvuuksien asentaminen lataamisen jälkeen:
-```bash
-poetry install
-```
+```poetry install```
 
 - Pelin käynnistys suoritetaan käskyllä:
-```bash
-poetry run invoke start
-```
+```poetry run invoke start```
 
 - Testien ajaminen suoritetaan käskyllä:
-```bash
-poetry run invoke test
-```
+```poetry run invoke test```
 
 - Testikattavuusraportin koostaminen suoritetaan käskyllä:
-```bash
-poetry run invoke coverage
-```
+```poetry run invoke coverage```
 
 - Koodin siistiminen PEP8 mukaiseksi suoritetaan käskyllä:
-```bash
-poetry run invoke format
-```
+```poetry run invoke format```
 
 - Pylint-raportin koostaminen suoritetaan käskyllä:
-```bash
-poetry run invoke lint
-```
+```poetry run invoke lint```
