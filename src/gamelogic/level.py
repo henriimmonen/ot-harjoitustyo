@@ -173,7 +173,10 @@ class Level:  # pylint: disable=too-many-instance-attributes
             ghost.speed = max(ghost.speed-(self.cleared*3), 3)
 
     def move_pacman(self):
-        """Pacman-luokan spriten liikuttaminen.
+        """Pacman-luokan spriten liikuttaminen. Jos Pacman on keskellä ruutua ja liikkuminen on
+        mahdollista new_direction-suuntaan, asetetaan nykyiseksi suunnaksi new_direction.
+        Tämän jälkeen vaihdetaan kuva vastaamaan liikkumissuuntaa, liikutaan nykyiseen
+        suuntaan ja syödään pellet jos mahdollista.
 
         Args:
             direction: Tuple suunnasta, johon spriten tulisi liikkua.
@@ -190,6 +193,13 @@ class Level:  # pylint: disable=too-many-instance-attributes
             self._pacman_eats()
 
     def move_ghost(self, sprite):
+        """Ghost-luokan sprite laskee reitin Pacmanin luokse, jos se on ruudun keskellä.
+        Jos sprite ei ole ruudun keskellä, se liikkuu ennalta-asetetun suunnan mukaisesti käyttäen
+        sille asetettua nopeutta.
+
+        Args:
+            sprite: Ghost-luokan sprite.
+        """
         if self._centered(sprite):
             next_cell = self._find_path(sprite)
             x_coordinate = next_cell[0] - sprite.rect.x//CELL_SIZE

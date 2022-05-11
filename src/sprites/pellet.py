@@ -5,6 +5,8 @@ dirname = os.path.dirname(__file__)
 
 
 class Pellet(pygame.sprite.Sprite):
+    """Luodaan pellet-nappulaa kuvaava sprite.
+    """
     def __init__(self, coordinate_x=0, coordinate_y=0):
         super().__init__()
         self.image = pygame.image.load(

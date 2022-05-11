@@ -13,7 +13,6 @@ class Gameloop:
             level: Level-luokan instanssi.
             screen: Pygamen display-olio.
             clock: Pygamen kello.
-            size: Solun koko pikseleinä.
         """
         self.screen = screen
         self.level = level
@@ -69,6 +68,9 @@ class Gameloop:
                     break
 
     def initialize_starting_screen(self):
+        """Alustetaan aloitusruutu piirtämällä logo, pelinaloitusteksti ja highscores-teksi.
+        Lopuksi kutsutaan _get_highscores_from_db() josta haetaan mahdolliset leaderboard-tulokset.
+        """
         self.screen.fill((0, 0, 0))
         highscore_font = pygame.font.SysFont('arial black', 20)
         start_text = self.font.render(
@@ -85,6 +87,8 @@ class Gameloop:
         pygame.display.update()
 
     def initialize_gameloop(self):
+        """Alustetaan varsinaisen pelin alku.
+        """
         self.screen.fill((0, 0, 0))
         pygame.draw.rect(self.screen, (0, 0, 0), self.score_box)
         self._update_lives()
@@ -92,6 +96,12 @@ class Gameloop:
         pygame.display.update()
 
     def initialize_gameover(self, score_check):
+        """Alustetaan gameover-näkymän ruutu. Jos pisteet riittävät leaderboardille,
+        näytetään ohjeistus oman nimen jättämiselle tietokantaan.
+
+        Args:
+            score_check: Kolmanneksi parhaan pelaajan tulos tai 0 jos ei riittävästi tuloksia.
+        """
         self.screen.fill((0, 0, 0))
         gameover_text = self.font.render(
             "GAME OVER", False, (190, 150, 100))
@@ -236,6 +246,8 @@ class Gameloop:
         return result[2]
 
     def enter_name_to_db(self):
+        """Yhdistetään tietokantaan ja luodaan uusi merkintä.
+        """
         connection = sqlite3.connect('highscores.db')
         cur = connection.cursor()
         cur.execute("INSERT INTO highscores VALUES (?, ?)",
