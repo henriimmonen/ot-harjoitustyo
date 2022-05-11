@@ -34,7 +34,7 @@ class App:
         self._establish_database()
         pygame.init()
         gameloop = Gameloop(self.level_class1, self.screen,
-                            self.clock, CELL_SIZE)
+                            self.clock)
         gameloop.draw_starting_screen()
         gameloop.gameloop()
 

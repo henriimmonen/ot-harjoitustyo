@@ -16,7 +16,7 @@ class Level:  # pylint: disable=too-many-instance-attributes
                 cell_size: luotavan pohjan solujen koko pikseleinä.
     """
 
-    def __init__(self, LEVEL_1):
+    def __init__(self, level_to_be_played):
         self.walls = pygame.sprite.Group()
         self.floors = pygame.sprite.Group()
         self.pellets = pygame.sprite.Group()
@@ -24,8 +24,9 @@ class Level:  # pylint: disable=too-many-instance-attributes
         self.ghosts = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
         self.pacman = None
+        self.ghost_counter = 1
         self.timer = pygame.time.get_ticks()
-        self.level1 = LEVEL_1
+        self.level = level_to_be_played
         self.score = 0
         self.lives = 3
         self.cleared = 0
@@ -38,17 +39,17 @@ class Level:  # pylint: disable=too-many-instance-attributes
         Args:
             level_map: pelattava kenttä ruudukkona.
         """
-        level_height = len(self.level1)
-        level_width = len(self.level1[0])
+        level_height = len(self.level)
+        level_width = len(self.level[0])
 
         actions = {0: self._add_pellets,
                    1: self._add_walls,
                    2: self._add_powerpellets,
                    3: self._add_pacman,
-                   4: self._add_ghost1,
-                   5: self._add_ghost2,
-                   6: self._add_ghost3,
-                   7: self._add_ghost4,
+                   4: self._add_ghost,
+                   5: self._add_ghost,
+                   6: self._add_ghost,
+                   7: self._add_ghost,
                    9: self._add_empty}
 
         for height in range(level_height):
@@ -56,7 +57,7 @@ class Level:  # pylint: disable=too-many-instance-attributes
                 self.normalized_y = height * CELL_SIZE
                 self.normalized_x = width * CELL_SIZE
 
-                actions[self.level1[height][width]]()
+                actions[self.level[height][width]]()
 
         self.all_sprites.add(
             self.floors,
@@ -83,32 +84,24 @@ class Level:  # pylint: disable=too-many-instance-attributes
         self.pacman = Pacman(self.normalized_x, self.normalized_y)
         self.floors.add(Floor(self.normalized_x, self.normalized_y))
 
-    def _add_ghost1(self):
-        self.ghosts.add(Ghost(1, self.normalized_x, self.normalized_y))
+    def _add_ghost(self):
+        self.ghosts.add(Ghost(self.ghost_counter, self.normalized_x, self.normalized_y))
         self.floors.add(Floor(self.normalized_x, self.normalized_y))
+        self.ghost_counter += 1
 
-    def _add_ghost2(self):
-        self.ghosts.add(Ghost(2, self.normalized_x, self.normalized_y))
-        self.floors.add(Floor(self.normalized_x, self.normalized_y))
-
-    def _add_ghost3(self):
-        self.ghosts.add(Ghost(3, self.normalized_x, self.normalized_y))
-        self.floors.add(Floor(self.normalized_x, self.normalized_y))
-
-    def _add_ghost4(self):
-        self.ghosts.add(Ghost(4, self.normalized_x, self.normalized_y))
-        self.floors.add(Floor(self.normalized_x, self.normalized_y))
+        if self.ghost_counter > 4:
+            self.ghost_counter = 1
 
     def _add_empty(self):
         pass
 
-    def _moving_is_possible(self, sprite):
-        sprite.rect.move_ip(
-            sprite.direction[0]//sprite.speed, sprite.direction[1]//sprite.speed)
-        crashing = pygame.sprite.spritecollide(sprite, self.walls, False)
+    def _moving_is_possible(self, direction):
+        self.pacman.rect.move_ip(
+            direction[0]//self.pacman.speed, direction[1]//self.pacman.speed)
+        crashing = pygame.sprite.spritecollide(self.pacman, self.walls, False)
         can_move = not crashing
-        sprite.rect.move_ip(-sprite.direction[0] //
-                            sprite.speed, -sprite.direction[1]//sprite.speed)
+        self.pacman.rect.move_ip(-direction[0]//
+                            self.pacman.speed, -direction[1]//self.pacman.speed)
         return can_move
 
     def _pacman_eats(self):
@@ -169,8 +162,8 @@ class Level:  # pylint: disable=too-many-instance-attributes
         Args:
             ghost: Ghost-luokan sprite.
         """
-        starting_point = 150 + 30*ghost.number
-        new_ghost = Ghost(ghost.number, starting_point, 210)
+        starting_point = 5*CELL_SIZE + CELL_SIZE*ghost.number
+        new_ghost = Ghost(ghost.number, starting_point, 7*CELL_SIZE)
         self._speed_up_ghost(new_ghost)
         self.ghosts.add(new_ghost)
         self.all_sprites.add(self.ghosts)
@@ -179,18 +172,17 @@ class Level:  # pylint: disable=too-many-instance-attributes
         if self.cleared >= 1:
             ghost.speed = max(ghost.speed-(self.cleared*3), 3)
 
-    def move_pacman(self, direction):
+    def move_pacman(self):
         """Pacman-luokan spriten liikuttaminen.
 
         Args:
             direction: Tuple suunnasta, johon spriten tulisi liikkua.
         """
         self._check_timer()
-        self.pacman.new_direction = direction
         if self._centered(self.pacman):
-            self.pacman.direction = self.pacman.new_direction
-
-        if self._moving_is_possible(self.pacman):
+            if self._moving_is_possible(self.pacman.new_direction):
+                self.pacman.direction = self.pacman.new_direction
+        if self._moving_is_possible(self.pacman.direction):
             self.pacman.set_image()
             self.pacman.rect.move_ip(
                 self.pacman.direction[0]//self.pacman.speed,
@@ -235,8 +227,8 @@ class Level:  # pylint: disable=too-many-instance-attributes
         return path[0]
 
     def _neighbour_is_inside_matrix(self, neighbour, current_cell):
-        if neighbour[0]+current_cell[0] >= 0 and neighbour[0]+current_cell[0] < len(self.level1[0]):
-            if neighbour[1]+current_cell[1] >= 0 and neighbour[1]+current_cell[1] < len(self.level1):
+        if neighbour[0]+current_cell[0] >= 0 and neighbour[0]+current_cell[0] < len(self.level[0]):
+            if neighbour[1]+current_cell[1] >= 0 and neighbour[1]+current_cell[1] < len(self.level):
                 return True
         return False
 
@@ -246,7 +238,6 @@ class Level:  # pylint: disable=too-many-instance-attributes
         path = []
         queue.append(starting_cell)
         while queue:  # pylint: disable=too-many-nested-blocks
-            # nested blocks can not be avoided in this algorithm
             current_cell = queue.popleft()
             visited.append(current_cell)
 
@@ -257,7 +248,7 @@ class Level:  # pylint: disable=too-many-instance-attributes
                 if self._neighbour_is_inside_matrix(neighbour, current_cell):
                     next_cell = [neighbour[0]+current_cell[0],
                                  neighbour[1]+current_cell[1]]
-                    if next_cell not in visited and self.level1[next_cell[1]][next_cell[0]] != 1:
+                    if next_cell not in visited and self.level[next_cell[1]][next_cell[0]] != 1:
                         queue.append(next_cell)
                         path.append([current_cell, next_cell])
         direction = [target_cell]

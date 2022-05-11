@@ -6,7 +6,7 @@ from levels.layouts import CELL_SIZE
 
 
 class Gameloop:
-    def __init__(self, level, screen, clock, size):
+    def __init__(self, level, screen, clock):
         """Luodaan muuttujat vaadittaville parametreille.
 
         Args:
@@ -17,12 +17,11 @@ class Gameloop:
         """
         self.screen = screen
         self.level = level
-        self.size = size
         self.clock = clock
         self.user_text = ''
         self.font = pygame.font.SysFont('arial black', 16)
-        self.score_box = pygame.Rect(CELL_SIZE, 0, 100, 30)
-        self.input_box = pygame.Rect(7*CELL_SIZE, 5*CELL_SIZE, 100, 30)
+        self.score_box = pygame.Rect(CELL_SIZE, 0, 4*CELL_SIZE, CELL_SIZE)
+        self.input_box = pygame.Rect(7*CELL_SIZE, 5*CELL_SIZE, 4*CELL_SIZE, CELL_SIZE)
 
     def draw_starting_screen(self):
         """Piirretään aloitusruutu initialize_starting_screen-metodilla ja
@@ -93,7 +92,6 @@ class Gameloop:
         pygame.display.update()
 
     def initialize_gameover(self, score_check):
-        print(score_check)
         self.screen.fill((0, 0, 0))
         gameover_text = self.font.render(
             "GAME OVER", False, (190, 150, 100))
@@ -121,9 +119,9 @@ class Gameloop:
                 False, (190, 150, 100)
             )
             self.screen.blit(did_not_make_it_text, (5*CELL_SIZE, 2*CELL_SIZE))
-            self.screen.blit(to_highscores_text, (5*CELL_SIZE+10, 3*CELL_SIZE))
-        self.screen.blit(score_text, (200, 0))
-        self.screen.blit(gameover_text, (200, 200))
+            self.screen.blit(to_highscores_text, (5*CELL_SIZE + CELL_SIZE//3, 3*CELL_SIZE))
+        self.screen.blit(score_text, (6*CELL_SIZE + CELL_SIZE//2, 0))
+        self.screen.blit(gameover_text, (7*CELL_SIZE - CELL_SIZE//3, 7*CELL_SIZE - CELL_SIZE//3))
         pygame.display.update()
 
     def handle_starting_events(self):
@@ -160,13 +158,13 @@ class Gameloop:
                 if event.key == pygame.K_ESCAPE:
                     return False
                 if event.key == pygame.K_LEFT:
-                    self.level.pacman.new_direction = (-self.size, 0)
+                    self.level.pacman.new_direction = (-CELL_SIZE, 0)
                 if event.key == pygame.K_RIGHT:
-                    self.level.pacman.new_direction = (self.size, 0)
+                    self.level.pacman.new_direction = (CELL_SIZE, 0)
                 if event.key == pygame.K_UP:
-                    self.level.pacman.new_direction = (0, -self.size)
+                    self.level.pacman.new_direction = (0, -CELL_SIZE)
                 if event.key == pygame.K_DOWN:
-                    self.level.pacman.new_direction = (0, self.size)
+                    self.level.pacman.new_direction = (0, CELL_SIZE)
             if event.type == pygame.QUIT:
                 return False
 
@@ -217,13 +215,13 @@ class Gameloop:
         if cur.fetchall() == []:
             no_scores_text = self.font.render(
                 "NO SCORES YET", False, (107, 183, 210))
-            self.screen.blit(no_scores_text, (6 * CELL_SIZE-10, y_coordinate))
+            self.screen.blit(no_scores_text, (6*CELL_SIZE - CELL_SIZE//3, y_coordinate))
 
         for player, score in cur.execute(
                 'SELECT player, score FROM highscores ORDER BY score DESC LIMIT 3'):
             player_score = player + ": " + str(score)
             highscores = self.font.render(player_score, False, (107, 183, 210))
-            self.screen.blit(highscores, (6 * CELL_SIZE-10, y_coordinate))
+            self.screen.blit(highscores, (6*CELL_SIZE - CELL_SIZE//3, y_coordinate))
             y_coordinate += CELL_SIZE
         connection.close()
 
@@ -254,11 +252,11 @@ class Gameloop:
     def _update_lives(self):
         lives_text = self.font.render(
             f"LIVES: {self.level.lives}", False, (107, 183, 210))
-        self.screen.blit(lives_text, (400, 0))
+        self.screen.blit(lives_text, (13*CELL_SIZE, 0))
 
     def _update_round(self):
         self.move_ghosts()
-        self.level.move_pacman(self.level.pacman.new_direction)
+        self.level.move_pacman()
         self._update_score()
         pygame.display.update()
 

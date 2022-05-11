@@ -27,4 +27,5 @@
 | 5.5.   |  2h    | Muokattu törmäyksen havaitsevaa metodia tarkemmaksi. Aloitettu tietokannan käyttöönotto. |
 | 6.5.   |  3h    | Tietokannan perusteet toimivat. |
 | 9.5.   |  6,5h  | Tietokanta toimii kokonaisuudessaan. Päivitetty dokumentaatiota ja refaktoroitu Level-luokkaa. |
-| Yhteensä | 86h |  |
+| 10.5.  |  2h    | Testausdokumentti luotu ja lisätty muutamat testit. |
+| Yhteensä | 88h |  |
