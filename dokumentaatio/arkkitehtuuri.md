@@ -4,7 +4,7 @@ Ohjelma muodostuu seuraavista pakkauksista: assets, gamelogic, levels, sprites j
 ![Pakkauskaavio](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/pakkauskaavio.png)
 
 ## Sovelluslogiikka
-Pelin käynnistys tapahtuu app.py-tiedostosta. App-luokassa luodaan Level-luokan instanssi, joka annetaan parametrinä Gameloop luokan määrityksessä. Gameloop-luokka muodostuu kolmesta päämetodista: 
+Pelin käynnistys tapahtuu app.py-tiedostosta. App-luokassa luodaan Level-luokan instanssi, joka annetaan parametrinä Gameloop-luokan määrityksessä. Gameloop-luokka muodostuu kolmesta päämetodista: 
 - draw_starting_screen
 - gameloop
 - gameover
