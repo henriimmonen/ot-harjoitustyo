@@ -203,8 +203,9 @@ class Gameloop:
                 if event.key == pygame.K_RETURN:
                     self.enter_name_to_db()
                     return False
-                self.user_text += event.unicode
-                return True
+                if len(self.user_text) <= 10:
+                    self.user_text += event.unicode
+                    return True
             if event.type == pygame.QUIT:
                 return False
         return True
