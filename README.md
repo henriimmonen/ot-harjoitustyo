@@ -4,6 +4,7 @@ Harjoitustyön aiheena on Pacman pelin versio. Tarkempi määrittely pelin omina
 ## Releaset
 - [Release 1](https://github.com/henriimmonen/ot-harjoitustyo/releases/tag/Viikko5)
 - [Release 2](https://github.com/henriimmonen/ot-harjoitustyo/releases/tag/Viikko6)
+- [Loppupalautus](https://github.com/henriimmonen/ot-harjoitustyo/releases/tag/Loppupalautus)
 
 ## Harjoitustyön dokumentaatio
 - [Vaatimusmäärittely](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
