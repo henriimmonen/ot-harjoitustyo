@@ -34,4 +34,4 @@
 - Pelin alussa näytetään kolmen parhaan pelaajan nimet ja pisteet.
 - Jos pelaaja saa enemmän pisteitä, kuin kolmanneksi paras pelaaja, annetaan mahdollisuus lisätä oma nimi listalle.
 - Haamuille lisätty aloitusruudusta kertova attribuutti.
-- -Pacmanin liikkumista sujuvoitettu. Nyt Pacman ei pysähdy jos esimerkiksi vasemmalle kuljettaessa painaa ylöspäin, ilman että siihen suuntaan voisi kulkea.
+- Pacmanin liikkumista sujuvoitettu. Nyt Pacman ei pysähdy jos esimerkiksi vasemmalle kuljettaessa painaa ylöspäin, ilman että siihen suuntaan voisi kulkea.
