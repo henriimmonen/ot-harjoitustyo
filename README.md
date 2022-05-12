@@ -29,5 +29,5 @@ Harjoitustyön aiheena on Pacman pelin versio. Tarkempi määrittely pelin omina
 - Koodin siistiminen PEP8 mukaiseksi suoritetaan käskyllä:
 ```poetry run invoke format```
 
-- Pylint-raportin koostaminen suoritetaan käskyllä:
+- Pylint-raportin (.pylintrc-tiedoston mukainen) koostaminen suoritetaan käskyllä:
 ```poetry run invoke lint```
