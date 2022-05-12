@@ -23,8 +23,12 @@ Harjoitustyön aiheena on Pacman pelin versio. Tarkempi määrittely pelin omina
 - Testien ajaminen suoritetaan käskyllä:
 ```poetry run invoke test```
 
-- Testikattavuusraportin koostaminen suoritetaan käskyllä:
+- Testikattavuuden tarkistaminen suoritetaan käskyllä:
 ```poetry run invoke coverage```
+
+- Testikattavuusraportin muodostaminen suoritetaan käskyllä:
+```poetry run invoke coverage-report```
+Html-muotoinen raportti (index.html) luodaan htmlcov-hakemistoon.
 
 - Koodin siistiminen PEP8 mukaiseksi suoritetaan käskyllä:
 ```poetry run invoke format```
