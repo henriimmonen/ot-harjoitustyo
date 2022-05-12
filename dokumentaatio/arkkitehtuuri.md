@@ -1,6 +1,7 @@
 # Arkkitehtuurikuvaus
 ## Pakkausrakenne
 Ohjelma muodostuu seuraavista pakkauksista: assets, gamelogic, levels, sprites ja ui. Näistä tärkeimmät ovat gamelogic, joka sisältää pelin toimintalogiikkaan liittyvän koodin ja ui, joka sisältää käyttöliittymään liittyvän koodin. Assets sisältää png-kuvia, joita sprites-pakkauksen luokat käyttävät. Sprites sisältää kaikki luokat, joista pelimaailman oliot rakentuvat. Levels pakkauksessa on pelikentän pohja ruudukkona.
+![Pakkauskaavio](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/pakkauskaavio.png)
 
 ## Sovelluslogiikka
 Pelin käynnistys tapahtuu app.py-tiedostosta. App-luokassa luodaan Level-luokan instanssi, joka annetaan parametrinä Gameloop luokan määrityksessä. Gameloop-luokasta kutsutaan ensin `draw_starting_screen` metodia joka piirtää näytölle aloitusruudun. Kun haluttua näppäintä painetaan, poistutaan tästä metodista ja kutsutaan `gameloop` metodia.
