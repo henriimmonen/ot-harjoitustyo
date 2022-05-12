@@ -28,4 +28,5 @@
 | 6.5.   |  3h    | Tietokannan perusteet toimivat. |
 | 9.5.   |  6,5h  | Tietokanta toimii kokonaisuudessaan. Päivitetty dokumentaatiota ja refaktoroitu Level-luokkaa. |
 | 10.5.  |  2h    | Testausdokumentti luotu ja lisätty muutamat testit. |
-| Yhteensä | 88h |  |
+| 11.5.  |  6h    | Docstring-kommentointi loppuun. Viimeisten asioiden hiomista lähdekoodissa. |
+| Yhteensä | 94h |  |

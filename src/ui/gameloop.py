@@ -51,7 +51,9 @@ class Gameloop:
         silmukka tapahtumien käsittelyä varten.
         """
         score_check = self._check_highscores_from_db()
-        score_check = score_check[0]
+        if score_check != 0:
+            score_check = score_check[0]
+
         self.initialize_gameover(score_check)
         if self.level.score > score_check:
             while True:
@@ -208,6 +210,12 @@ class Gameloop:
         return True
 
     def handle_gameover_events_no_entry(self):
+        """Käsitellään silmukassa tapahtumat, kun pelaaja ei laita nimeään
+        leaderboardille.
+
+        Returns:
+            Boolean arvo False, jos näyttö suljetaan. Muuten True.
+        """
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -268,7 +276,7 @@ class Gameloop:
 
     def _update_round(self):
         self.move_ghosts()
-        self.level.move_pacman()
+        self.level.move_pacman(self.level.pacman.new_direction)
         self._update_score()
         pygame.display.update()
 

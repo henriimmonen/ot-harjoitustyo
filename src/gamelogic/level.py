@@ -50,6 +50,7 @@ class Level:  # pylint: disable=too-many-instance-attributes
                    5: self._add_ghost,
                    6: self._add_ghost,
                    7: self._add_ghost,
+                   8: self._add_floors,
                    9: self._add_empty}
 
         for height in range(level_height):
@@ -82,6 +83,9 @@ class Level:  # pylint: disable=too-many-instance-attributes
 
     def _add_pacman(self):
         self.pacman = Pacman(self.normalized_x, self.normalized_y)
+        self.floors.add(Floor(self.normalized_x, self.normalized_y))
+
+    def _add_floors(self):
         self.floors.add(Floor(self.normalized_x, self.normalized_y))
 
     def _add_ghost(self):
@@ -162,8 +166,8 @@ class Level:  # pylint: disable=too-many-instance-attributes
         Args:
             ghost: Ghost-luokan sprite.
         """
-        starting_point = 5*CELL_SIZE + CELL_SIZE*ghost.number
-        new_ghost = Ghost(ghost.number, starting_point, 7*CELL_SIZE)
+        new_ghost = Ghost(ghost.number, ghost.starting_point[0]*CELL_SIZE,
+            ghost.starting_point[1]*CELL_SIZE)
         self._speed_up_ghost(new_ghost)
         self.ghosts.add(new_ghost)
         self.all_sprites.add(self.ghosts)
@@ -172,7 +176,7 @@ class Level:  # pylint: disable=too-many-instance-attributes
         if self.cleared >= 1:
             ghost.speed = max(ghost.speed-(self.cleared*3), 3)
 
-    def move_pacman(self):
+    def move_pacman(self, direction):
         """Pacman-luokan spriten liikuttaminen. Jos Pacman on keskellä ruutua ja liikkuminen on
         mahdollista new_direction-suuntaan, asetetaan nykyiseksi suunnaksi new_direction.
         Tämän jälkeen vaihdetaan kuva vastaamaan liikkumissuuntaa, liikutaan nykyiseen
@@ -183,8 +187,8 @@ class Level:  # pylint: disable=too-many-instance-attributes
         """
         self._check_timer()
         if self._centered(self.pacman):
-            if self._moving_is_possible(self.pacman.new_direction):
-                self.pacman.direction = self.pacman.new_direction
+            if self._moving_is_possible(direction):
+                self.pacman.direction = direction
         if self._moving_is_possible(self.pacman.direction):
             self.pacman.set_image()
             self.pacman.rect.move_ip(
@@ -242,25 +246,30 @@ class Level:  # pylint: disable=too-many-instance-attributes
                 return True
         return False
 
+    def _check_neighbours(self, queue, visited, current_cell, path):
+        for neighbour in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+            if self._neighbour_is_inside_matrix(neighbour, current_cell):
+                next_cell = [neighbour[0]+current_cell[0],
+                            neighbour[1]+current_cell[1]]
+                if next_cell not in visited and self.level[next_cell[1]][next_cell[0]] != 1:
+                    queue.append(next_cell)
+                    path.append([current_cell, next_cell])
+        return path
+
     def _bfs(self, starting_cell, target_cell):
         queue = deque()
         visited = []
         path = []
         queue.append(starting_cell)
-        while queue:  # pylint: disable=too-many-nested-blocks
+        while queue:
             current_cell = queue.popleft()
             visited.append(current_cell)
 
             if current_cell == target_cell:
                 break
 
-            for neighbour in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-                if self._neighbour_is_inside_matrix(neighbour, current_cell):
-                    next_cell = [neighbour[0]+current_cell[0],
-                                 neighbour[1]+current_cell[1]]
-                    if next_cell not in visited and self.level[next_cell[1]][next_cell[0]] != 1:
-                        queue.append(next_cell)
-                        path.append([current_cell, next_cell])
+            path = self._check_neighbours(queue, visited, current_cell, path)
+
         direction = [target_cell]
         while target_cell != starting_cell:
             for step in path:
