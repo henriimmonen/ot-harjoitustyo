@@ -6,7 +6,7 @@
 ## Käyttäjät
 - Käyttäjinä toimivat pelin pelaajat. Muita tarpeellisia rooleja käyttäjille ei ole.
  
-## Suunnitellut toiminnallisuudet
+## Pelin toiminnallisuudet
 - Peli alkaa aloitusruudulla, jossa näytetään ns. leaderboard kolmen parhaan pistesaldon keränneistä pelaajista (paikallisesti).
 - Painamalla välilyöntiä, peli alkaa.
 - Pelaaja liikuttaa hahmoa nuolinäppäimillä ympäri kenttää ja koittaa kerätä mahdollisimman monta pistettä.
