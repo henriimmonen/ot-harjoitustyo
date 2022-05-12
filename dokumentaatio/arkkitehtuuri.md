@@ -54,7 +54,6 @@ sequenceDiagram
 	Gameloop->>Gameloop: self.move_ghosts()
 	Gameloop->>Level: move_pacman(pacman.new_direction)
 	Gameloop->>Gameloop: update_score()
-	Note left of Gameloop: score_text.render(), screen.blit(score_text)
 	Note left of Gameloop: pygame.display.update()
 	Gameloop->>Level: if all_pellets_eaten()
 	Gameloop->>Gameloop: start_over_with_pellets()
