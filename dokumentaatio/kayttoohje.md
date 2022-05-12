@@ -1,7 +1,7 @@
 # Käyttöohje
 
 - Ennen pelin pelaamista täytyy olla asennettuna [sqlite3](https://www.sqlite.org/index.html), [pygame](https://www.pygame.org/news) ja [poetry](https://python-poetry.org/).
-- Lataa pelin viimeisin [release](https://github.com/henriimmonen/ot-harjoitustyo/releases/tag/Viikko6).
+- Lataa pelin viimeisin [release](https://github.com/henriimmonen/ot-harjoitustyo/releases/tag/Loppupalautus).
 - Ennen ohjelman käynnistämistä, asenna riippuvuudet komennolla `poetry install`.
 - Tämän jälkeen ohjelman käynnistäminen tapahtuu juurihakemistosta komennolla `poetry run invoke start`.
 - Muita komentoja, joita voit suorittaa löytyvät projektin [README.md tiedostosta](https://github.com/henriimmonen/ot-harjoitustyo/blob/master/README.md).
